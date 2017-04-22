@@ -5,9 +5,6 @@ Files tree :
 bin/weather23k              the application
 
 conf/weatherman.conf        sample configuration file
-conf/weatherman.conf_org    sample configuration file
-conf/weatherman.conf_SFT    sample configuration file
-conf/weatherman.conf_temp   sample configuration file
 
 include/data.h
 inlcude/errors.h
