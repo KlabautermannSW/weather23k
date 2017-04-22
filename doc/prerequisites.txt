@@ -1,0 +1,11 @@
+Prerequisites
+
+	make
+	gcc
+	libcurl
+	libcurl-devel
+
+
+On the web server
+
+	PHP
