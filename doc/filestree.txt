@@ -18,7 +18,7 @@ inlcude/ws23kcom.h
 inlcude/ws23k.h
 
 doc/filestree.txt           list of all files included in this project
-doc/prerequisites.txt		what you need to create and use this project
+doc/prerequisites.txt       what you need to create and use this project
 
 obj/*                       object files created by comlining
 
@@ -27,7 +27,7 @@ php/humid.php               graphic displaying the outdoor humitity
 php/relpress.php            graphic displaying the outdoor air pressure (relative) 
 php/temperatures.php        graphic displaying the outdoor temperature
 php/windchill.php           graphic displaying the windchill temperature
-php/winddir.php		        graphic displaying the wind direction
+php/winddir.php	            graphic displaying the wind direction
 php/windspeed.php           graphic displaying the wind speed
 
 src/data.c
@@ -46,6 +46,6 @@ src/ws23kcom.c
 .gitignore                  the git ignore rules
 LICENSE                     the license description
 Makefile                    make : compiles and links the whole project
-						    make clean : removes object files and bluefish backup
+                            make clean : removes object files and bluefish backup
                                          files but not the application
 README.MD                   this documentation
