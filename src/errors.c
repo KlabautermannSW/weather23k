@@ -1,44 +1,44 @@
 /*
-	Copyright (C)
+    Copyright (C)
 
-	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 3 of the License, or
-	(at your option) any later version.
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 3 of the License, or
+    (at your option) any later version.
 
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-	See the GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+    See the GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with this program.
-	If not, see <http://www.gnu.org/licenses/>.
+    You should have received a copy of the GNU General Public License
+    along with this program.
+    If not, see <http://www.gnu.org/licenses/>.
 
-	Klabautermann Software
-	Uwe Jantzen
-	Weingartener Straße 33
-	76297 Stutensee
-	Germany
+    Klabautermann Software
+    Uwe Jantzen
+    Weingartener Straße 33
+    76297 Stutensee
+    Germany
 
-	file		errors.c
+    file        errors.c
 
-	date		09.10.2016
+    date        09.10.2016
 
-	author		Uwe Jantzen (jantzen@klabautermann-software.de)
+    author      Uwe Jantzen (jantzen@klabautermann-software.de)
 
-	brief		Error code handling
+    brief       Error code handling
 
-	details		Defines the error codes and description strings.
-				Implements a verbose error output function.
+    details     Defines the error codes and description strings.
+                Implements a verbose error output function.
 
-	project		weather23k
-	target		Linux
-	begin		09.10.2016
+    project     weather23k
+    target      Linux
+    begin       09.10.2016
 
-	note		
+    note        
 
-	todo		
+    todo        
 
 */
 
@@ -49,48 +49,48 @@
 
 
 static char * errors[] =
-	{
-	"No error",
-	"Port name longer than 255 characters",
-	"No port name given",
-	"opening serial port failed",
-	"serial port is locked",
-	"Unable to initialize serial port",
-	0
-	};
+    {
+    "No error",
+    "Port name longer than 255 characters",
+    "No port name given",
+    "opening serial port failed",
+    "serial port is locked",
+    "Unable to initialize serial port",
+    0
+    };
 
 
-/*	function		void error( ERRNO err )
+/*  function        void error( ERRNO err )
 
-	brief			Prints a brief description of error "err" to stdout if
-					verbose mode is set.
+    brief           Prints a brief description of error "err" to stdout if
+                    verbose mode is set.
 
-	param[in]		ERRNO err, code of error to describe.
+    param[in]       ERRNO err, code of error to describe.
 
 */
 void error( ERRNO err )
-	{
-	int idx;
-	int count;
+    {
+    int idx;
+    int count;
 
-	idx = (int)err * -1;										// switch error code to index into the text array
-	if( idx < 0 )												// just in case ...
-		{
-		printf("Error %3d --- This is an implementation bug! Error code should NOT be positive!\n", err);
-		return;
-		}
+    idx = (int)err * -1;                                                        // switch error code to index into the text array
+    if( idx < 0 )                                                               // just in case
+        {
+        printf("Error %3d --- This is an implementation bug! Error code should NOT be positive!\n", err);
+        return;
+        }
 
-	if( verbose() )
-		{
-		for( count = 0; errors[count]; ++count )
-			{
-			if( idx == count )
-				break;
-			}
+    if( verbose() )
+        {
+        for( count = 0; errors[count]; ++count )
+            {
+            if( idx == count )
+                break;
+            }
 
-		if( errors[count] )
-			printf("Error %3d : %s\n", err, errors[count]);
-		else
-			printf("Error %3d : unknown error code !\n", err);
-		}
-	}
+        if( errors[count] )
+            printf("Error %3d : %s\n", err, errors[count]);
+        else
+            printf("Error %3d : unknown error code !\n", err);
+        }
+    }
