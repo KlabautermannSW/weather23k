@@ -1,51 +1,51 @@
 /*
-	Copyright (C)
+    Copyright (C)
 
-	This program is free software; you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation; either version 3 of the License, or
-	(at your option) any later version.
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 3 of the License, or
+    (at your option) any later version.
 
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with this program. If not, see <http://www.gnu.org/licenses/>.
+    You should have received a copy of the GNU General Public License
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-	Klabautermann Software
-	Uwe Jantzen
-	Weingartener Straße 33
-	76297 Stutensee
-	Germany
+    Klabautermann Software
+    Uwe Jantzen
+    Weingartener Straße 33
+    76297 Stutensee
+    Germany
 
-	file		sercom.h
+    file        sercom.h
 
-	date		09.10.2016
+    date        09.10.2016
 
-	author		Uwe Jantzen (jantzen@klabautermann-software.de)
+    author      Uwe Jantzen (jantzen@klabautermann-software.de)
 
-	brief		Handle access to a WS2300 compatible weather station.
+    brief       Handle access to a WS2300 compatible weather station.
 
-	details		This driver provides low level access functions to a WS2300
-				compatible weather station.
-				The API includes
-				- ws_init
-				- ws_open
-				- ws_close
-				- ws_read
-				- ws_write
+    details     This driver provides low level access functions to a WS2300
+                compatible weather station.
+                The API includes
+                - ws_init
+                - ws_open
+                - ws_close
+                - ws_read
+                - ws_write
 
-	project		weather23k
-	target		Linux
-	begin		14.04.2017
+    project     weather23k
+    target      Linux
+    begin       14.04.2017
 
-	note		The functionality is based on the work done by Kenneth Larvsen
-				(openWS23) but has advanced driver capabilities to prevent
-				WS2300 hardware dependent problems when using the serial interface.
+    note        The functionality is based on the work done by Kenneth Larvsen
+                (openWS23) but has advanced driver capabilities to prevent
+                WS2300 hardware dependent problems when using the serial interface.
 
-	todo		
+    todo        
 
 */
 
@@ -69,4 +69,4 @@ extern ERRNO ws_clear( void );
 
 
 
-#endif	// __H_SERCOM__
+#endif  // __H_SERCOM__
