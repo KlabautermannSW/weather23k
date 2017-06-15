@@ -482,7 +482,7 @@ ERRNO _GetEntry( FILE * p_file, char * p_section, char * p_key, char * p_val )
 
 /*  function        ERRNO Init( void )
 
-    brief           initializes the global viarables from the date out of the
+    brief           initializes the global viarables from the data out of the
                     .ini file
 
     return          ERRNO, initialization error or success
@@ -627,7 +627,6 @@ ERRNO Init( void )
     if( !the_ftp_string )
         error = ERR_NOT_ENOUGH_MEMORY;
 
-    OpenWS23K();
 end_Init:                                                                       // error exit
     free(p_template_buffer);
     fclose(p_inifile);
@@ -643,8 +642,6 @@ end_Init:                                                                       
 void DeInit( void )
     {
     struct _tokens * p_token;
-
-    CloseWS23K();
 
     the_p_token = the_p_token_list;
     while( the_p_token )

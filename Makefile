@@ -45,7 +45,7 @@ vpath %.o obj
 
 CC  = gcc
 CC  = gcc
-OBJ = weather23k.o sercom.o ws23kcom.o ws23k.o ftp.o getargs.o data.o log.o password.o driver.o errors.o
+OBJ = weather23k.o sercom.o ws23kcom.o ws23k.o ftp.o getargs.o data.o log.o password.o errors.o
 DSRC = src
 DINC = include
 DBIN = bin
@@ -72,7 +72,6 @@ weather23k : $(OBJ)
 		$(DOBJ)/data.o \
 		$(DOBJ)/log.o \
 		$(DOBJ)/password.o \
-		$(DOBJ)/driver.o \
 		$(DOBJ)/errors.o \
 		-lcurl \
 		$(CC_LDFLAGS)
@@ -116,10 +115,6 @@ password.o : password.c
 errors.o : errors.c errors.h data.h
 	mkdir -p $(DOBJ)
 	$(CC) $(CFLAGS) -c $(DSRC)/errors.c -o $(DOBJ)/errors.o
-
-driver.o : driver.c errors.h
-	mkdir -p $(DOBJ)
-	$(CC) $(CFLAGS) -c $(DSRC)/driver.c -o $(DOBJ)/driver.o
 
 clean:
 	rm -v -f $(DSRC)/*~ $(DINC)/*~ $(CONF)/*~ $(DOBJ)/* *~ 

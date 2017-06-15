@@ -109,7 +109,7 @@ int main( int argc, char *argv[] )
         return error;
         }
 
-    i = 0;
+    ws_open();
     for( ; ; )
         {
         ReadData();

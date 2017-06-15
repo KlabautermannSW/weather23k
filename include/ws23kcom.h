@@ -46,8 +46,11 @@
 #define __H_file__
 
 
-extern int read_data( unsigned char *data, unsigned char *cmd, int addr, int n );
-extern int write_data( unsigned char *data, unsigned char *cmd, int addr, int n, unsigned char encode_constant );
+#include <stdint.h>
+
+
+extern int read_data( uint8_t *data, uint8_t *cmd, int addr, int n );
+extern int write_data( uint8_t *data, uint8_t *cmd, int addr, int n, uint8_t encode_constant );
 
 
 #endif  // __H_file__
