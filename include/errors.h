@@ -49,24 +49,26 @@
 
 #define NOERR                                   0
 
-#define ERR_NAME                                -1        // port name too long
-#define ERR_NO_PORT                             -2        // no port given
-#define ERR_NO_HANDLE                           -3        // opening serial port failed
-#define ERR_LOCKED                              -4        // serial port is locked
-#define ERR_INIT_PORT                           -5        // Unable to initialize serial port
+#define ERR_NAME                                -1                              // port name too long
+#define ERR_NO_PORT                             -2                              // no port given
+#define ERR_NO_HANDLE                           -3                              // opening serial port failed
+#define ERR_LOCKED                              -4                              // serial port is locked
+#define ERR_INIT_PORT                           -5                              // Unable to initialize serial port
 
-#define ERR_COMM_ERR                            -10        // general serial communications error
+#define ERR_COMM_ERR                            -10                             // general serial communications error
+#define ERR_COMM_READ                           -11                             // error reading from WS2300
+#define ERR_COMM_WRITE                          -12                             // error writng to WS2300
 
 #define ERR_ILLEGAL_STRING_LEGNTH               -21
 #define ERR_NO_INIFILE                          -22
-#define    ERR_EOF                              -23
-#define    ERR_UNKNOWN                          -24
+#define ERR_EOF                                 -23
+#define ERR_UNKNOWN                             -24
 #define ERR_ILLEGAL_KEYLINE                     -25
 #define ERR_ILLEGAL_KEY_TYPE                    -26
 #define ERR_OUT_OF_MEMORY                       -27
 #define ERR_ILLEGAL_STRING_PTR                  -28
 #define ERR_GET_FILE_LENGTH                     -29
-#define    ERR_NOT_ENOUGH_MEMORY                -30
+#define ERR_NOT_ENOUGH_MEMORY                   -30
 #define ERR_VAR_UNKNOWN                         -31
 #define ERR_OPEN_FILE                           -32
 #define ERR_PASSWORD_TO_LONG                    -33
@@ -78,6 +80,8 @@
 #define ERR_CURL_SETOPERRNOOR                   -39
 #define ERR_CURL_PERFORM_ERROR                  -40
 #define ERR_RESET_COMMUNICATION                 -41
+#define ERR_NO_FTP_SERVER                       -42
+#define ERR_NO_LOG_DATA                         -43
 
 
 typedef int ERRNO;

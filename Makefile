@@ -22,7 +22,7 @@
 #
 #   file        Makefile
 #
-#   date        13.10.2016
+#   date        18.06.2017
 #
 #   author      Uwe Jantzen (jantzen@klabautermann-software.de)
 #
@@ -45,7 +45,7 @@ vpath %.o obj
 
 CC  = gcc
 CC  = gcc
-OBJ = weather23k.o sercom.o ws23kcom.o ws23k.o ftp.o getargs.o data.o log.o password.o errors.o
+OBJ = weather23k.o sercom.o ws23kcom.o ws23k.o ftp.o getargs.o data.o log.o password.o errors.o locals.o
 DSRC = src
 DINC = include
 DBIN = bin
@@ -73,14 +73,15 @@ weather23k : $(OBJ)
 		$(DOBJ)/log.o \
 		$(DOBJ)/password.o \
 		$(DOBJ)/errors.o \
+		$(DOBJ)/locals.o \
 		-lcurl \
 		$(CC_LDFLAGS)
 
-weather23k.o : weather23k.c
+weather23k.o : weather23k.c data.h getargs.h ws23k.h ftp.h log.h sercom.h
 	mkdir -p $(DOBJ)
 	$(CC) $(CFLAGS) -c $(DSRC)/weather23k.c -o $(DOBJ)/weather23k.o
 
-sercom.o : sercom.c errors.h
+sercom.o : sercom.c sercom.h errors.h
 	mkdir -p $(DOBJ)
 	$(CC) $(CFLAGS) -c $(DSRC)/sercom.c -o $(DOBJ)/sercom.o
 
@@ -88,33 +89,37 @@ ws23kcom.o : ws23kcom.c sercom.h errors.h
 	mkdir -p $(DOBJ)
 	$(CC) $(CFLAGS) -c $(DSRC)/ws23kcom.c -o $(DOBJ)/ws23kcom.o
 
-ws23k.o : ws23k.c
+ws23k.o : ws23k.c data.h ws23kcom.h ws23k.h locals.h
 	mkdir -p $(DOBJ)
 	$(CC) $(CFLAGS) -c $(DSRC)/ws23k.c -o $(DOBJ)/ws23k.o
 
-ftp.o : ftp.c
+ftp.o : ftp.c ftp.h data.h
 	mkdir -p $(DOBJ)
 	$(CC) $(CFLAGS) -c $(DSRC)/ftp.c -o $(DOBJ)/ftp.o
 
-getargs.o : getargs.c
+getargs.o : getargs.c data.h password.h getargs.h
 	mkdir -p $(DOBJ)
 	$(CC) $(CFLAGS) -c $(DSRC)/getargs.c -o $(DOBJ)/getargs.o
 
-data.o : data.c
+data.o : data.c data.h ws23k.h password.h
 	mkdir -p $(DOBJ)
 	$(CC) $(CFLAGS) -c $(DSRC)/data.c -o $(DOBJ)/data.o
 
-log.o : log.c
+log.o : log.c log.h ws23k.h
 	mkdir -p $(DOBJ)
 	$(CC) $(CFLAGS) -c $(DSRC)/log.c -o $(DOBJ)/log.o
 
-password.o : password.c
+password.o : password.c password.h
 	mkdir -p $(DOBJ)
 	$(CC) $(CFLAGS) -c $(DSRC)/password.c -o $(DOBJ)/password.o
 
 errors.o : errors.c errors.h data.h
 	mkdir -p $(DOBJ)
 	$(CC) $(CFLAGS) -c $(DSRC)/errors.c -o $(DOBJ)/errors.o
+
+locals.o : locals.c locals.h
+	mkdir -p $(DOBJ)
+	$(CC) $(CFLAGS) -c $(DSRC)/locals.c -o $(DOBJ)/locals.o
 
 clean:
 	rm -v -f $(DSRC)/*~ $(DINC)/*~ $(CONF)/*~ $(DOBJ)/* *~ 

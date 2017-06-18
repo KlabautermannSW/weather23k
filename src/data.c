@@ -87,12 +87,12 @@ static const char * the_default_com_port = "/dev/ttyS0";
 
 static char the_verbose_flag = 0;
 static char the_debug_flag = 0;
-static char the_com_port[128];
-static char the_log_path[128];
-static char the_ftp_server[256];
-static char the_user_name[128];
-static char the_key[MAX_PASSWORD_LENGTH];
-static char the_ftp_file[128];
+static char the_com_port[128] = { 0, };
+static char the_log_path[128] = { 0, };
+static char the_ftp_server[256] = { 0, };
+static char the_user_name[128] = { 0, };
+static char the_key[MAX_PASSWORD_LENGTH] = { 0, };
+static char the_ftp_file[128] = { 0, };
 static char * the_init_file_name = 0;
 
 static struct _tokens * the_p_token_list = 0;
@@ -666,7 +666,7 @@ void DeInit( void )
 */
 ERRNO PrintVariable( int var, char * dst )
     {
-    WEATHERDATA * p_weatherdata;
+    weatherdata_t * p_weatherdata;
     char var_str[20];
 
     if( (var > VAR_NUM_OF_VARS) || (var == VAR_UNKNOWN) )

@@ -91,7 +91,7 @@ ERRNO Log( void )
     char curr_date[11];
     char line[1024];
     FILE * logfile;
-    WEATHERDATA * p_weatherdata = get_weatherdata_ptr();
+    weatherdata_t * p_weatherdata = get_weatherdata_ptr();
 
     sprintf(line, "%s", p_weatherdata->act_time);
     sprintf(line, "%s %5.1f", line, p_weatherdata->temperature);                // temperature [٠C]

@@ -8,12 +8,11 @@
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-    See the    GNU General Public License for more details.
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.
-    If not, see <http://www.gnu.org/licenses/>.
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
 
     Klabautermann Software
     Uwe Jantzen
@@ -21,19 +20,19 @@
     76297 Stutensee
     Germany
 
-    file        ws23kcom.h
+    file        locals.h
 
-    date        16.04.2017
+    date        18.06.2017
 
     author      Uwe Jantzen (jantzen@klabautermann-software.de)
 
-    brief       Handle all access to WS2300 weather station
+    brief       This file include some localized data
 
     details     
 
     project     weather23k
     target      Linux
-    begin       16.04.2017
+    begin       18.06.2017
 
     note        
 
@@ -42,20 +41,18 @@
 */
 
 
-#ifndef __H_file__
-#define __H_file__
+#ifndef __LOCALS_H__
+#define __LOCALS_H__
 
 
-#include <stdint.h>
+/*
+#define HEIGHT                                   195.0                          // Joehlingen
+#define HEIGHT                                     5.0                          // Hoernum
+*/
+#define HEIGHT                                   114.0                          // Staffort
 
 
-#define BIT_SET                                 0x12
-#define BIT_CLEAR                               0x32
+extern const char * directions[];
 
 
-extern int read_data( uint8_t * data, int addr, int n );
-extern int write_data( uint8_t * data, int addr, int n, uint8_t encode_constant );
-extern void handle_comm_error( ERRNO err );
-
-
-#endif  // __H_file__
+#endif  //  __LOCALS_H__

@@ -50,184 +50,39 @@
 
 #define MAX_RETRIES                             50
 
-#define WRITE_NIBBBLE                           0x42
-
-#define BIT_SET                                 0x12
-#define BIT_CLEAR                               0x32
-
 #define ACK_WRITE                               0x10
 #define ACK_SET                                 0x04
 #define ACK_CLEAR                               0x0C
 
-#define RESET_MIN                               0x01
-#define RESET_MAX                               0x02
 
-
-/*  function        int sample( int a, char * b, char * c )
-
-    brief           <brief description of function content>
-
-    param[in]       int a, Description of a
-    param[in/out]   char * b, Description of b
-    param[out]      char * c, Description of c
-
-    return          int
-*/
-
-
-/********************************************************************
- * enc_address converts an 16 bit address to the form needed
- * by the WS-2300 when sending commands.
- *
- * Input:   address_in (interger - 16 bit)
- * 
- * Output:  address_out - Pointer to an uint8_tacter array.
- *          3 bytes, not zero terminated.
- * 
- * Returns: Nothing.
- *
- ********************************************************************/
 /*  function        static void enc_address( int src, uint8_t * dst )
 
     brief           Convert an eeprom address into WS23k telegram format
 
     param[in]       int src, eeprom address
-    param[out]      uint8_t * dst, output buffer - must be 4 bytes long at least
+    param[out]      uint8_t * dst, output buffer - must be 4 bytes long at least,
                                    not checked for enough space here!!
 */
 static void enc_address( int src, uint8_t * dst )
-{
-	for( int i = 0; i < 4; ++i )
-    	{
-		dst[i] = (uint8_t) (0x82 + (((src >> (4 * (3 - i))) & 0x0F) * 4));
-	   }
-}
+    {
+    for( int i = 0; i < 4; ++i )
+        dst[i] = (uint8_t) (0x82 + (((src >> (4 * (3 - i))) & 0x0F) * 4));
+    }
 
 
-/********************************************************************
- * numberof_encoder converts the number of bytes we want to read
- * to the form needed by the WS-2300 when sending commands.
- *
- * Input:   number interger, max value 15
- * 
- * Returns: uint8_t which is the coded number of bytes
- *
- ********************************************************************/
-/*  function        int sample( int a, char * b, char * c )
+/*  function        static uint8_t checksum_cmd( uint8_t cmd, int n )
 
-    brief           <brief description of function content>
+    brief           calculates the checksum for the bytes of commnd
 
-    param[in]       int a, Description of a
-    param[in/out]   char * b, Description of b
-    param[out]      char * c, Description of c
+    param[in]       uint8_t cmd, command to caculate the checksum for
+    param[in]       int n, the n'th byte of command
 
-    return          int
+    return          uint8_t, cjecksum
 */
-uint8_t numberof_encoder(int number)
-{
-	int coded_number;
-
-	coded_number = (uint8_t) (0xC2 + number * 4);
-	if (coded_number > 0xfe)
-		coded_number = 0xfe;
-
-	return coded_number;
-}
-
-
-/********************************************************************
- * command_check0123 calculates the checksum for the first 4
- * commands sent to WS2300.
- *
- * Input:   pointer to char to check
- *          sequence of command - i.e. 0, 1, 2 or 3.
- * 
- * Returns: calculated checksum as uint8_t
- *
- ********************************************************************/
-/*  function        int sample( int a, char * b, char * c )
-
-    brief           <brief description of function content>
-
-    param[in]       int a, Description of a
-    param[in/out]   char * b, Description of b
-    param[out]      char * c, Description of c
-
-    return          int
-*/
-static uint8_t command_check0123(uint8_t *command, int sequence)
-{
-	int response;
-
-	response = sequence * 16 + ((*command) - 0x82) / 4;
-
-	return (uint8_t) response;
-}
-
-
-/********************************************************************
- * command_check4 calculates the checksum for the last command
- * which is sent just before data is received from WS2300
- *
- * Input: number of bytes requested
- * 
- * Returns: expected response from requesting number of bytes
- *
- ********************************************************************/
-/*  function        int sample( int a, char * b, char * c )
-
-    brief           <brief description of function content>
-
-    param[in]       int a, Description of a
-    param[in/out]   char * b, Description of b
-    param[out]      char * c, Description of c
-
-    return          int
-*/
-static uint8_t command_check4(int number)
-{
-	int response;
-
-	response = 0x30 + number;
-
-	return response;
-}
-
-
-/********************************************************************
- * data_checksum calculates the checksum for the data bytes received
- * from the WS2300
- *
- * Input:   pointer to array of data to check
- *          number of bytes in array
- * 
- * Returns: calculated checksum as uint8_t
- *
- ********************************************************************/
-/*  function        int sample( int a, char * b, char * c )
-
-    brief           <brief description of function content>
-
-    param[in]       int a, Description of a
-    param[in/out]   char * b, Description of b
-    param[out]      char * c, Description of c
-
-    return          int
-*/
-static uint8_t data_checksum(uint8_t *data, int number)
-{
-	int checksum = 0;
-	int i;
-
-	for (i = 0; i < number; i++)
-	{
-		checksum += data[i];
-	}
-
-	checksum &= 0xFF;
-
-	return (uint8_t) checksum;
-}
+static uint8_t checksum_cmd( uint8_t cmd, int n )
+    {
+    return (uint8_t)(n * 16 + (cmd - 0x82) / 4);
+    }
 
 
 /*  function        ERRNO reset( void )
@@ -246,7 +101,7 @@ static uint8_t data_checksum(uint8_t *data, int number)
 static ERRNO reset( void )
     {
     uint8_t cmd = 0x06;
-    uint8_t answer;
+    uint8_t dst;
 
     for( int i = 0; i < 100; ++i )
         {
@@ -254,9 +109,9 @@ static ERRNO reset( void )
 
         ws_write(&cmd, 1);
 
-        while( ws_read(&answer, 1) == 1 )
+        while( ws_read(&dst, 1) == 1 )
             {
-            if( answer == 0x02 )
+            if( dst == 0x02 )
                 return NOERR;
             }
 
@@ -268,43 +123,46 @@ static ERRNO reset( void )
     }
 
 
-/*  function        int perform_read( uint8_t *data, uint8_t *cmd, int addr, int n )
+/*  function        int perform_read( uint8_t * data, int addr, int n )
 
     brief           Read a number of data from a given address into the buffer data using
                     the command cmd.
 
-    param[out]      uint8_t *data, buffer to read into
-    param[in]       uint8_t *cmd, command to perform
+    param[out]      uint8_t * data, buffer to read into
     param[in]       int addr, data array is starting here
-    param[in]       int n number of bytes to read
+    param[in]       int n, number of bytes to read
 
     return          int, number of bytes read
 */
-static int perform_read( uint8_t *data, uint8_t *cmd, int addr, int n )
+static int perform_read( uint8_t * data, int addr, int n )
     {
-
-    uint8_t answer;
+    uint8_t cmd[5];
+    uint8_t dst;
+    uint8_t checksum = 0;
     int i;
 
-    enc_address(addr, cmd);                                                 // First 4 bytes are populated with converted address range 0000-13B0
-    cmd[4] = numberof_encoder(n);                                          // Last populate the 5th byte with the converted number of bytes
+    if( n > 15 )                                                                // we can't read more then 15 bytes at a single blow 
+        return -1;
+
+    enc_address(addr, cmd);                                                     // first 4 bytes are address
+    cmd[4] = (uint8_t)(0xC2 + n * 4);                                           // last byte contains the number of bytes
 
     for( i = 0; i < 4; ++i )
         {
         if( ws_write(cmd + i, 1) != 1 )
             return -1;
-        if( ws_read(&answer, 1) != 1 )
+        if( ws_read(&dst, 1) != 1 )
             return -1;
-        if( answer != command_check0123(cmd + i, i) )
+        if( dst != checksum_cmd(cmd[i], i) )
             return -1;
         }
 
-    // send the final command that asks for 'number' of bytes, check answer
+    // send the final command that asks for 'number' of bytes, check dst
     if( ws_write(cmd + 4, 1) != 1 )
         return -1;
-    if( ws_read(&answer, 1) != 1 )
+    if( ws_read(&dst, 1) != 1 )
         return -1;
-    if( answer != command_check4(n) )
+    if( dst != (n + 0x30) )
         return -1;
 
     // read the data bytes
@@ -315,35 +173,38 @@ static int perform_read( uint8_t *data, uint8_t *cmd, int addr, int n )
         }
 
     // read and verify checksum
-    if( ws_read(&answer, 1) != 1 )
+    if( ws_read(&dst, 1) != 1 )
         return -1;
-    if( answer != data_checksum(data, n) )
+    for( i = 0; i < n; ++i )
+        checksum += data[i];
+    checksum &= 0xFF;
+
+    if( dst != checksum )
         return -1;
 
     return i;
     }
 
 
-/*  function        int read_data( uint8_t *data, uint8_t *cmd, int addr, int n )
+/*  function        int read_data( uint8_t * data, int addr, int n )
 
     brief           Read a number of data from a given address into the buffer data using
                     the command cmd. Retry until all data is read or max retries are done.
 
-    param[out]      uint8_t *data, buffer to read into
-    param[in]       uint8_t *cmd, command to perform
+    param[out]      uint8_t * data, buffer to read into
     param[in]       int addr, read the data is starting here
     param[in]       int n number of bytes to read
 
     return          int, number of bytes read
 */
-int read_data( uint8_t *data, uint8_t *cmd, int addr, int n )
+int read_data( uint8_t * data, int addr, int n )
     {
     for( int j = 0; j < MAX_RETRIES; ++j )
         {
         if( reset() != NOERR )
             return ERR_RESET_COMMUNICATION;
 
-        if( perform_read(data, cmd, addr, n) == n )                             // read the data, if expected number of bytes read break out of loop
+        if( perform_read(data, addr, n) == n )                             // read the data, if expected number of bytes read break out of loop
             return n;
         }
 
@@ -351,135 +212,97 @@ int read_data( uint8_t *data, uint8_t *cmd, int addr, int n )
     }
 
 
-/*  function        int perform_write( uint8_t *data, uint8_t *cmd, int addr, int n, uint8_t encode_constant )
+/*  function        int perform_write( uint8_t * data, int addr, int n, uint8_t enc_type )
 
     brief           Write a number of bytes to the WS2300 weather station.
 
-    param[in]       uint8_t *data, buffer to write out
-    param[in]       uint8_t *cmd, command to perform
+    param[in]       uint8_t * data, buffer to write out
     param[in]       int addr, read the data from here
-    param[in]       int n number of bytes to read
-    param[in]       uint8_t encode_constant
+    param[in]       int n, number of bytes to read
+    param[in]       uint8_t enc_type
 
     return          int, number of bytes written
 */
-static int perform_write( uint8_t *data, uint8_t *cmd, int addr, int n, uint8_t encode_constant )
+static int perform_write( uint8_t * data, int addr, int n, uint8_t enc_type )
     {
-    uint8_t answer;
-    uint8_t encoded_data[80];
+    uint8_t dst;
+    uint8_t src[80];
+    uint8_t cmd[5];
     int i;
-    uint8_t ack_constant = ACK_WRITE;
+    uint8_t ack = ACK_WRITE;
     
-    if( encode_constant == BIT_SET )
-        ack_constant = ACK_SET;
-    else if( encode_constant == BIT_CLEAR )
-        ack_constant = ACK_CLEAR;
+    if( enc_type == BIT_SET )
+        ack = ACK_SET;
+    else if( enc_type == BIT_CLEAR )
+        ack = ACK_CLEAR;
 
-    enc_address(addr, cmd);                                                 // First 4 bytes are populated with converted address range 0000-13XX
-	for (i = 0; i < n; i++)
-	{
-		encoded_data[i] = (uint8_t) (encode_constant + (data[i] * 4));
-	}
+    enc_address(addr, cmd);                                                     // First 4 bytes are populated with converted address range 0000-13XX
+    for( i = 0; i < n; ++i )
+        src[i] = (uint8_t) (enc_type + (data[i] * 4));
 
     for( i = 0; i < 4; ++i )                                                    // Write the 4 address bytes
         {
         if( ws_write(cmd + i, 1) != 1 )
             return -1;
-        if( ws_read(&answer, 1) != 1 )
+        if( ws_read(&dst, 1) != 1 )
             return -1;
-        if( answer != command_check0123(cmd + i, i) )
+        if( dst != checksum_cmd(cmd[i], i) )
             return -1;
         }
 
     for( i = 0; i < n; ++i )                                                    // Write the data nibbles or set/unset the bits
         {
-        if( ws_write(encoded_data + i, 1) != 1 )
+        if( ws_write(src + i, 1) != 1 )
             return -1;
-        if( ws_read(&answer, 1) != 1 )
+        if( ws_read(&dst, 1) != 1 )
             return -1;
-        if( answer != (data[i] + ack_constant) )
+        if( dst != (data[i] + ack) )
             return -1;
-        cmd[i + 4] = encoded_data[i];
+        cmd[i + 4] = src[i];
         }
 
     return i;
     }
 
 
-/*  function        int perform_write( uint8_t *data, uint8_t *cmd, int addr, int n, uint8_t encode_constant )
+/*  function        int write_data( uint8_t * data, int addr, int n, uint8_t enc_type )
 
     brief           Write a number of bytes to the WS2300 weather station until all
                     bytes are written or max retires are done.
 
-    param[in]       uint8_t *data, buffer to write out
-    param[in]       uint8_t *cmd, command to perform
+    param[in]       uint8_t * data, buffer to write out
     param[in]       int addr, read the data from here
-    param[in]       int n number of bytes to read
-    param[in]       uint8_t encode_constant
+    param[in]       int n, number of bytes to read
+    param[in]       uint8_t enc_type
 
     return          int, number of bytes written
 */
-int write_data( uint8_t *data, uint8_t *cmd, int addr, int n, uint8_t encode_constant )
-{
-    int j;
-
-    for (j = 0; j < MAX_RETRIES; j++)
+int write_data( uint8_t * data, int addr, int n, uint8_t enc_type )
+    {
+    for( int i = 0; i < MAX_RETRIES; ++i )
         {
         if( reset() != NOERR )
             return ERR_RESET_COMMUNICATION;
 
-        if( perform_write(data, cmd, addr, n, encode_constant) == n )           // write the data, If all data written break out of loop
+        if( perform_write(data, addr, n, enc_type) == n )                  // write the data, If all data written break out of loop
             return n;
         }
     
-    return -1;                                                                  // could not get enough data
+    return -1;                                                                  // could not write all data
     }
 
 
-#ifdef NIX
-/********************************************************************
- * read_safe Read data, retry until success or maxretries
- * Reads data from the WS2300 based on a given address,
- * number of data read, and an already open serial port
- * Uses the read_data function and has same interface
- *
- * Inputs:  ws2300 - device number of the already open serial port
- *          address (interger - 16 bit)
- *          number - number of bytes to read, max value 15
- *
- * Output:  readdata - pointer to an array of chars containing
- *                     the just read data, not zero terminated
- *          commanddata - pointer to an array of chars containing
- *                     the commands that were sent to the station
- * 
- * Returns: number of bytes read, -1 if failed
- *                                  -2 if reset failed    
- ********************************************************************/
-static int read_safe(WEATHERSTATION ws2300, int address, int number,
-              uint8_t *readdata, uint8_t *commanddata)
-{
-    int j;
+/*  function        void handle_comm_error( ERRNO err )
 
-    for (j = 0; j < MAXRETRIES; j++)
+    brief           Closes and reopens the connection to the weather station
+
+    param[in]       ERRNO err, to show the error
+*/
+void handle_comm_error( ERRNO err )
     {
-/*      reset_06(ws2300);    */
-        if( reset_06(ws2300) )
-            return -2;                                                          // UJA 18.12.2011
-
-        // Read the data. If expected number of bytes read break out of loop.
-        if (read_data(ws2300, address, number, readdata, commanddata)==number)
-        {
-            break;
-        }
+    error(err);
+    
+    ws_close();
+    usleep(8000);
+    ws_open();
     }
-
-    // If we have tried MAXRETRIES times to read we expect not to
-    // have valid data
-    if (j == MAXRETRIES)
-    {
-        return -1;
-    }
-
-    return number;
-}
-#endif  // NIX

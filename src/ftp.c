@@ -117,6 +117,8 @@ ERRNO PushFile( void )
         printf("RNFR %s\n", ftp_file());
         fflush(stdout);
         }
+    if( strlen(ftp_server()) == 0 )
+        return ERR_NO_FTP_SERVER;
     sprintf(remote_url, "ftp://%s%s", ftp_server(), ftp_file());
     if( debug() )
         {
@@ -236,8 +238,8 @@ ERRNO AppendFile( char * logfile, char * line )
     char remote_url[540];
     char name_pass[272]; 
 
-    if( line == 0)
-        return -1;
+    if( line == 0 )
+        return ERR_NO_LOG_DATA;
 
     sprintf(buf_1, "RNFR %s", logfile);
     if( debug() )
@@ -245,6 +247,8 @@ ERRNO AppendFile( char * logfile, char * line )
         printf("RNFR %s\n", logfile);
         fflush(stdout);
         }
+    if( strlen(ftp_server()) == 0 )
+        return ERR_NO_FTP_SERVER;
     sprintf(remote_url, "ftp://%s%s", ftp_server(), logfile);
     if( debug() )
         {

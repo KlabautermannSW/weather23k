@@ -77,15 +77,14 @@
 */
 int main( int argc, char *argv[] )
     {
-    WEATHERDATA * p_weatherdata;
+    weatherdata_t * p_weatherdata;
     char act_time[11];
     time_t basictime;
     ERRNO error = NOERR;
-    int i;
 
     if( argc > 0 )
         {
-        for( i=1; i<argc; ++i )
+        for( int i = 1; i < argc; ++i )
             {
             error = handle_arg(argv[i]);
             if( error )
@@ -166,18 +165,14 @@ int main( int argc, char *argv[] )
             fflush(stdout);
             }
         if( Log() )
-            {
             printf("Logging error : %d, programm continuing!\n", error);
-            }
 
         time(&basictime);
         strftime(act_time, sizeof(act_time)-1, "%H:%M:%S", localtime(&basictime));
         act_time[10] = 0;
 
         if( verbose() )
-            {
             printf("%s\n", act_time);
-            }
 
         ws_close();
         sleep(20);
