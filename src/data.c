@@ -22,7 +22,7 @@
 
     file        data.c
 
-    date        13.10.2016
+    date        18.06.2017
 
     author      Uwe Jantzen (jantzen@klabautermann-software.de)
 
@@ -87,11 +87,11 @@ static const char * the_default_com_port = "/dev/ttyS0";
 
 static char the_verbose_flag = 0;
 static char the_debug_flag = 0;
-static char the_com_port[128] = { 0, };
-static char the_log_path[128] = { 0, };
-static char the_ftp_server[256] = { 0, };
-static char the_user_name[128] = { 0, };
-static char the_key[MAX_PASSWORD_LENGTH] = { 0, };
+static char the_com_port[128];
+static char the_log_path[128];
+static char the_ftp_server[256];
+static char the_user_name[128];
+static char the_key[MAX_PASSWORD_LENGTH];
 static char the_ftp_file[128] = { 0, };
 static char * the_init_file_name = 0;
 
@@ -137,13 +137,13 @@ void set_debug( char set )
     }
 
 
-/*  function        char debug( void )
+/*  function        char is_debug( void )
 
     brief           get the verbosity
 
     return          char, 0 : quiet, other : show debug output
 */
-char debug( void )
+char is_debug( void )
     {
     return the_debug_flag;
     }
@@ -482,7 +482,7 @@ ERRNO _GetEntry( FILE * p_file, char * p_section, char * p_key, char * p_val )
 
 /*  function        ERRNO Init( void )
 
-    brief           initializes the global viarables from the data out of the
+    brief           initializes the global viarables from the data from the
                     .ini file
 
     return          ERRNO, initialization error or success

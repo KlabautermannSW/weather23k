@@ -120,14 +120,14 @@ ERRNO ws_open( void )
     control.c_cflag |= CS8;                                                     // character size 8 bits
     control.c_cflag |= CREAD;                                                   // enable receiver
     control.c_cflag |= CLOCAL;                                                  // ignore modem control lines
-    control.c_lflag = 0;
-    control.c_iflag = IGNBRK|IGNPAR;
-    control.c_oflag &= ~OPOST;
-    control.c_cc[VTIME] = 10;                                                   // 1 sec timeout
-    control.c_cc[VMIN] = 0;                                                     // block read to first char
 
     cfsetispeed(&control, B2400);
     cfsetospeed(&control, B2400);
+
+    control.c_lflag = 0;
+    control.c_iflag = IGNBRK|IGNPAR;
+    control.c_cc[VTIME] = 10;                                                   // 1 sec timeout
+    control.c_cc[VMIN] = 0;                                                     // block read to first char
 
     if( tcsetattr(the_handle, TCSANOW, &control) < 0 )
         {
@@ -199,17 +199,13 @@ ERRNO ws_close( void )
 */
 size_t ws_read( uint8_t * dst, size_t n )
     {
-    int i = 0;
-    int m = 0;
+    int i;
 
     do
-        {
-        i = read(the_handle, dst, n - m);
-        m = m + i;
-        }
-    while( i != 0 && errno == EINTR );
+        i = read(the_handle, dst, n);
+    while( i == 0 && errno == EINTR );
 
-    return m;
+    return i;
     }
 
 

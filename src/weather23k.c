@@ -52,12 +52,16 @@
 #include <time.h>
 #include <stdio.h>
 #include <string.h>
+#include "debug.h"
 #include "data.h"
 #include "getargs.h"
 #include "ws23k.h"
 #include "ftp.h"
 #include "log.h"
 #include "sercom.h"
+#include "debug.h"
+
+#include "ws23kcom.h"
 
 
 /*  function        int main( int argc, char *argv[] )
@@ -92,13 +96,16 @@ int main( int argc, char *argv[] )
             }
         }
         
-    ws_close();
-    sleep(15);
-
     error = Init();
     if( error )
         {
         printf("General initialization error : %d, programm exiting!\n", error);
+        return error;
+        }
+    error = ws_init(com_port());
+    if( error )
+        {
+        printf("Serial port initialization error : %d, programm exiting!\n", error);
         return error;
         }
     error = FtpInit();
@@ -108,7 +115,22 @@ int main( int argc, char *argv[] )
         return error;
         }
 
+    ws_close();
+    debug("Serial port closed\n");
+
+    sleep(15);
     ws_open();
+    debug("Serial port open\n");
+
+#ifdef NIX
+    uint8_t data[256] = { 0, }; 
+    for(;;)
+        {
+        write_data(data, 0, sizeof(data), 0);
+        debug("Serial port closed\n");
+        }
+#endif  // NIX
+
     for( ; ; )
         {
         ReadData();
@@ -137,20 +159,12 @@ int main( int argc, char *argv[] )
             printf("Gefühlte Temp. :      %5.1f °C\n", p_weatherdata->windchill);           // windchill [٠]
             printf("Regen / Stunde :      %5.1f mm\n", p_weatherdata->rain_per_hour);       // rain_per_hour [l]
             printf("Regen / 24 Stunden :  %5.1f mm\n", p_weatherdata->rain_per_day);        // rain_per_day [l]            }
-        if( debug() )
-            {
-            printf("Preparing data string\n");
-            fflush(stdout);
-            }
+        debug("Preparing data string\n");
         SetFtpString();
 #ifndef NIX
         if( p_weatherdata->temperature < 75.0 )
             {
-            if( debug() )
-                {
-                printf("Sending data string\n");
-                fflush(stdout);
-                }
+            debug("Sending data string\n");
             error = PushFile();
             if( error )
                 {
@@ -159,11 +173,7 @@ int main( int argc, char *argv[] )
             }
 
 #endif    // NIX
-        if( debug() )
-            {
-            printf("Logging\n");
-            fflush(stdout);
-            }
+        debug("Logging\n");
         if( Log() )
             printf("Logging error : %d, programm continuing!\n", error);
 

@@ -44,6 +44,7 @@
 
 
 #include "ftp.h"
+#include "debug.h"
 #include "data.h"
 #include <curl/curl.h>
 #include <string.h>
@@ -112,25 +113,16 @@ ERRNO PushFile( void )
     char name_pass[272]; 
 
     sprintf(buf_1, "RNFR %s", ftp_file());
-    if( debug() )
-        {
-        printf("RNFR %s\n", ftp_file());
-        fflush(stdout);
-        }
+    debug("RNFR %s\n", ftp_file());
+
     if( strlen(ftp_server()) == 0 )
         return ERR_NO_FTP_SERVER;
+
     sprintf(remote_url, "ftp://%s%s", ftp_server(), ftp_file());
-    if( debug() )
-        {
-        printf("ftp://%s%s\n", ftp_server(), ftp_file());
-        fflush(stdout);
-        }
+    debug("ftp://%s%s\n", ftp_server(), ftp_file());
+
     sprintf(name_pass, "%s:%s", user_name(), user_key());
-    if( debug() )
-        {
-        printf("Set user name and key\n");
-        fflush(stdout);
-        }
+    debug("Set user name and key\n");
 
     fsize = (curl_off_t)strlen(ftp_string());                                   // get the number of bytes for transfer
     the_ftp_string_ptr = ftp_string();  
@@ -140,12 +132,8 @@ ERRNO PushFile( void )
         {
         error = ERR_CURL_EASY_INIERRNOOR;
         goto end_PushFile;
-        }
-    if( debug() )
-        {
-        printf("Curl initialized\n");
-        fflush(stdout);
-        }
+        }   
+    debug("Curl initialized\n");
 
     headerlist = curl_slist_append(headerlist, buf_1);                          // build a list of commands to pass to libcurl
     if( !headerlist )
@@ -153,11 +141,8 @@ ERRNO PushFile( void )
         error = ERR_CURL_HEADERLISERRNOOR;
         goto cleanup_PushFile;
         }
-    if( debug() )
-        {
-        printf("Headerlist set\n");
-        fflush(stdout);
-        }
+    debug("Headerlist set\n");
+
     error = ERR_CURL_SETOPERRNOOR;
     if( curl_easy_setopt(curl, CURLOPT_READFUNCTION, _read_callback) )          // we want to use our own read function
         goto setopt_PushFile;
@@ -171,11 +156,7 @@ ERRNO PushFile( void )
         goto setopt_PushFile;
     if( curl_easy_setopt(curl, CURLOPT_READDATA, the_ftp_string_ptr) )          // now specify which file to upload
         goto setopt_PushFile;
-    if( debug() )
-        {
-        printf("Options set\n");
-        fflush(stdout);
-        }
+    debug("Options set\n");
 
     /* Set the size of the file to upload (optional). If you give a *_LARGE
        option you MUST make sure that the type of the passed-in argument is a
@@ -183,35 +164,19 @@ ERRNO PushFile( void )
        make sure that to pass in a type 'long' argument. */
     if( curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)fsize) )
         goto setopt_PushFile;
-    if( debug() )
-        {
-        printf("Filesize set set\n");
-        fflush(stdout);
-        }
+    debug("Filesize set set\n");
 
     error = NOERR;
     if( curl_easy_perform(curl) )                                               // Now run off and do what you've been told!
         error = ERR_CURL_PERFORM_ERROR;
-    if( debug() )
-        {
-        printf("Curl performed\n");
-        fflush(stdout);
-        }
+    debug("Curl performed\n");
 
 setopt_PushFile:
     curl_slist_free_all(headerlist);                                            // clean up the FTP commands list
-    if( debug() )
-        {
-        printf("Curl freed\n");
-        fflush(stdout);
-        }
+    debug("Curl freed\n");
 cleanup_PushFile:
     curl_easy_cleanup(curl);                                                    // always cleanup
-    if( debug() )
-        {
-        printf("Curl cleaned up\n");
-        fflush(stdout);
-        }
+    debug("Curl cleaned up\n");
 end_PushFile:
     return error;
     }
@@ -242,33 +207,17 @@ ERRNO AppendFile( char * logfile, char * line )
         return ERR_NO_LOG_DATA;
 
     sprintf(buf_1, "RNFR %s", logfile);
-    if( debug() )
-        {
-        printf("RNFR %s\n", logfile);
-        fflush(stdout);
-        }
+    debug("RNFR %s\n", logfile);
     if( strlen(ftp_server()) == 0 )
         return ERR_NO_FTP_SERVER;
     sprintf(remote_url, "ftp://%s%s", ftp_server(), logfile);
-    if( debug() )
-        {
-        printf("ftp://%s%s\n", ftp_server(), logfile);
-        fflush(stdout);
-        }
+    debug("ftp://%s%s\n", ftp_server(), logfile);
     sprintf(name_pass, "%s:%s", user_name(), user_key());
-    if( debug() )
-        {
-        printf("Set user name and key\n");
-        fflush(stdout);
-        }
+    debug("Set user name and key\n");
 
     fsize = (curl_off_t)strlen(line);                                           // get the number of bytes for transfer
     the_ftp_string_ptr = line;  
-    if( debug() )
-        {
-        printf("ftp string : %s, len %d\n", the_ftp_string_ptr, (int)fsize);
-        fflush(stdout);
-        }
+    debug("ftp string : %s, len %d\n", the_ftp_string_ptr, (int)fsize);
 
     /* In windows, this will init the winsock stuff */
     curl_global_init(CURL_GLOBAL_ALL);
@@ -279,11 +228,7 @@ ERRNO AppendFile( char * logfile, char * line )
         error = ERR_CURL_EASY_INIERRNOOR;
         goto end_AppendFile;
         }
-    if( debug() )
-        {
-        printf("Curl initialized\n");
-        fflush(stdout);
-        }
+    debug("Curl initialized\n");
 
     headerlist = curl_slist_append(headerlist, buf_1);                          // build a list of commands to pass to libcurl
     if( !headerlist )
@@ -291,11 +236,7 @@ ERRNO AppendFile( char * logfile, char * line )
         error = ERR_CURL_HEADERLISERRNOOR;
         goto cleanup_AppendFile;
         }
-    if( debug() )
-        {
-        printf("Headerlist set\n");
-        fflush(stdout);
-        }
+    debug("Headerlist set\n");
     error = ERR_CURL_SETOPERRNOOR;
     if( curl_easy_setopt(curl, CURLOPT_READFUNCTION, _read_callback) )          // we want to use our own read function
         goto setopt_AppendFile;
@@ -311,11 +252,7 @@ ERRNO AppendFile( char * logfile, char * line )
         goto setopt_AppendFile;
     if( curl_easy_setopt(curl, CURLOPT_READDATA, the_ftp_string_ptr) )          // now specify which file to upload
         goto setopt_AppendFile;
-    if( debug() )
-        {
-        printf("Options set\n");
-        fflush(stdout);
-        }
+    debug("Options set\n");
 
     /* Set the size of the file to upload (optional). If you give a *_LARGE
        option you MUST make sure that the type of the passed-in argument is a
@@ -323,48 +260,24 @@ ERRNO AppendFile( char * logfile, char * line )
        make sure that to pass in a type 'long' argument. */
     if( curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)fsize) )
         goto setopt_AppendFile;
-    if( debug() )
-        {
-        printf("Filesize set set\n");
-        fflush(stdout);
-        }
+    debug("Filesize set set\n");
 
     error = NOERR;
     if( (res = curl_easy_perform(curl)) )                                       // Now run off and do what you've been told!
         {
-        if( debug() )
-            {
-            printf("curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
-            fflush(stdout);
-            }
+        debug("curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
         error = ERR_CURL_PERFORM_ERROR;
         }
-    if( debug() )
-        {
-        printf("Curl performed\n");
-        fflush(stdout);
-        }
+    debug("Curl performed\n");
 
 setopt_AppendFile:
     curl_slist_free_all(headerlist);                                            // clean up the FTP commands list
-    if( debug() )
-        {
-        printf("Curl freed\n");
-        fflush(stdout);
-        }
+    debug("Curl freed\n");
 cleanup_AppendFile:
     curl_easy_cleanup(curl);                                                    // always cleanup
-    if( debug() )
-        {
-        printf("Curl esy cleaned up\n");
-        fflush(stdout);
-        }
+    debug("Curl esy cleaned up\n");
     curl_global_cleanup();
-    if( debug() )
-        {
-        printf("Curl global cleaned up\n");
-        fflush(stdout);
-        }
+    debug("Curl global cleaned up\n");
 end_AppendFile:
     return error;
     }
@@ -378,6 +291,7 @@ end_AppendFile:
 */
 ERRNO FtpInit( void )
     {
+    debug("Initialize curl\n");
     return ( curl_global_init(CURL_GLOBAL_ALL) ) ? ERR_CURL_INIERRNOOR : NOERR;
     }
 

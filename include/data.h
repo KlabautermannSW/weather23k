@@ -22,7 +22,7 @@
 
     file        data.h
 
-    date        13.10.2016
+    date        18.06.2017
 
     author      Uwe Jantzen (jantzen@klabautermann-software.de)
 
@@ -72,7 +72,7 @@
 extern void set_verbose( char set );
 extern char verbose( void );
 extern void set_debug( char set );
-extern char debug( void );
+extern char is_debug( void );
 extern void set_ini_file( char * ini_file_name );
 extern char * com_port( void );
 extern char * log_path( void );

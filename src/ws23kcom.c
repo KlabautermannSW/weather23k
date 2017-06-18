@@ -66,7 +66,7 @@
 static void enc_address( int src, uint8_t * dst )
     {
     for( int i = 0; i < 4; ++i )
-        dst[i] = (uint8_t) (0x82 + (((src >> (4 * (3 - i))) & 0x0F) * 4));
+        *(dst + i) = (uint8_t)(0x82 + (((src >> (4 * (3 - i))) & 0x0F) * 4));
     }
 
 
@@ -115,7 +115,7 @@ static ERRNO reset( void )
                 return NOERR;
             }
 
-        usleep(50000 * i);                                                      //we sleep longer and longer for each retry
+        usleep(50000 * i);                                                      // we sleep longer and longer for each retry
         }
 
     fprintf(stderr, "\nCould not reset\n");

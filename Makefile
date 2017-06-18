@@ -45,7 +45,7 @@ vpath %.o obj
 
 CC  = gcc
 CC  = gcc
-OBJ = weather23k.o sercom.o ws23kcom.o ws23k.o ftp.o getargs.o data.o log.o password.o errors.o locals.o
+OBJ = weather23k.o sercom.o ws23kcom.o ws23k.o ftp.o getargs.o data.o log.o password.o errors.o locals.o debug.o
 DSRC = src
 DINC = include
 DBIN = bin
@@ -74,52 +74,57 @@ weather23k : $(OBJ)
 		$(DOBJ)/password.o \
 		$(DOBJ)/errors.o \
 		$(DOBJ)/locals.o \
+		$(DOBJ)/debug.o \
 		-lcurl \
 		$(CC_LDFLAGS)
 
-weather23k.o : weather23k.c data.h getargs.h ws23k.h ftp.h log.h sercom.h
+weather23k.o : weather23k.c data.h getargs.h ws23k.h ftp.h log.h sercom.h debug.h
 	mkdir -p $(DOBJ)
 	$(CC) $(CFLAGS) -c $(DSRC)/weather23k.c -o $(DOBJ)/weather23k.o
 
-sercom.o : sercom.c sercom.h errors.h
+sercom.o : sercom.c sercom.h errors.h debug.h
 	mkdir -p $(DOBJ)
 	$(CC) $(CFLAGS) -c $(DSRC)/sercom.c -o $(DOBJ)/sercom.o
 
-ws23kcom.o : ws23kcom.c sercom.h errors.h
+ws23kcom.o : ws23kcom.c sercom.h errors.h debug.h
 	mkdir -p $(DOBJ)
 	$(CC) $(CFLAGS) -c $(DSRC)/ws23kcom.c -o $(DOBJ)/ws23kcom.o
 
-ws23k.o : ws23k.c data.h ws23kcom.h ws23k.h locals.h
+ws23k.o : ws23k.c data.h ws23kcom.h ws23k.h locals.h debug.h
 	mkdir -p $(DOBJ)
 	$(CC) $(CFLAGS) -c $(DSRC)/ws23k.c -o $(DOBJ)/ws23k.o
 
-ftp.o : ftp.c ftp.h data.h
+ftp.o : ftp.c ftp.h data.h debug.h
 	mkdir -p $(DOBJ)
 	$(CC) $(CFLAGS) -c $(DSRC)/ftp.c -o $(DOBJ)/ftp.o
 
-getargs.o : getargs.c data.h password.h getargs.h
+getargs.o : getargs.c data.h password.h getargs.h debug.h
 	mkdir -p $(DOBJ)
 	$(CC) $(CFLAGS) -c $(DSRC)/getargs.c -o $(DOBJ)/getargs.o
 
-data.o : data.c data.h ws23k.h password.h
+data.o : data.c data.h ws23k.h password.h debug.h
 	mkdir -p $(DOBJ)
 	$(CC) $(CFLAGS) -c $(DSRC)/data.c -o $(DOBJ)/data.o
 
-log.o : log.c log.h ws23k.h
+log.o : log.c log.h ws23k.h debug.h
 	mkdir -p $(DOBJ)
 	$(CC) $(CFLAGS) -c $(DSRC)/log.c -o $(DOBJ)/log.o
 
-password.o : password.c password.h
+password.o : password.c password.h debug.h
 	mkdir -p $(DOBJ)
 	$(CC) $(CFLAGS) -c $(DSRC)/password.c -o $(DOBJ)/password.o
 
-errors.o : errors.c errors.h data.h
+errors.o : errors.c errors.h data.h debug.h
 	mkdir -p $(DOBJ)
 	$(CC) $(CFLAGS) -c $(DSRC)/errors.c -o $(DOBJ)/errors.o
 
-locals.o : locals.c locals.h
+locals.o : locals.c locals.h debug.h
 	mkdir -p $(DOBJ)
 	$(CC) $(CFLAGS) -c $(DSRC)/locals.c -o $(DOBJ)/locals.o
+
+debug.o : debug.c debug.h
+	mkdir -p $(DOBJ)
+	$(CC) $(CFLAGS) -c $(DSRC)/debug.c -o $(DOBJ)/debug.o
 
 clean:
 	rm -v -f $(DSRC)/*~ $(DINC)/*~ $(CONF)/*~ $(DOBJ)/* *~ 
