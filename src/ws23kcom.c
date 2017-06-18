@@ -42,6 +42,7 @@
 */
 
 
+#include "debug.h"
 #include "sercom.h"
 #include "ws23kcom.h"
 #include <stdio.h>
@@ -143,7 +144,6 @@ static int perform_read( uint8_t * data, int addr, int n )
 
     if( n > 15 )                                                                // we can't read more then 15 bytes at a single blow 
         return -1;
-
     enc_address(addr, cmd);                                                     // first 4 bytes are address
     cmd[4] = (uint8_t)(0xC2 + n * 4);                                           // last byte contains the number of bytes
 

@@ -22,7 +22,7 @@
 
     file        sercom.c
 
-    date        09.10.2016
+    date        18.06.2017
 
     author      Uwe Jantzen (jantzen@klabautermann-software.de)
 
@@ -51,6 +51,7 @@
 */
 
 
+#include "debug.h"
 #include "sercom.h"
 #include <errno.h>
 #include <sys/file.h>
@@ -117,8 +118,13 @@ ERRNO ws_open( void )
     memset(&control, 0, sizeof(control));
 
     // Serial control options
+    control.c_cflag &= ~PARENB;                                                 // No parity
+    control.c_cflag &= ~CSTOPB;                                                 // One stop bit
+    control.c_cflag &= ~CSIZE;                                                  // Character size mask
     control.c_cflag |= CS8;                                                     // character size 8 bits
     control.c_cflag |= CREAD;                                                   // enable receiver
+    control.c_cflag &= ~HUPCL;                                                  // No "hangup"
+    control.c_cflag &= ~CRTSCTS;                                                // No flowcontrol
     control.c_cflag |= CLOCAL;                                                  // ignore modem control lines
 
     cfsetispeed(&control, B2400);
@@ -126,6 +132,7 @@ ERRNO ws_open( void )
 
     control.c_lflag = 0;
     control.c_iflag = IGNBRK|IGNPAR;
+    control.c_oflag &= ~OPOST;
     control.c_cc[VTIME] = 10;                                                   // 1 sec timeout
     control.c_cc[VMIN] = 0;                                                     // block read to first char
 
@@ -149,6 +156,7 @@ ERRNO ws_open( void )
     portstatus &= ~TIOCM_DTR;
     ioctl(the_handle, TIOCMSET, &portstatus);                                   // set current port status
     sleep(2);
+    return error;
 
 finish_ws_open:
     close(the_handle);

@@ -50,12 +50,50 @@
 
 static char * errors[] =
     {
-    "No error",
+    "No error",                                                                 //   0
     "Port name longer than 255 characters",
     "No port name given",
     "opening serial port failed",
     "serial port is locked",
     "Unable to initialize serial port",
+    "",
+    "",
+    "",
+    "",
+    "serial port general communication error",                                  //  10
+    "reading from serial port failed",
+    "writing to serial port failed",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",                                                                         //  20
+    "illegal string length",
+    "no configuration file",
+    "unexpected end of file",
+    "unknown error",
+    "configuration file : illegal key line",
+    "configuration file : illegal key",
+    "out of memory",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
     0
     };
 

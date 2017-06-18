@@ -122,15 +122,6 @@ int main( int argc, char *argv[] )
     ws_open();
     debug("Serial port open\n");
 
-#ifdef NIX
-    uint8_t data[256] = { 0, }; 
-    for(;;)
-        {
-        write_data(data, 0, sizeof(data), 0);
-        debug("Serial port closed\n");
-        }
-#endif  // NIX
-
     for( ; ; )
         {
         ReadData();

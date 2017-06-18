@@ -42,6 +42,7 @@
 */
 
 
+#include "debug.h"
 #include "data.h"
 #include "ws23kcom.h"
 #include "ws23k.h"
@@ -253,9 +254,11 @@ double temperature_outdoor( void )
     int address = 0x373;
     int bytes = 2;
 
+debug("+%s \n", __func__);
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
+debug("-%s \n", __func__);
     return (((data[1] >> 4) * 10 + (data[1] & 0xF) + (data[0] >> 4) / 10.0 + (data[0] & 0xF) / 100.0) - 30.0);
     }
 
@@ -1850,6 +1853,7 @@ void light( int set )
 */
 void ReadData( void )
     {
+debug("+%s \n", __func__);
 #ifndef NIX
     time_t basictime;
     struct timespec ts;
@@ -1868,16 +1872,22 @@ void ReadData( void )
         fflush(stdout);
         }
 
+debug(" %s temperature_outdoor()\n", __func__);
     the_weatherdata.temperature = temperature_outdoor();         // outdoor temperature
     nanosleep(&ts, 0);
+debug(" %s temperature_indoor()\n", __func__);
     the_weatherdata.temperature_in = temperature_indoor();       // indoor temperature
     nanosleep(&ts, 0);
+debug(" %s humidity_outdoor()\n", __func__);
     the_weatherdata.humidity = humidity_outdoor();
     nanosleep(&ts, 0);
+debug(" %s humidity_indoor()\n", __func__);
     the_weatherdata.humidity_in = humidity_indoor();
     nanosleep(&ts, 0);
+debug(" %s dewpoint()\n", __func__);
     the_weatherdata.dewpoint = dewpoint();
     nanosleep(&ts, 0);
+debug(" %s wind_current_flags()\n", __func__);
     the_weatherdata.speed[0] = wind_current_flags(&the_weatherdata.direction, &the_weatherdata.sensor_connected, &minimum_code);
     nanosleep(&ts, 0);
     the_weatherdata.speed[1] = the_weatherdata.speed[0] * KMH;
@@ -1919,12 +1929,16 @@ void ReadData( void )
     else
         the_weatherdata.speed[3] = 17.0;
     memcpy(&the_weatherdata.dir, directions[(int)(the_weatherdata.direction/22.5)], 4);
+debug(" %s rain_1h()\n", __func__);
     the_weatherdata.rain_per_hour = rain_1h();                                  // mm or l/qm
     nanosleep(&ts, 0);
+debug(" %s rain_24h()\n", __func__);
     the_weatherdata.rain_per_day = rain_24h();                                  // mm or l/qm
     nanosleep(&ts, 0);
+debug(" %s abs_pressure()\n", __func__);
     the_weatherdata.pressure = abs_pressure();
     nanosleep(&ts, 0);
+debug(" %s windchill()\n", __func__);
     the_weatherdata.windchill = windchill();
     nanosleep(&ts, 0);
 #else   // NIX
@@ -1991,10 +2005,12 @@ void ReadData( void )
     the_weatherdata.pressure = 1005.0;
     the_weatherdata.windchill = 3.8;
 #endif  // NIX
+debug(" %s \n", __func__);
 
     if( verbose() )
         {
         printf("data read\n");
         fflush(stdout);
         }
+debug("-%s \n", __func__);
     }
