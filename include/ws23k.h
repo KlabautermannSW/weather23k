@@ -96,7 +96,8 @@ typedef struct _weatherdata
     double rain_per_hour;
     double rain_per_day;
     char dir[4];
-    char act_time[11];    } weatherdata_t;
+    char act_time[11];
+    } weatherdata_t;
 
 
 extern weatherdata_t * get_weatherdata_ptr( void );
