@@ -8,6 +8,7 @@ outside your local network you should beware of the following :
 - implement the functions
     - encode( void )
     - decode( char * p_in, char * p_password )
+
 with your own encoder/decoder algorithm so there will be no plain text
 password in the configuration file
 
