@@ -22,16 +22,20 @@
 
     file        password.c
 
-    date        15.10.2016
+    date        01.07.2017
 
     author      Uwe Jantzen (jantzen@klabautermann-software.de)
 
-    brief       encode() codes the password used for identification to the ftp server to
-                the string to be saved in the ini file.
-                decode() decodes the string from the ini file to tthe password used for
-                identification to the ftp server.
+    brief       encode() codes the password used for identification to the ftp
+                server to the string to be saved in the ini file.
+                decode() decodes the string from the ini file to the password
+                used for identification to the ftp server.
 
-    details     
+    details     If your computer where this program is running on is accessible from
+                outside your local network you should not save your ftp password
+                using plain text.
+                You can use these two functions to implement your own
+                encoding/decoding algorithm.
 
     project     weather23k
     target      Linux
@@ -90,5 +94,8 @@ ERRNO encode( void )
 */
 ERRNO decode( char * p_in, char * p_password )
     {
+    strncpy(p_password, p_in, strlen(p_in));
+    p_password[strlen(p_in)] = 0;
+
     return NOERR;
     }

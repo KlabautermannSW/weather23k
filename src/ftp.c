@@ -122,7 +122,7 @@ ERRNO PushFile( void )
     debug("ftp://%s%s\n", ftp_server(), ftp_file());
 
     sprintf(name_pass, "%s:%s", user_name(), user_key());
-    debug("Set user name and key\n");
+    debug("Set user name and key : %s %s\n", user_name(), user_key());
 
     fsize = (curl_off_t)strlen(ftp_string());                                   // get the number of bytes for transfer
     the_ftp_string_ptr = ftp_string();  
@@ -213,7 +213,7 @@ ERRNO AppendFile( char * logfile, char * line )
     sprintf(remote_url, "ftp://%s%s", ftp_server(), logfile);
     debug("ftp://%s%s\n", ftp_server(), logfile);
     sprintf(name_pass, "%s:%s", user_name(), user_key());
-    debug("Set user name and key\n");
+    debug("Set user name and key : %s %s\n", user_name(), user_key());
 
     fsize = (curl_off_t)strlen(line);                                           // get the number of bytes for transfer
     the_ftp_string_ptr = line;  

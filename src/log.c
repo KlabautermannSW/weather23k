@@ -122,7 +122,7 @@ ERRNO Log( void )
         fclose(logfile);
         }
 
-    sprintf(filename, "%s%sdata.log", "/wetter/", curr_date);
+    sprintf(filename, "%s%sdata.log", ftp_log_path(), curr_date);
     if( (error = AppendFile(filename, line)) != 0 )
         {
         printf("Error logging to server %d\n", error);

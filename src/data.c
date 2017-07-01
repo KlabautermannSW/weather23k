@@ -91,6 +91,7 @@ static char the_com_port[128];
 static char the_log_path[128];
 static char the_ftp_server[256];
 static char the_user_name[128];
+static char the_ftp_log_path[128];
 static char the_key[MAX_PASSWORD_LENGTH];
 static char the_ftp_file[128] = { 0, };
 static char * the_init_file_name = 0;
@@ -218,6 +219,18 @@ char * user_name( void )
 char * user_key( void )
     {
     return the_key;
+    }
+
+
+/*  function        char * ftp_log_path( void )
+
+    brief           returns a pointer to the path for the log files on the server
+
+    return          char *, pointer to the servers log file path string
+*/
+char * ftp_log_path( void )
+    {
+    return the_ftp_log_path;
     }
 
 
@@ -540,6 +553,8 @@ ERRNO Init( void )
             decode(val, the_key);
         else if( (strcmp(section, "FTP") == 0) && (strcmp(key, "file") == 0) )
             strcpy(the_ftp_file, val);
+        else if( (strcmp(section, "FTP") == 0) && (strcmp(key, "logpath") == 0) )
+            strcpy(the_ftp_log_path, val);
         else if( (strcmp(section, "File") == 0) && (strcmp(key, "logpath") == 0) )
             strcpy(the_log_path, val);
         else if( (strcmp(section, "Port") == 0) && (strcmp(key, "port") == 0) )

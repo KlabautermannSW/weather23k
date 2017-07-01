@@ -79,6 +79,7 @@ extern char * log_path( void );
 extern char * ftp_server( void );
 extern char * user_name( void );
 extern char * user_key( void );
+extern char * ftp_log_path( void );
 extern char * ftp_file( void );
 extern char * ftp_string( void );
 extern char * get_first_token( int * len );
