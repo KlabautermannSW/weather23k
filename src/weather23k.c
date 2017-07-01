@@ -129,8 +129,8 @@ int main( int argc, char *argv[] )
         if( verbose() )
             {
             printf("Zeit : %s\n", p_weatherdata->act_time);
-            printf("Temperatur innen :        %5.1f °C\n", p_weatherdata->temperature_in);      // temperature [٠C]
-            printf("Temperatur aussen :       %5.1f °C\n", p_weatherdata->temperature);         // temperature [٠C]
+            printf("Temperatur innen :        %6.2f °C\n", p_weatherdata->temperature_in);      // temperature [٠C]
+            printf("Temperatur aussen :       %6.2f °C\n", p_weatherdata->temperature);         // temperature [٠C]
             printf("Luftdruck (abs.) :       %6.1f hPa\n", p_weatherdata->pressure);            // absolute pressure [hPa]
             printf("Luftdruck (rel.) :       %6.1f hPa\n", GetRelPressure());                   // relative pressure [hPa]
             printf("Luftfeuchtigkeit innen :  %3d %%\n", p_weatherdata->humidity_in);           // relative humudity [%]
@@ -148,8 +148,8 @@ int main( int argc, char *argv[] )
                 {
                 printf("Windsensor nicht angeschlossen!\n");
                 }
-            printf("Taupunkt :                %5.1f °C\n", p_weatherdata->dewpoint);            // dewpoint [٠]
-            printf("Gefühlte Temp. :          %5.1f °C\n", p_weatherdata->windchill);           // windchill [٠]
+            printf("Taupunkt :                %6.2f °C\n", p_weatherdata->dewpoint);            // dewpoint [٠]
+            printf("Gefühlte Temp. :          %6.2f °C\n", p_weatherdata->windchill);           // windchill [٠]
             printf("Regen / Stunde :          %5.1f mm\n", p_weatherdata->rain_per_hour);       // rain_per_hour [l]
             printf("Regen / 24 Stunden :      %5.1f mm\n", p_weatherdata->rain_per_day);        // rain_per_day [l]            }
         debug("Preparing data string\n");
