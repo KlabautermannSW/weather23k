@@ -89,13 +89,13 @@ typedef struct _weatherdata
     int humidity;
     int humidity_in;
     double direction;
+    char dir[4];
     double speed[4];                                                            // m/s, kmh, kn, bft
     int sensor_connected;
     double dewpoint;
     double windchill;
     double rain_per_hour;
     double rain_per_day;
-    char dir[4];
     char act_time[11];
     } weatherdata_t;
 

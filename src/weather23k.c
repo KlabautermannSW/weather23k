@@ -129,27 +129,29 @@ int main( int argc, char *argv[] )
         if( verbose() )
             {
             printf("Zeit : %s\n", p_weatherdata->act_time);
-            printf("Temperatur :          %5.1f °C\n", p_weatherdata->temperature);         // temperature [٠C]
-            printf("Luftdruck (abs.) :   %6.1f hPa\n", p_weatherdata->pressure);            // absolute pressure [hPa]
-            printf("Luftdruck (rel.) :   %6.1f hPa\n", GetRelPressure());                   // relative pressure [hPa]
-            printf("Luftfeuchtigkeit :    %3d %%\n", p_weatherdata->humidity);              // relative humudity [%]
+            printf("Temperatur innen :        %5.1f °C\n", p_weatherdata->temperature_in);      // temperature [٠C]
+            printf("Temperatur aussen :       %5.1f °C\n", p_weatherdata->temperature);         // temperature [٠C]
+            printf("Luftdruck (abs.) :       %6.1f hPa\n", p_weatherdata->pressure);            // absolute pressure [hPa]
+            printf("Luftdruck (rel.) :       %6.1f hPa\n", GetRelPressure());                   // relative pressure [hPa]
+            printf("Luftfeuchtigkeit innen :  %3d %%\n", p_weatherdata->humidity_in);           // relative humudity [%]
+            printf("Luftfeuchtigkeit aussen : %3d %%\n", p_weatherdata->humidity);              // relative humudity [%]
             if( p_weatherdata->sensor_connected == 0 )
                 {
-                printf("Windrichtung :        %5.1f °\n", p_weatherdata->direction);        // wind direction [٠]
-                printf("Windrichtung :        %3s\n", p_weatherdata->dir);                  // wind direction
-                printf("Windgeschwindigkeit :  %4.1f m/sec\n", p_weatherdata->speed[0]);    // wind speed [m/sec]
-                printf("                      %5.1f km/h\n", p_weatherdata->speed[1]);      // wind speed [km/h]
-                printf("                      %5.1f kn\n", p_weatherdata->speed[2]);        // wind speed [kn]
-                printf("                       %2d bft\n", (int)p_weatherdata->speed[3]);   // wind speed [bft]
+                printf("Windrichtung :            %5.1f °\n", p_weatherdata->direction);        // wind direction [٠]
+                printf("Windrichtung :            %3s\n", p_weatherdata->dir);                  // wind direction
+                printf("Windgeschwindigkeit :      %4.1f m/sec\n", p_weatherdata->speed[0]);    // wind speed [m/sec]
+                printf("                          %5.1f km/h\n", p_weatherdata->speed[1]);      // wind speed [km/h]
+                printf("                          %5.1f kn\n", p_weatherdata->speed[2]);        // wind speed [kn]
+                printf("                           %2d bft\n", (int)p_weatherdata->speed[3]);   // wind speed [bft]
                 }
             else
                 {
                 printf("Windsensor nicht angeschlossen!\n");
                 }
-            printf("Taupunkt :            %5.1f °C\n", p_weatherdata->dewpoint);            // dewpoint [٠]
-            printf("Gefühlte Temp. :      %5.1f °C\n", p_weatherdata->windchill);           // windchill [٠]
-            printf("Regen / Stunde :      %5.1f mm\n", p_weatherdata->rain_per_hour);       // rain_per_hour [l]
-            printf("Regen / 24 Stunden :  %5.1f mm\n", p_weatherdata->rain_per_day);        // rain_per_day [l]            }
+            printf("Taupunkt :                %5.1f °C\n", p_weatherdata->dewpoint);            // dewpoint [٠]
+            printf("Gefühlte Temp. :          %5.1f °C\n", p_weatherdata->windchill);           // windchill [٠]
+            printf("Regen / Stunde :          %5.1f mm\n", p_weatherdata->rain_per_hour);       // rain_per_hour [l]
+            printf("Regen / 24 Stunden :      %5.1f mm\n", p_weatherdata->rain_per_day);        // rain_per_day [l]            }
         debug("Preparing data string\n");
         SetFtpString();
 #ifndef NIX
