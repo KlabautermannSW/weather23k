@@ -44,18 +44,18 @@ I feeded my [weather webpage](http://ur9.de/) with a self developed program base
 [OPEN2300 library](http://lavrsen.dk/foswiki/bin/view/Open2300/WebHome) implemented by
 Kenneth Lavrsen for a long time.
 
-However the compiling time on a [Raspberry Pi](http://www.raspberrypi.org/)was to long because
-in the source there are lots of gadgets that I never needed. Additionally the drivers included
-in the library are for Linux as for winows. The last I need no more.
+When workinh on the program I felt the compiling time on a [Raspberry Pi](http://www.raspberrypi.org/)
+was to long because in the source there are lots of gadgets that I never needed. Additionally the drivers included
+in the library are for Linux as for Winows. The last I do not need any more.
 
 So I decided to use the [OPEN2300 library](http://lavrsen.dk/foswiki/bin/view/Open2300/WebHome)
 as a base for my own development. I emphasized well structured and fast as possible code for
-my project. That resulted in some modules that fulfills the following criteria:
-- code is for Linux only
+my project. That resulted in some modules that fulfill the following criteria :
+- code is implemented for Linux only
 - the project has a precisely defined structure using separate directories
-- functions that belong together are collected in the same module (source and include files)
+- functions that belong together are collected in the same module (source and include file)
 - functions and data used exclusive in one module are declared as static there
-- the API contains external neeeded functions and type declarations only ns- und Typdeklarationen
+- the API contains external needed functions and type declarations only
 - there is no function inside a module that is called only once
 
 From this thoughts the program "weather23k" came into existence. It is not a
@@ -63,7 +63,7 @@ generally usable library but a complete application to
 - read data for a WS2300 compatible weather station
 - log these data (locally and on a ftp server)
 - provide selected data to a web page
-- having simple debug features
+- support simple debug features
 
 The program is in development state yet but it fulfills most of the requirements just now.
 
