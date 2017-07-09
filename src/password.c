@@ -22,7 +22,7 @@
 
     file        password.c
 
-    date        01.07.2017
+    date        09.07.2017
 
     author      Uwe Jantzen (jantzen@klabautermann-software.de)
 
@@ -83,16 +83,16 @@ ERRNO encode( void )
     }
 
 
-/*  function        ERRNO decode( char * p_in, char * p_password )
+/*  function        ERRNO decode( char * p_password, char * p_in )
 
     brief           decodes the encoded password
 
-    param[in]       char * p_in, pointer to string containing the coded password
     param[out]      char * pointer to the string to hold the decoded password
+    param[in]       char * p_in, pointer to string containing the coded password
 
     return          ERRNO
 */
-ERRNO decode( char * p_in, char * p_password )
+ERRNO decode( char * p_password, char * p_in )
     {
     strncpy(p_password, p_in, strlen(p_in));
     p_password[strlen(p_in)] = 0;

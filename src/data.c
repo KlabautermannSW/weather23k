@@ -550,7 +550,7 @@ ERRNO Init( void )
         else if( (strcmp(section, "FTP") == 0) && (strcmp(key, "user") == 0) )
             strcpy(the_user_name, val);
         else if( (strcmp(section, "FTP") == 0) && (strcmp(key, "key") == 0) )
-            decode(val, the_key);
+            decode(the_key, val);
         else if( (strcmp(section, "FTP") == 0) && (strcmp(key, "file") == 0) )
             strcpy(the_ftp_file, val);
         else if( (strcmp(section, "FTP") == 0) && (strcmp(key, "logpath") == 0) )

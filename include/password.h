@@ -22,7 +22,7 @@
 
     file        password.h
 
-    date        13.10.2016
+    date        09.07.2017
 
     author      Uwe Jantzen (jantzen@klabautermann-software.de)
 
@@ -56,7 +56,7 @@
 
 extern const char * get_pwd_filename( void );
 extern ERRNO encode( void );
-extern ERRNO decode( char * p_in, char * p_password );
+extern ERRNO decode( char * p_password, char * p_in );
 
 
 #endif  // __PASSWORD_H__
