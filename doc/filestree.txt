@@ -4,7 +4,7 @@ Files tree :
 
 bin/weather23k              the application
 
-conf/weatherman.conf        sample configuration file
+conf/weather23k.conf        sample configuration file
 
 include/data.h
 inlcude/debuh.h
@@ -48,7 +48,7 @@ src/ws23kcom.c
 
 .gitignore                  the git ignore rules
 LICENSE                     the license description
-Makefile                    make : compiles and links the whole project
+Makefile                    make :       compiles and links the whole project
                             make clean : removes object files and bluefish backup
                                          files but not the application
-README.MD                   this documentation
+README.MD                   GitHub documentation
