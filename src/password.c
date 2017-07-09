@@ -54,21 +54,6 @@
 #include <string.h>
 
 
-static const char * the_password_file_name = "password.txt";
-
-
-/*  function        const char * get_pwd_filename( void )
-
-    brief           returns the pointer to the global password file name
-
-    return          char *, pointer to the_passowrd_file_name
-*/
-const char * get_pwd_filename( void )
-    {
-    return the_password_file_name;
-    }
-
-
 /*  function        ERRNO encode( void )
 
     brief           encodes the password typed in by the user to the password file

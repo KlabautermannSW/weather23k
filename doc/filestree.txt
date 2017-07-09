@@ -7,20 +7,23 @@ bin/weather23k              the application
 conf/weatherman.conf        sample configuration file
 
 include/data.h
+inlcude/debuh.h
 inlcude/errors.h
 inlcude/ftp.h
 inlcude/getargs.h
+inlcude/locals.h
 inlcude/log.h
 inlcude/password.h
-inlcude/raw23k.h~
 inlcude/sercom.h
 inlcude/ws23kcom.h
 inlcude/ws23k.h
 
 doc/filestree.txt           list of all files included in this project
+doc/memory_map_2300.txt     lists all known addresss and their contents
 doc/prerequisites.txt       what you need to create and use this project
+doc/weather23k.pdf          program documentaion
 
-obj/*                       object files created by comlining
+obj/*                       object files created by comiling
 
 php/                        sample php scripts to show data on the web page
 php/humid.php               graphic displaying the outdoor humitity
@@ -31,14 +34,14 @@ php/winddir.php	            graphic displaying the wind direction
 php/windspeed.php           graphic displaying the wind speed
 
 src/data.c
+src/debug.c
 src/errors.c
 src/ftp.c
-src/ftpupload.c
 src/getargs.c
+src/locals.c
 src/log.c
 src/password.c
 src/sercom.c
-src/var_args.c
 src/weather23k.c
 src/ws23k.c
 src/ws23kcom.c

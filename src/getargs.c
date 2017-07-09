@@ -22,7 +22,7 @@
 
     file        getargs.c
 
-    date        15.10.2016
+    date        09.07.2017
 
     author      Uwe Jantzen (jantzen@klabautermann-software.de)
 
@@ -74,12 +74,23 @@ ERRNO handle_arg( char * str )
                 case 'd' :
                     set_debug(1);                                               // switch on debug mode
                     break;
+                case 'h' :
+                    printf("\nweather23k V%s (c) Uwe Jantzen (Klabautermann-Software) %s", VERSION, __DATE__);
+                    printf("\n\nUsage:");
+                    printf("\n        weather23k [options] [<configuration file>]]");
+                    printf("\nOptios:");
+                    printf("\n        -v            verbose, show data read from the weather station");
+                    printf("\n        -d            debug, show more data (eg. ftp, logging ...)");
+                    printf("\n        -h            show this help thet stop without doing anything more");
+                    printf("\n        -c            start the password encoder");
+                    printf("\n\nIf no configuration file name is given the file \"conf/weather23k.conf\" is used.");
+                    printf("\n\n");
+                    exit(error);
+                    break;
                 case 'c' :
                     error = encode();
                     if( error != NOERR )
                         printf("password coding failed!\n");
-                    else
-                        printf("now you will find the coded password in a file named \"%s\".\n", get_pwd_filename());
                     exit(error);
                     break;
                 default :

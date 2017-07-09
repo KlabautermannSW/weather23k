@@ -37,14 +37,20 @@ erreichbar ist, sollte folgendes beachtet werden :
 - die folgenden Funktionen sollten mit einem eigenen Ver-/Entschlüsselungs-Algorythmus
 implementiert sein
     - encode( void )
-    - decode( char * p_in, char * p_password )
+    - decode( char * p_password, char * p_in )
+
+## Mehr Informationen
+Um dieses Programmbauen und benutzen zu können müssen libcurl und
+libcurl-devel installiert sein.
+
+Für eine Liste aller Dateien s. doc/filestree.txt
 
 ## Idea and Goal
 I feeded my [weather webpage](http://ur9.de/) with a self developed program based on the
 [OPEN2300 library](http://lavrsen.dk/foswiki/bin/view/Open2300/WebHome) implemented by
 Kenneth Lavrsen for a long time.
 
-When workinh on the program I felt the compiling time on a [Raspberry Pi](http://www.raspberrypi.org/)
+When working on the program I felt the compiling time on a [Raspberry Pi](http://www.raspberrypi.org/)
 was to long because in the source there are lots of gadgets that I never needed. Additionally the drivers included
 in the library are for Linux as for Winows. The last I do not need any more.
 
@@ -60,7 +66,7 @@ my project. That resulted in some modules that fulfill the following criteria :
 
 From this thoughts the program "weather23k" came into existence. It is not a
 generally usable library but a complete application to
-- read data for a WS2300 compatible weather station
+- read data from a WS2300 compatible weather station
 - log these data (locally and on a ftp server)
 - provide selected data to a web page
 - support simple debug features
@@ -73,7 +79,7 @@ outside your local network you should beware of the following :
 - do NOT store the source code on the same computer
 - implement the functions
     - encode( void )
-    - decode( char * p_in, char * p_password )
+    - decode( char * p_password, char * p_in )
 
 with your own encoder/decoder algorithm so there will be no plain text
 password in the configuration file

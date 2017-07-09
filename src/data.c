@@ -82,7 +82,7 @@ static const char * the_variables[] =
 static const int max_var_length[] =                                             // maximum string lenght if variable is printed 
     { 0, 6, 6, 3, 3, 4, 5, 5, 2, 6, 6, 6, 6, 3, 11 };
 
-static const char * the_default_init_file_name = "conf/weatherman.conf";
+static const char * the_default_init_file_name = "conf/weather23k.conf";
 static const char * the_default_com_port = "/dev/ttyS0";
 
 static char the_verbose_flag = 0;
@@ -546,15 +546,15 @@ ERRNO Init( void )
         NOT DONE YET !!!!!
 */
         if( (strcmp(section, "FTP") == 0) && (strcmp(key, "server") == 0) )
-            strcpy(the_ftp_server, val);
+            decode(the_ftp_server, val);
         else if( (strcmp(section, "FTP") == 0) && (strcmp(key, "user") == 0) )
-            strcpy(the_user_name, val);
+            decode(the_user_name, val);
         else if( (strcmp(section, "FTP") == 0) && (strcmp(key, "key") == 0) )
             decode(the_key, val);
         else if( (strcmp(section, "FTP") == 0) && (strcmp(key, "file") == 0) )
-            strcpy(the_ftp_file, val);
+            decode(the_ftp_file, val);
         else if( (strcmp(section, "FTP") == 0) && (strcmp(key, "logpath") == 0) )
-            strcpy(the_ftp_log_path, val);
+            decode(the_ftp_log_path, val);
         else if( (strcmp(section, "File") == 0) && (strcmp(key, "logpath") == 0) )
             strcpy(the_log_path, val);
         else if( (strcmp(section, "Port") == 0) && (strcmp(key, "port") == 0) )

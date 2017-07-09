@@ -54,7 +54,6 @@
 #define MAX_PASSWORD_LENGTH                     128
 
 
-extern const char * get_pwd_filename( void );
 extern ERRNO encode( void );
 extern ERRNO decode( char * p_password, char * p_in );
 

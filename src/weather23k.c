@@ -28,7 +28,7 @@
 
     brief       this file holds the main program
 
-                get the neccessary data from ini file
+                get the necessary data from ini file
 
                 every minute
                     read data from ws2300
