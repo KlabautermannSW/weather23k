@@ -59,8 +59,6 @@
 #include "ftp.h"
 #include "log.h"
 #include "sercom.h"
-#include "debug.h"
-
 #include "ws23kcom.h"
 
 

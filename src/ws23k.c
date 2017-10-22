@@ -173,12 +173,8 @@ void temperature_indoor_reset( uint8_t minmax )
     uint8_t data_read[6];
     uint8_t data_value[4];
     uint8_t data_time[10];
-    int address;
-    int number;
-
-    // first read current temperature into data_value
-    address = 0x346;
-    number = 2;
+    int address = 0x346;                                                        // current temperature
+    int number = 2;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
@@ -188,8 +184,7 @@ void temperature_indoor_reset( uint8_t minmax )
     data_value[2] = data_read[1] & 0xF;
     data_value[3] = data_read[1] >> 4;
 
-    // Get current time from station
-    address = 0x23B;
+    address = 0x23B;                                                            // current time
     number = 6;
 
     if( read_data(data_read, address, number) != number )
@@ -208,15 +203,13 @@ void temperature_indoor_reset( uint8_t minmax )
 
     if( minmax & RESET_MIN )
         {
-        // Set min value to current value
-        address = 0x34B;
+        address = 0x34B;                                                        // set min value
         number = 4;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        // Set min value timestamp to current time
-        address = 0x354;
+        address = 0x354;                                                        // set min value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -225,15 +218,13 @@ void temperature_indoor_reset( uint8_t minmax )
 
     if( minmax & RESET_MAX )
         {
-        // Set max value to current value
-        address = 0x350;
+        address = 0x350;                                                        // set max value
         number = 4;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        // Set max value timestamp to current time
-        address = 0x35E;
+        address = 0x35E;                                                        // set max value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -254,11 +245,9 @@ double temperature_outdoor( void )
     int address = 0x373;
     int bytes = 2;
 
-debug("+%s \n", __func__);
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-debug("-%s \n", __func__);
     return (((data[1] >> 4) * 10 + (data[1] & 0xF) + (data[0] >> 4) / 10.0 + (data[0] & 0xF) / 100.0) - 30.0);
     }
 
@@ -309,12 +298,8 @@ void temperature_outdoor_reset( uint8_t minmax )
     uint8_t data_read[6];
     uint8_t data_value[4];
     uint8_t data_time[10];
-    int address;
-    int number;
-
-    // First read current temperature into data_value
-    address = 0x373;
-    number = 2;
+    int address = 0x373;                                                        // current temperature
+    int number = 2;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
@@ -324,8 +309,7 @@ void temperature_outdoor_reset( uint8_t minmax )
     data_value[2] = data_read[1] & 0xF;
     data_value[3] = data_read[1] >> 4;
 
-    // Get current time from station
-    address = 0x23B;
+    address = 0x23B;                                                            // current time
     number = 6;
 
     if( read_data(data_read, address, number) != number )
@@ -344,15 +328,13 @@ void temperature_outdoor_reset( uint8_t minmax )
 
     if( minmax & RESET_MIN )
         {
-        // Set min value to current value
-        address = 0x378;
+        address = 0x378;                                                        // set min value
         number = 4;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        // Set min value timestamp to current time
-        address = 0x381;
+        address = 0x381;                                                        // set min value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -361,15 +343,13 @@ void temperature_outdoor_reset( uint8_t minmax )
 
     if( minmax & RESET_MAX )
         {
-        // Set max value to current value
-        address = 0x37D;
+        address = 0x37D;                                                        // set max value
         number = 4;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        // Set max value timestamp to current time
-        address = 0x38B;
+        address = 0x38B;                                                        // set max value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -443,12 +423,8 @@ void dewpoint_reset( uint8_t minmax )
     uint8_t data_read[6];
     uint8_t data_value[4];
     uint8_t data_time[10];
-    int address;
-    int number;
-
-    // First read current dewpoint into data_value
-    address = 0x3CE;
-    number = 2;
+    int address = 0x3CE;                                                        // current dewpoint
+    int number = 2;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
@@ -458,8 +434,7 @@ void dewpoint_reset( uint8_t minmax )
     data_value[2] = data_read[1] & 0xF;
     data_value[3] = data_read[1] >> 4;
 
-    // Get current time from station
-    address = 0x23B;
+    address = 0x23B;                                                            // current time
     number = 6;
 
     if( read_data(data_read, address, number) != number )
@@ -478,15 +453,13 @@ void dewpoint_reset( uint8_t minmax )
 
     if( minmax & RESET_MIN )
         {
-        // Set min value to current value
-        address = 0x3D3;
+        address = 0x3D3;                                                        // set min value
         number = 4;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        // Set min value timestamp to current time
-        address = 0x3DC;
+        address = 0x3DC;                                                        // set min value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -495,15 +468,13 @@ void dewpoint_reset( uint8_t minmax )
 
     if( minmax & RESET_MAX )
         {
-            // Set max value to current value
-        address = 0x3D8;
+        address = 0x3D8;                                                        // set max value
         number = 4;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        // Set max value timestamp to current time
-        address = 0x3E6;
+        address = 0x3E6;                                                        // set max value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -581,12 +552,8 @@ void humidity_indoorr_reset( uint8_t minmax )
     uint8_t data_read[6];
     uint8_t data_value[4];
     uint8_t data_time[10];
-    int address;
-    int number;
-
-    // First read current humidity into data_value
-    address = 0x3FB;
-    number = 1;
+    int address = 0x3FB;                                                        // current humidity
+    int number = 1;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
@@ -594,8 +561,7 @@ void humidity_indoorr_reset( uint8_t minmax )
     data_value[0] = data_read[0] & 0xF;
     data_value[1] = data_read[0] >> 4;
 
-    // Get current time from station
-    address = 0x23B;
+    address = 0x23B;                                                            // current time
     number = 6;
 
     if( read_data(data_read, address, number) != number )
@@ -614,15 +580,13 @@ void humidity_indoorr_reset( uint8_t minmax )
 
     if( minmax & RESET_MIN )
         {
-        // Set min value to current value
-        address = 0x3FD;
+        address = 0x3FD;                                                        // set min value
         number = 2;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        // Set min value timestamp to current time
-        address = 0x401;
+        address = 0x401;                                                        // set min value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -631,15 +595,14 @@ void humidity_indoorr_reset( uint8_t minmax )
 
     if( minmax & RESET_MAX )
         {
-        // Set max value to current value
-        address = 0x3FF;
+        address = 0x3FF;                                                        // set max value
+
         number = 2;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        // Set max value timestamp to current time
-        address = 0x40B;
+        address = 0x40B;                                                        // set max value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -717,12 +680,8 @@ void humidity_outdoor_reset( uint8_t minmax )
     uint8_t data_read[6];
     uint8_t data_value[4];
     uint8_t data_time[10];
-    int address;
-    int number;
-
-    // First read current humidity into data_value
-    address = 0x419;
-    number = 1;
+    int address = 0x419;                                                        // current humidity
+    int number = 1;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
@@ -730,8 +689,7 @@ void humidity_outdoor_reset( uint8_t minmax )
     data_value[0] = data_read[0] & 0xF;
     data_value[1] = data_read[0] >> 4;
 
-    // Get current time from station
-    address = 0x23B;
+    address = 0x23B;                                                            // current time
     number = 6;
 
     if( read_data(data_read, address, number) != number )
@@ -750,15 +708,13 @@ void humidity_outdoor_reset( uint8_t minmax )
 
     if( minmax & RESET_MIN )
         {
-        // Set min value to current value
-        address = 0x41B;
+        address = 0x41B;                                                        // set min value
         number = 2;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        // Set min value timestamp to current time
-        address = 0x41F;
+        address = 0x41F;                                                        // set min value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -767,15 +723,13 @@ void humidity_outdoor_reset( uint8_t minmax )
 
     if( minmax & RESET_MAX )
         {
-        // Set max value to current value
-        address = 0x41D;
+        address = 0x41D;                                                        // set max value
         number = 2;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        // Set max value timestamp to current time
-        address = 0x429;
+        address = 0x429;                                                        // set max value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -807,7 +761,7 @@ double wind_current( double * winddir )
         if( ( data[0] != 0x00 ) ||                                              // invalid wind data
             ( ( data[1] == 0xFF ) && ( ((data[2] & 0xF) == 0 ) || ( (data[2] & 0xF) == 1 ) ) ) )
             {
-            usleep(10000); //wait 10 seconds for new wind measurement
+            usleep(10000);                                                      // wait 10 seconds for new wind measurement
             continue;
             }
         else
@@ -816,7 +770,6 @@ double wind_current( double * winddir )
 
     *winddir = (data[2] >> 4) * 22.5;
 
-    // calculate raw wind speed
     return (((data[2] & 0xF) << 8) + data[1]) / 10.0;
     }
 
@@ -878,7 +831,7 @@ double wind_all( int * winddir_index, double * winddir )
     {
     uint8_t data[6];
     int i;
-    int address = 0x527; //Windspeed and direction
+    int address = 0x527;                                                        // windspeed and direction
     int bytes = 6;
 
     for( i = 0; i < MAXWINDRETRIES; ++i )
@@ -998,8 +951,7 @@ void wind_reset( uint8_t minmax )
     data_value[2] = (current_wind>>8) & 0xF;
     data_value[3] = (current_wind>>12) & 0xF;
 
-    // Get current time from station
-    address = 0x23B;
+    address = 0x23B;                                                            // current time
     number = 6;
 
     if( read_data(data_read, address, number) != number )
@@ -1018,15 +970,13 @@ void wind_reset( uint8_t minmax )
 
     if( minmax & RESET_MIN )
         {
-        // Set min value to current value
-        address = 0x4EE;
+        address = 0x4EE;                                                        // set min value
         number = 4;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        // Set min value timestamp to current time
-        address = 0x4F8;
+        address = 0x4F8;                                                        // set min value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -1035,15 +985,13 @@ void wind_reset( uint8_t minmax )
 
     if( minmax & RESET_MAX )
         {
-        // Set max value to current value
-        address = 0x4F4;
+        address = 0x4F4;                                                        // set max value
         number = 4;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        // Set max value timestamp to current time
-        address = 0x502;
+        address = 0x502;                                                        // set max value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -1118,12 +1066,8 @@ void windchill_reset( uint8_t minmax )
     uint8_t data_read[6];
     uint8_t data_value[4];
     uint8_t data_time[10];
-    int address;
-    int number;
-
-    // First read current windchill into data_value
-    address = 0x3A0;
-    number = 2;
+    int address = 0x3A0;                                                        // current windchill
+    int number = 2;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
@@ -1133,8 +1077,7 @@ void windchill_reset( uint8_t minmax )
     data_value[2] = data_read[1] & 0xF;
     data_value[3] = data_read[1] >> 4;
 
-    // Get current time from station
-    address = 0x23B;
+    address = 0x23B;                                                            // current time
     number = 6;
 
     if( read_data(data_read, address, number) != number )
@@ -1153,15 +1096,13 @@ void windchill_reset( uint8_t minmax )
 
     if( minmax & RESET_MIN )
         {
-        // Set min value to current value
-        address = 0x3A5;
+        address = 0x3A5;                                                        // set min value
         number = 4;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        // Set min value timestamp to current time
-        address = 0x3AE;
+        address = 0x3AE;                                                        // set min value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -1170,15 +1111,13 @@ void windchill_reset( uint8_t minmax )
 
     if( minmax & RESET_MAX )
         {
-        // Set max value to current value
-        address = 0x3AA;
+        address = 0x3AA;                                                        // set max value
         number = 4;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        // Set max value timestamp to current time
-        address = 0x3B8;
+        address = 0x3B8;                                                        // set max value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -1248,12 +1187,8 @@ void rain_1h_max_reset( void )
     uint8_t data_read[6];
     uint8_t data_value[6];
     uint8_t data_time[10];
-    int address;
-    int number;
-
-    // First read current rain 1h into data_value
-    address = 0x4B4;
-    number = 3;
+    int address = 0x4B4;                                                        // current rain 1h
+    int number = 3;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
@@ -1265,8 +1200,7 @@ void rain_1h_max_reset( void )
     data_value[4] = data_read[2] & 0xF;
     data_value[5] = data_read[2] >> 4;
 
-    // Get current time from station
-    address = 0x23B;
+    address = 0x23B;                                                            // current time
     number = 6;
 
     if( read_data(data_read, address, number) != number )
@@ -1283,15 +1217,13 @@ void rain_1h_max_reset( void )
     data_time[8] = data_read[4] >> 4;
     data_time[9] = data_read[5] & 0xF;
 
-    // Set max value to current value
-    address = 0x4BA;
+    address = 0x4BA;                                                            // set max value
     number = 6;
 
     if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
         handle_comm_error(ERR_COMM_WRITE);
 
-    // Set max value timestamp to current time
-    address = 0x4C0;
+    address = 0x4C0;                                                            // set max value timestamp
     number = 10;
 
     if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -1306,19 +1238,15 @@ void rain_1h_max_reset( void )
 void rain_1h_reset( void )
     {
     uint8_t data[30];
-    int address;
-    int number;
+    int address = 0x479;                                                        // overwrite 1h rain history with zeros
+    int number = 30;
 
-    // First overwrite the 1h rain history with zeros
-    address = 0x479;
-    number = 30;
     memset(&data, 0, sizeof(data));
 
     if( write_data(data, address, number, WRITE_NIBBBLE) != number )
         handle_comm_error(ERR_COMM_WRITE);
 
-    // Set value to zero
-    address = 0x4B4;
+    address = 0x4B4;                                                            // set value to zero
     number = 6;
 
     if( write_data(data, address, number, WRITE_NIBBBLE) != number )
@@ -1387,12 +1315,8 @@ void rain_24h_max_reset( void )
     uint8_t data_read[6];
     uint8_t data_value[6];
     uint8_t data_time[10];
-    int address;
-    int number;
-
-    // First read current rain 24h into data_value
-    address = 0x497;
-    number = 3;
+    int address = 0x497;                                                        // current rain 24h
+    int number = 3;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
@@ -1404,8 +1328,7 @@ void rain_24h_max_reset( void )
     data_value[4] = data_read[2] & 0xF;
     data_value[5] = data_read[2] >> 4;
 
-    // Get current time from station
-    address = 0x23B;
+    address = 0x23B;                                                            // current time
     number = 6;
 
     if( read_data(data_read, address, number) != number )
@@ -1422,15 +1345,13 @@ void rain_24h_max_reset( void )
     data_time[8] = data_read[4] >> 4;
     data_time[9] = data_read[5] & 0xF;
 
-    // Set max value to current value
-    address = 0x49D;
+    address = 0x49D;                                                            // set max value
     number = 6;
 
     if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
         handle_comm_error(ERR_COMM_WRITE);
 
-    // Set max value timestamp to current time
-    address = 0x4A3;
+    address = 0x4A3;                                                            // set max value timestamp
     number = 10;
 
     if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -1445,19 +1366,15 @@ void rain_24h_max_reset( void )
 void rain_24h_reset( void )
     {
     uint8_t data[30];
-    int address;
-    int number;
+    int address = 0x446;                                                        // overwrite 24h rain history with zeros
+    int number = 48;
 
-    // First overwrite the 24h rain history with zeros
-    address = 0x446;
-    number = 48;
     memset(&data, 0, sizeof(data));
 
     if( write_data(data, address, number, WRITE_NIBBBLE) != number )
         handle_comm_error(ERR_COMM_WRITE);
 
-    // Set value to zero
-    address = 0x497;
+    address = 0x497;                                                            // set value to zero
     number = 6;
 
     if( write_data(data, address, number, WRITE_NIBBBLE) != number )
@@ -1522,12 +1439,8 @@ void rain_total_reset( void )
     uint8_t data_read[6];
     uint8_t data_value[7];
     uint8_t data_time[10];
-    int address;
-    int number;
-
-    // Get current time from station
-    address = 0x23B;
-    number = 6;
+    int address = 0x23B;                                                        // current time
+    int number = 6;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
@@ -1543,16 +1456,14 @@ void rain_total_reset( void )
     data_time[8] = data_read[4] >> 4;
     data_time[9] = data_read[5] & 0xF;
 
-    // Set value to zero
-    address = 0x4D1;
+    address = 0x4D1;                                                            // set value to zero
     number = 7;
     memset(&data_value, 0, sizeof(data_value));
 
     if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
         handle_comm_error(ERR_COMM_WRITE);
 
-    // Set max value timestamp to current time
-    address = 0x4D8;
+    address = 0x4D8;                                                            // set max value timestamp
     number = 10;
 
     if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -1666,7 +1577,7 @@ void abs_pressure_minmax( double * pres_min, double * pres_max, struct timestamp
     *pres_max = (data[12] & 0xF) * 1000 + (data[11] >> 4) * 100 + (data[11] & 0xF) * 10 +
                 (data[10] >> 4) + (data[10] & 0xF) / 10.0;
     
-    address = 0x61E; //Relative pressure time and date for min/max
+    address = 0x61E;                                                            // relative pressure time and date for min/max
     bytes = 10;
 
     if( read_data(data, address, bytes) != bytes )
@@ -1699,12 +1610,8 @@ void pressure_reset( char minmax )
     uint8_t data_value_abs[5];
     uint8_t data_value_rel[5];
     uint8_t data_time[10];
-    int address;
-    int number;
-
-    // First read current abs/rel pressure into data_value_abs/rel
-    address = 0x5D8;
-    number = 8;
+    int address = 0x5D8;                                                        // current abs/rel pressure
+    int number = 8;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
@@ -1721,8 +1628,7 @@ void pressure_reset( char minmax )
     data_value_rel[3] = data_read[6] >> 4;
     data_value_rel[4] = data_read[7] & 0xF;
 
-    // Get current time from station
-    address = 0x23B;
+    address = 0x23B;                                                            // current time
     number = 6;
 
     if( read_data(data_read, address, number) != number )
@@ -1741,22 +1647,19 @@ void pressure_reset( char minmax )
 
     if( minmax & RESET_MIN )
         {
-        // Set min abs value to current abs value
-        address = 0x5F6;
+        address = 0x5F6;                                                        // set min abs value
         number = 5;
     
         if( write_data(data_value_abs, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
         
-        // Set min rel value to current rel value
-        address = 0x600;
+        address = 0x600;                                                        // set min rel value
         number = 5;
     
         if( write_data(data_value_rel, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        // Set min value timestamp to current time
-        address = 0x61E;
+        address = 0x61E;                                                        // set min value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -1765,22 +1668,19 @@ void pressure_reset( char minmax )
 
     if( minmax & RESET_MAX )
         {
-        // Set max abs value to current abs value
-        address = 0x60A;
+        address = 0x60A;                                                        // set max abs value
         number = 5;
     
         if( write_data(data_value_abs, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
         
-        // Set max rel value to current rel value
-        address = 0x614;
+        address = 0x614;                                                        // set max rel value
         number = 5;
     
         if( write_data(data_value_rel, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        // Set max value timestamp to current time
-        address = 0x628;
+        address = 0x628;                                                        // set max value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -1857,7 +1757,7 @@ void light( int set )
 */
 void ReadData( void )
     {
-debug("+%s \n", __func__);
+    debug("+%s \n", __func__);
 #ifndef NIX
     time_t basictime;
     struct timespec ts;
@@ -1876,22 +1776,22 @@ debug("+%s \n", __func__);
         fflush(stdout);
         }
 
-debug(" %s temperature_outdoor()\n", __func__);
-    the_weatherdata.temperature = temperature_outdoor();         // outdoor temperature
+    debug(" %s temperature_outdoor()\n", __func__);
+    the_weatherdata.temperature = temperature_outdoor();                        // outdoor temperature
     nanosleep(&ts, 0);
-debug(" %s temperature_indoor()\n", __func__);
-    the_weatherdata.temperature_in = temperature_indoor();       // indoor temperature
+    debug(" %s temperature_indoor()\n", __func__);
+    the_weatherdata.temperature_in = temperature_indoor();                      // indoor temperature
     nanosleep(&ts, 0);
-debug(" %s humidity_outdoor()\n", __func__);
+    debug(" %s humidity_outdoor()\n", __func__);
     the_weatherdata.humidity = humidity_outdoor();
     nanosleep(&ts, 0);
-debug(" %s humidity_indoor()\n", __func__);
+    debug(" %s humidity_indoor()\n", __func__);
     the_weatherdata.humidity_in = humidity_indoor();
     nanosleep(&ts, 0);
-debug(" %s dewpoint()\n", __func__);
+    debug(" %s dewpoint()\n", __func__);
     the_weatherdata.dewpoint = dewpoint();
     nanosleep(&ts, 0);
-debug(" %s wind_current_flags()\n", __func__);
+    debug(" %s wind_current_flags()\n", __func__);
     the_weatherdata.speed[0] = wind_current_flags(&the_weatherdata.direction, &the_weatherdata.sensor_connected, &minimum_code);
     nanosleep(&ts, 0);
     the_weatherdata.speed[1] = the_weatherdata.speed[0] * KMH;
@@ -1933,16 +1833,16 @@ debug(" %s wind_current_flags()\n", __func__);
     else
         the_weatherdata.speed[3] = 17.0;
     memcpy(&the_weatherdata.dir, directions[(int)(the_weatherdata.direction/22.5)], 4);
-debug(" %s rain_1h()\n", __func__);
+    debug(" %s rain_1h()\n", __func__);
     the_weatherdata.rain_per_hour = rain_1h();                                  // mm or l/qm
     nanosleep(&ts, 0);
-debug(" %s rain_24h()\n", __func__);
+    debug(" %s rain_24h()\n", __func__);
     the_weatherdata.rain_per_day = rain_24h();                                  // mm or l/qm
     nanosleep(&ts, 0);
-debug(" %s abs_pressure()\n", __func__);
+    debug(" %s abs_pressure()\n", __func__);
     the_weatherdata.pressure = abs_pressure();
     nanosleep(&ts, 0);
-debug(" %s windchill()\n", __func__);
+    debug(" %s windchill()\n", __func__);
     the_weatherdata.windchill = windchill();
     nanosleep(&ts, 0);
 #else   // NIX
@@ -2009,12 +1909,12 @@ debug(" %s windchill()\n", __func__);
     the_weatherdata.pressure = 1005.0;
     the_weatherdata.windchill = 3.8;
 #endif  // NIX
-debug(" %s \n", __func__);
+    debug(" %s \n", __func__);
 
     if( verbose() )
         {
         printf("data read\n");
         fflush(stdout);
         }
-debug("-%s \n", __func__);
+    debug("-%s \n", __func__);
     }
