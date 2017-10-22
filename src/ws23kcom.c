@@ -23,7 +23,7 @@
 
     file        ws23kcom.c
 
-    date        16.04.2017
+    date        22.10.2017
 
     author      Uwe Jantzen (jantzen@klabautermann-software.de)
 
@@ -66,7 +66,9 @@
 */
 static void enc_address( int src, uint8_t * dst )
     {
-    for( int i = 0; i < 4; ++i )
+    int i;
+
+    for( i = 0; i < 4; ++i )
         *(dst + i) = (uint8_t)(0x82 + (((src >> (4 * (3 - i))) & 0x0F) * 4));
     }
 
@@ -101,10 +103,11 @@ static uint8_t checksum_cmd( uint8_t cmd, int n )
 */
 static ERRNO reset( void )
     {
+    int i;
     uint8_t cmd = 0x06;
     uint8_t dst;
 
-    for( int i = 0; i < 100; ++i )
+    for( i = 0; i < 100; ++i )
         {
         ws_clear();
 
@@ -199,12 +202,14 @@ static int perform_read( uint8_t * data, int addr, int n )
 */
 int read_data( uint8_t * data, int addr, int n )
     {
-    for( int j = 0; j < MAX_RETRIES; ++j )
+    int i;
+
+    for( i = 0; i < MAX_RETRIES; ++i )
         {
         if( reset() != NOERR )
             return ERR_RESET_COMMUNICATION;
 
-        if( perform_read(data, addr, n) == n )                             // read the data, if expected number of bytes read break out of loop
+        if( perform_read(data, addr, n) == n )                                  // read the data, if expected number of bytes read break out of loop
             return n;
         }
 
@@ -279,12 +284,14 @@ static int perform_write( uint8_t * data, int addr, int n, uint8_t enc_type )
 */
 int write_data( uint8_t * data, int addr, int n, uint8_t enc_type )
     {
-    for( int i = 0; i < MAX_RETRIES; ++i )
+    int i;
+
+    for( i = 0; i < MAX_RETRIES; ++i )
         {
         if( reset() != NOERR )
             return ERR_RESET_COMMUNICATION;
 
-        if( perform_write(data, addr, n, enc_type) == n )                  // write the data, If all data written break out of loop
+        if( perform_write(data, addr, n, enc_type) == n )                       // write the data, If all data written break out of loop
             return n;
         }
     

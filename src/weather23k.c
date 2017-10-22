@@ -22,7 +22,7 @@
 
     file        weather23k.c
 
-    date        13.10.2016
+    date        22.10.2017
 
     author      Uwe Jantzen (jantzen@klabautermann-software.de)
 
@@ -84,11 +84,12 @@ int main( int argc, char *argv[] )
     weatherdata_t * p_weatherdata;
     char act_time[11];
     time_t basictime;
+    int i;
     ERRNO error = NOERR;
 
     if( argc > 0 )
         {
-        for( int i = 1; i < argc; ++i )
+        for( i = 1; i < argc; ++i )
             {
             error = handle_arg(argv[i]);
             if( error )

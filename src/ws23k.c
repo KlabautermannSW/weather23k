@@ -22,7 +22,7 @@
 
     file        ws23k.c
 
-    date        15.10.2016
+    date        22.10.2017
 
     author      Uwe Jantzen (jantzen@klabautermann-software.de)
 
@@ -794,11 +794,12 @@ void humidity_outdoor_reset( uint8_t minmax )
 */
 double wind_current( double * winddir )
     {
+    int i;
     uint8_t data[3];
     int address = 0x527;                                                        // windspeed and direction
     int bytes = 3;
 
-    for( int i = 0; i < MAXWINDRETRIES; ++i )
+    for( i = 0; i < MAXWINDRETRIES; ++i )
         {
         if( read_data(data, address, bytes) != bytes )                          // wind
             handle_comm_error(ERR_COMM_READ);
@@ -833,10 +834,11 @@ double wind_current( double * winddir )
 double wind_current_flags( double * winddir, int * sensor_connected, int * minimum_code )
     {
     uint8_t data[3];
+    int i;
     int address = 0x527;                                                        // windspeed and direction
     int bytes = 3;
 
-    for( int i = 0; i < MAXWINDRETRIES; ++i )
+    for( i = 0; i < MAXWINDRETRIES; ++i )
         {
         if( read_data(data, address, bytes) != bytes )                          // wind
             handle_comm_error(ERR_COMM_READ);
@@ -875,10 +877,11 @@ double wind_current_flags( double * winddir, int * sensor_connected, int * minim
 double wind_all( int * winddir_index, double * winddir )
     {
     uint8_t data[6];
+    int i;
     int address = 0x527; //Windspeed and direction
     int bytes = 6;
 
-    for( int i = 0; i < MAXWINDRETRIES; ++i )
+    for( i = 0; i < MAXWINDRETRIES; ++i )
         {
         if( read_data(data, address, bytes) != bytes )                          // wind
             handle_comm_error(ERR_COMM_READ);
@@ -962,6 +965,7 @@ double wind_minmax( double * wind_min, double * wind_max, struct timestamp * tim
 */
 void wind_reset( uint8_t minmax )
     {
+    int i;
     uint8_t data_read[6];
     uint8_t data_value[6];
     uint8_t data_time[10];
@@ -972,7 +976,7 @@ void wind_reset( uint8_t minmax )
     address = 0x527;                                                            // windspeed
     number = 3;
 
-    for( int i = 0; i < MAXWINDRETRIES; ++i )
+    for( i = 0; i < MAXWINDRETRIES; ++i )
         {
         if( read_data(data_read, address, number) != number )
             handle_comm_error(ERR_COMM_READ);
