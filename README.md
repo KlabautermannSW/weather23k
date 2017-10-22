@@ -40,19 +40,22 @@ implementiert sein
     - decode( char * p_password, char * p_in )
 
 ## Mehr Informationen
-Um dieses Programmbauen und benutzen zu können müssen libcurl und
+Um dieses Programm bauen und benutzen zu können müssen libcurl und
 libcurl-devel installiert sein.
 
 Für eine Liste aller Dateien s. doc/filestree.txt
 
+Eine ausführliche (englische) Dokumentation steht in doc/wether23k_en.pdf, die deutsche
+Dokumentation folgt noch.
+
 ## Idea and Goal
-I feeded my [weather webpage](http://ur9.de/) with a self developed program based on the
-[OPEN2300 library](http://lavrsen.dk/foswiki/bin/view/Open2300/WebHome) implemented by
-Kenneth Lavrsen for a long time.
+I feeded my [weather webpage](http://ur9.de/) for a long time with a self developed
+program based on the [OPEN2300 library](http://lavrsen.dk/foswiki/bin/view/Open2300/WebHome)
+implemented by Kenneth Lavrsen.
 
 When working on the program I felt the compiling time on a [Raspberry Pi](http://www.raspberrypi.org/)
-was to long because in the source there are lots of gadgets that I never needed. Additionally the drivers included
-in the library are for Linux as for Winows. The last I do not need any more.
+was too long because in the source there are lots of gadgets that I never needed. Additionally
+the drivers included in the library are for Linux as for Winows. The last I do not need any more.
 
 So I decided to use the [OPEN2300 library](http://lavrsen.dk/foswiki/bin/view/Open2300/WebHome)
 as a base for my own development. I emphasized well structured and fast as possible code for
@@ -89,3 +92,5 @@ To make and use this application you must have installed libcurl and
 libcurl-devel on your system.
 
 For a files list see doc/filestree.txt
+
+For detailed documentation see doc/wether23k_en.pdf
