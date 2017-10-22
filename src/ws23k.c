@@ -123,7 +123,7 @@ double temperature_indoor( void )
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    return (((data[1] >> 4) * 10 + (data[1] & 0xF) + (data[0] >> 4) / 10.0 + (data[0] & 0xF) / 100.0) - 30.0);
+    return (((data[1] >> 4) * 10 + (data[1] & 0x0f) + (data[0] >> 4) / 10.0 + (data[0] & 0x0f) / 100.0) - 30.0);
     }
 
 
@@ -145,20 +145,20 @@ void temperature_indoor_minmax( double * temp_min, double * temp_max, struct tim
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    *temp_min = ((data[1] >> 4) * 10 + (data[1] & 0xF) + (data[0] >> 4)/10.0 + (data[0] & 0xF) / 100.0) - 30.0;
-    *temp_max = ((data[4] & 0xF) * 10 + (data[3] >> 4) + (data[3] & 0xF)/10.0 + (data[2] >> 4) / 100.0) - 30.0;
+    *temp_min = ((data[1] >> 4) * 10 + (data[1] & 0x0f) + (data[0] >> 4)/10.0 + (data[0] & 0x0f) / 100.0) - 30.0;
+    *temp_max = ((data[4] & 0x0f) * 10 + (data[3] >> 4) + (data[3] & 0x0f)/10.0 + (data[2] >> 4) / 100.0) - 30.0;
 
-    time_min->minute = ((data[5] & 0xF) * 10) + (data[4] >> 4);
-    time_min->hour = ((data[6] & 0xF) * 10) + (data[5] >> 4);
-    time_min->day = ((data[7] & 0xF) * 10) + (data[6] >> 4);
-    time_min->month = ((data[8] & 0xF) * 10) + (data[7] >> 4);
-    time_min->year = 2000 + ((data[9] & 0xF) * 10) + (data[8] >> 4);
+    time_min->minute = ((data[5] & 0x0f) * 10) + (data[4] >> 4);
+    time_min->hour = ((data[6] & 0x0f) * 10) + (data[5] >> 4);
+    time_min->day = ((data[7] & 0x0f) * 10) + (data[6] >> 4);
+    time_min->month = ((data[8] & 0x0f) * 10) + (data[7] >> 4);
+    time_min->year = 2000 + ((data[9] & 0x0f) * 10) + (data[8] >> 4);
     
-    time_max->minute = ((data[10] & 0xF) * 10) + (data[9] >> 4);
-    time_max->hour = ((data[11] & 0xF) * 10) + (data[10] >> 4);
-    time_max->day = ((data[12] & 0xF) * 10) + (data[11] >> 4);
-    time_max->month = ((data[13] & 0xF) * 10) + (data[12] >> 4);
-    time_max->year = 2000 + ((data[14] & 0xF) * 10) + (data[13] >> 4);
+    time_max->minute = ((data[10] & 0x0f) * 10) + (data[9] >> 4);
+    time_max->hour = ((data[11] & 0x0f) * 10) + (data[10] >> 4);
+    time_max->day = ((data[12] & 0x0f) * 10) + (data[11] >> 4);
+    time_max->month = ((data[13] & 0x0f) * 10) + (data[12] >> 4);
+    time_max->year = 2000 + ((data[14] & 0x0f) * 10) + (data[13] >> 4);
     }
 
 
@@ -179,27 +179,27 @@ void temperature_indoor_reset( uint8_t minmax )
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
 
-    data_value[0] = data_read[0] & 0xF;
+    data_value[0] = data_read[0] & 0x0f;
     data_value[1] = data_read[0] >> 4;
-    data_value[2] = data_read[1] & 0xF;
+    data_value[2] = data_read[1] & 0x0f;
     data_value[3] = data_read[1] >> 4;
 
-    address = 0x23B;                                                            // current time
+    address = 0x23b;                                                            // current time
     number = 6;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
 
-    data_time[0] = data_read[0] & 0xF;
+    data_time[0] = data_read[0] & 0x0f;
     data_time[1] = data_read[0] >> 4;
-    data_time[2] = data_read[1] & 0xF;
+    data_time[2] = data_read[1] & 0x0f;
     data_time[3] = data_read[1] >> 4;
     data_time[4] = data_read[2] >> 4;
-    data_time[5] = data_read[3] & 0xF;
+    data_time[5] = data_read[3] & 0x0f;
     data_time[6] = data_read[3] >> 4;
-    data_time[7] = data_read[4] & 0xF;
+    data_time[7] = data_read[4] & 0x0f;
     data_time[8] = data_read[4] >> 4;
-    data_time[9] = data_read[5] & 0xF;
+    data_time[9] = data_read[5] & 0x0f;
 
     if( minmax & RESET_MIN )
         {
@@ -224,7 +224,7 @@ void temperature_indoor_reset( uint8_t minmax )
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        address = 0x35E;                                                        // set max value timestamp
+        address = 0x35e;                                                        // set max value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -248,7 +248,7 @@ double temperature_outdoor( void )
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    return (((data[1] >> 4) * 10 + (data[1] & 0xF) + (data[0] >> 4) / 10.0 + (data[0] & 0xF) / 100.0) - 30.0);
+    return (((data[1] >> 4) * 10 + (data[1] & 0x0f) + (data[0] >> 4) / 10.0 + (data[0] & 0x0f) / 100.0) - 30.0);
     }
 
 
@@ -270,20 +270,20 @@ void temperature_outdoor_minmax( double * temp_min, double * temp_max, struct ti
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    *temp_min = ((data[1] >> 4) * 10 + (data[1] & 0xF) + (data[0] >> 4)/10.0 + (data[0] & 0xF) / 100.0) - 30.0;
-    *temp_max = ((data[4] & 0xF) * 10 + (data[3] >> 4) + (data[3] & 0xF)/10.0 + (data[2] >> 4) / 100.0) - 30.0;
+    *temp_min = ((data[1] >> 4) * 10 + (data[1] & 0x0f) + (data[0] >> 4)/10.0 + (data[0] & 0x0f) / 100.0) - 30.0;
+    *temp_max = ((data[4] & 0x0f) * 10 + (data[3] >> 4) + (data[3] & 0x0f)/10.0 + (data[2] >> 4) / 100.0) - 30.0;
 
-    time_min->minute = ((data[5] & 0xF) * 10) + (data[4] >> 4);
-    time_min->hour = ((data[6] & 0xF) * 10) + (data[5] >> 4);
-    time_min->day = ((data[7] & 0xF) * 10) + (data[6] >> 4);
-    time_min->month = ((data[8] & 0xF) * 10) + (data[7] >> 4);
-    time_min->year = 2000 + ((data[9] & 0xF) * 10) + (data[8] >> 4);
+    time_min->minute = ((data[5] & 0x0f) * 10) + (data[4] >> 4);
+    time_min->hour = ((data[6] & 0x0f) * 10) + (data[5] >> 4);
+    time_min->day = ((data[7] & 0x0f) * 10) + (data[6] >> 4);
+    time_min->month = ((data[8] & 0x0f) * 10) + (data[7] >> 4);
+    time_min->year = 2000 + ((data[9] & 0x0f) * 10) + (data[8] >> 4);
 
-    time_max->minute = ((data[10] & 0xF) * 10) + (data[9] >> 4);
-    time_max->hour = ((data[11] & 0xF) * 10) + (data[10] >> 4);
-    time_max->day = ((data[12] & 0xF) * 10) + (data[11] >> 4);
-    time_max->month = ((data[13] & 0xF) * 10) + (data[12] >> 4);
-    time_max->year = 2000 + ((data[14] & 0xF) * 10) + (data[13] >> 4);
+    time_max->minute = ((data[10] & 0x0f) * 10) + (data[9] >> 4);
+    time_max->hour = ((data[11] & 0x0f) * 10) + (data[10] >> 4);
+    time_max->day = ((data[12] & 0x0f) * 10) + (data[11] >> 4);
+    time_max->month = ((data[13] & 0x0f) * 10) + (data[12] >> 4);
+    time_max->year = 2000 + ((data[14] & 0x0f) * 10) + (data[13] >> 4);
     }
 
 
@@ -304,27 +304,27 @@ void temperature_outdoor_reset( uint8_t minmax )
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
 
-    data_value[0] = data_read[0] & 0xF;
+    data_value[0] = data_read[0] & 0x0f;
     data_value[1] = data_read[0] >> 4;
-    data_value[2] = data_read[1] & 0xF;
+    data_value[2] = data_read[1] & 0x0f;
     data_value[3] = data_read[1] >> 4;
 
-    address = 0x23B;                                                            // current time
+    address = 0x23b;                                                            // current time
     number = 6;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
     
-    data_time[0] = data_read[0] & 0xF;
+    data_time[0] = data_read[0] & 0x0f;
     data_time[1] = data_read[0] >> 4;
-    data_time[2] = data_read[1] & 0xF;
+    data_time[2] = data_read[1] & 0x0f;
     data_time[3] = data_read[1] >> 4;
     data_time[4] = data_read[2] >> 4;
-    data_time[5] = data_read[3] & 0xF;
+    data_time[5] = data_read[3] & 0x0f;
     data_time[6] = data_read[3] >> 4;
-    data_time[7] = data_read[4] & 0xF;
+    data_time[7] = data_read[4] & 0x0f;
     data_time[8] = data_read[4] >> 4;
-    data_time[9] = data_read[5] & 0xF;
+    data_time[9] = data_read[5] & 0x0f;
 
     if( minmax & RESET_MIN )
         {
@@ -343,13 +343,13 @@ void temperature_outdoor_reset( uint8_t minmax )
 
     if( minmax & RESET_MAX )
         {
-        address = 0x37D;                                                        // set max value
+        address = 0x37d;                                                        // set max value
         number = 4;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        address = 0x38B;                                                        // set max value timestamp
+        address = 0x38b;                                                        // set max value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -367,13 +367,13 @@ void temperature_outdoor_reset( uint8_t minmax )
 double dewpoint( void )
     {
     uint8_t data[2];
-    int address = 0x3CE;
+    int address = 0x3ce;
     int bytes = 2;
 
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    return (((data[1] >> 4) * 10 + (data[1] & 0xF) + (data[0] >> 4) / 10.0 + (data[0] & 0xF) / 100.0) - 30.0);
+    return (((data[1] >> 4) * 10 + (data[1] & 0x0f) + (data[0] >> 4) / 10.0 + (data[0] & 0x0f) / 100.0) - 30.0);
     }
 
 
@@ -389,26 +389,26 @@ double dewpoint( void )
 void dewpoint_minmax( double * dp_min, double * dp_max, struct timestamp * time_min, struct timestamp * time_max )
     {
     uint8_t data[15];
-    int address = 0x3D3;
+    int address = 0x3d3;
     int bytes = 15;
 
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    *dp_min = ((data[1] >> 4) * 10 + (data[1] & 0xF) + (data[0] >> 4)/10.0 + (data[0] & 0xF) / 100.0) - 30.0;
-    *dp_max = ((data[4] & 0xF) * 10 + (data[3] >> 4) + (data[3] & 0xF)/10.0 + (data[2] >> 4) / 100.0) - 30.0;
+    *dp_min = ((data[1] >> 4) * 10 + (data[1] & 0x0f) + (data[0] >> 4)/10.0 + (data[0] & 0x0f) / 100.0) - 30.0;
+    *dp_max = ((data[4] & 0x0f) * 10 + (data[3] >> 4) + (data[3] & 0x0f)/10.0 + (data[2] >> 4) / 100.0) - 30.0;
 
-    time_min->minute = ((data[5] & 0xF) * 10) + (data[4] >> 4);
-    time_min->hour = ((data[6] & 0xF) * 10) + (data[5] >> 4);
-    time_min->day = ((data[7] & 0xF) * 10) + (data[6] >> 4);
-    time_min->month = ((data[8] & 0xF) * 10) + (data[7] >> 4);
-    time_min->year = 2000 + ((data[9] & 0xF) * 10) + (data[8] >> 4);
+    time_min->minute = ((data[5] & 0x0f) * 10) + (data[4] >> 4);
+    time_min->hour = ((data[6] & 0x0f) * 10) + (data[5] >> 4);
+    time_min->day = ((data[7] & 0x0f) * 10) + (data[6] >> 4);
+    time_min->month = ((data[8] & 0x0f) * 10) + (data[7] >> 4);
+    time_min->year = 2000 + ((data[9] & 0x0f) * 10) + (data[8] >> 4);
 
-    time_max->minute = ((data[10] & 0xF) * 10) + (data[9] >> 4);
-    time_max->hour = ((data[11] & 0xF) * 10) + (data[10] >> 4);
-    time_max->day = ((data[12] & 0xF) * 10) + (data[11] >> 4);
-    time_max->month = ((data[13] & 0xF) * 10) + (data[12] >> 4);
-    time_max->year = 2000 + ((data[14] & 0xF) * 10) + (data[13] >> 4);
+    time_max->minute = ((data[10] & 0x0f) * 10) + (data[9] >> 4);
+    time_max->hour = ((data[11] & 0x0f) * 10) + (data[10] >> 4);
+    time_max->day = ((data[12] & 0x0f) * 10) + (data[11] >> 4);
+    time_max->month = ((data[13] & 0x0f) * 10) + (data[12] >> 4);
+    time_max->year = 2000 + ((data[14] & 0x0f) * 10) + (data[13] >> 4);
     }
 
 
@@ -423,43 +423,43 @@ void dewpoint_reset( uint8_t minmax )
     uint8_t data_read[6];
     uint8_t data_value[4];
     uint8_t data_time[10];
-    int address = 0x3CE;                                                        // current dewpoint
+    int address = 0x3ce;                                                        // current dewpoint
     int number = 2;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
 
-    data_value[0] = data_read[0] & 0xF;
+    data_value[0] = data_read[0] & 0x0f;
     data_value[1] = data_read[0] >> 4;
-    data_value[2] = data_read[1] & 0xF;
+    data_value[2] = data_read[1] & 0x0f;
     data_value[3] = data_read[1] >> 4;
 
-    address = 0x23B;                                                            // current time
+    address = 0x23b;                                                            // current time
     number = 6;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
     
-    data_time[0] = data_read[0] & 0xF;
+    data_time[0] = data_read[0] & 0x0f;
     data_time[1] = data_read[0] >> 4;
-    data_time[2] = data_read[1] & 0xF;
+    data_time[2] = data_read[1] & 0x0f;
     data_time[3] = data_read[1] >> 4;
     data_time[4] = data_read[2] >> 4;
-    data_time[5] = data_read[3] & 0xF;
+    data_time[5] = data_read[3] & 0x0f;
     data_time[6] = data_read[3] >> 4;
-    data_time[7] = data_read[4] & 0xF;
+    data_time[7] = data_read[4] & 0x0f;
     data_time[8] = data_read[4] >> 4;
-    data_time[9] = data_read[5] & 0xF;
+    data_time[9] = data_read[5] & 0x0f;
 
     if( minmax & RESET_MIN )
         {
-        address = 0x3D3;                                                        // set min value
+        address = 0x3d3;                                                        // set min value
         number = 4;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        address = 0x3DC;                                                        // set min value timestamp
+        address = 0x3dc;                                                        // set min value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -468,13 +468,13 @@ void dewpoint_reset( uint8_t minmax )
 
     if( minmax & RESET_MAX )
         {
-        address = 0x3D8;                                                        // set max value
+        address = 0x3d8;                                                        // set max value
         number = 4;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        address = 0x3E6;                                                        // set max value timestamp
+        address = 0x3e6;                                                        // set max value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -492,13 +492,13 @@ void dewpoint_reset( uint8_t minmax )
 int humidity_indoor( void )
     {
     uint8_t data;
-    int address = 0x3FB;
+    int address = 0x3fb;
     int bytes = 1;
 
     if( read_data(&data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    return (data >> 4) * 10 + (data & 0xF);
+    return (data >> 4) * 10 + (data & 0x0f);
     }
 
 
@@ -516,28 +516,28 @@ int humidity_indoor( void )
 int humidity_indoor_all( int * hum_min, int * hum_max, struct timestamp * time_min, struct timestamp * time_max )
     {
     uint8_t data[13];
-    int address = 0x3FB;
+    int address = 0x3fb;
     int bytes = 13;
 
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    *hum_min = (data[1] >> 4) * 10 + (data[1] & 0xF);
-    *hum_max = (data[2] >> 4) * 10 + (data[2] & 0xF);
+    *hum_min = (data[1] >> 4) * 10 + (data[1] & 0x0f);
+    *hum_max = (data[2] >> 4) * 10 + (data[2] & 0x0f);
 
-    time_min->minute = ((data[3] >> 4) * 10) + (data[3] & 0xF);
-    time_min->hour = ((data[4] >> 4) * 10) + (data[4] & 0xF);
-    time_min->day = ((data[5] >> 4) * 10) + (data[5] & 0xF);
-    time_min->month = ((data[6] >> 4) * 10) + (data[6] & 0xF);
-    time_min->year = 2000 + ((data[7] >> 4) * 10) + (data[7] & 0xF);
+    time_min->minute = ((data[3] >> 4) * 10) + (data[3] & 0x0f);
+    time_min->hour = ((data[4] >> 4) * 10) + (data[4] & 0x0f);
+    time_min->day = ((data[5] >> 4) * 10) + (data[5] & 0x0f);
+    time_min->month = ((data[6] >> 4) * 10) + (data[6] & 0x0f);
+    time_min->year = 2000 + ((data[7] >> 4) * 10) + (data[7] & 0x0f);
 
-    time_max->minute = ((data[8] >> 4) * 10) + (data[8] & 0xF);
-    time_max->hour = ((data[9] >> 4) * 10) + (data[9] & 0xF);
-    time_max->day = ((data[10] >> 4) * 10) + (data[10] & 0xF);
-    time_max->month = ((data[11] >> 4) * 10) + (data[11] & 0xF);
-    time_max->year = 2000 + ((data[12] >> 4) * 10) + (data[12] & 0xF);
+    time_max->minute = ((data[8] >> 4) * 10) + (data[8] & 0x0f);
+    time_max->hour = ((data[9] >> 4) * 10) + (data[9] & 0x0f);
+    time_max->day = ((data[10] >> 4) * 10) + (data[10] & 0x0f);
+    time_max->month = ((data[11] >> 4) * 10) + (data[11] & 0x0f);
+    time_max->year = 2000 + ((data[12] >> 4) * 10) + (data[12] & 0x0f);
 
-    return (data[0] >> 4) * 10 + (data[0] & 0xF);
+    return (data[0] >> 4) * 10 + (data[0] & 0x0f);
     }
 
 
@@ -552,35 +552,35 @@ void humidity_indoorr_reset( uint8_t minmax )
     uint8_t data_read[6];
     uint8_t data_value[4];
     uint8_t data_time[10];
-    int address = 0x3FB;                                                        // current humidity
+    int address = 0x3fb;                                                        // current humidity
     int number = 1;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
 
-    data_value[0] = data_read[0] & 0xF;
+    data_value[0] = data_read[0] & 0x0f;
     data_value[1] = data_read[0] >> 4;
 
-    address = 0x23B;                                                            // current time
+    address = 0x23b;                                                            // current time
     number = 6;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
     
-    data_time[0] = data_read[0] & 0xF;
+    data_time[0] = data_read[0] & 0x0f;
     data_time[1] = data_read[0] >> 4;
-    data_time[2] = data_read[1] & 0xF;
+    data_time[2] = data_read[1] & 0x0f;
     data_time[3] = data_read[1] >> 4;
     data_time[4] = data_read[2] >> 4;
-    data_time[5] = data_read[3] & 0xF;
+    data_time[5] = data_read[3] & 0x0f;
     data_time[6] = data_read[3] >> 4;
-    data_time[7] = data_read[4] & 0xF;
+    data_time[7] = data_read[4] & 0x0f;
     data_time[8] = data_read[4] >> 4;
-    data_time[9] = data_read[5] & 0xF;
+    data_time[9] = data_read[5] & 0x0f;
 
     if( minmax & RESET_MIN )
         {
-        address = 0x3FD;                                                        // set min value
+        address = 0x3fd;                                                        // set min value
         number = 2;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
@@ -595,14 +595,14 @@ void humidity_indoorr_reset( uint8_t minmax )
 
     if( minmax & RESET_MAX )
         {
-        address = 0x3FF;                                                        // set max value
+        address = 0x3ff;                                                        // set max value
 
         number = 2;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        address = 0x40B;                                                        // set max value timestamp
+        address = 0x40b;                                                        // set max value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -626,7 +626,7 @@ int humidity_outdoor( void )
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    return (data[0] >> 4) * 10 + (data[0] & 0xF);
+    return (data[0] >> 4) * 10 + (data[0] & 0x0f);
     }
 
 
@@ -650,22 +650,22 @@ int humidity_outdoor_all( int * hum_min, int * hum_max, struct timestamp * time_
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    *hum_min = (data[1] >> 4) * 10 + (data[1] & 0xF);
-    *hum_max = (data[2] >> 4) * 10 + (data[2] & 0xF);
+    *hum_min = (data[1] >> 4) * 10 + (data[1] & 0x0f);
+    *hum_max = (data[2] >> 4) * 10 + (data[2] & 0x0f);
 
-    time_min->minute = ((data[3] >> 4) * 10) + (data[3] & 0xF);
-    time_min->hour = ((data[4] >> 4) * 10) + (data[4] & 0xF);
-    time_min->day = ((data[5] >> 4) * 10) + (data[5] & 0xF);
-    time_min->month = ((data[6] >> 4) * 10) + (data[6] & 0xF);
-    time_min->year = 2000 + ((data[7] >> 4) * 10) + (data[7] & 0xF);
+    time_min->minute = ((data[3] >> 4) * 10) + (data[3] & 0x0f);
+    time_min->hour = ((data[4] >> 4) * 10) + (data[4] & 0x0f);
+    time_min->day = ((data[5] >> 4) * 10) + (data[5] & 0x0f);
+    time_min->month = ((data[6] >> 4) * 10) + (data[6] & 0x0f);
+    time_min->year = 2000 + ((data[7] >> 4) * 10) + (data[7] & 0x0f);
 
-    time_max->minute = ((data[8] >> 4) * 10) + (data[8] & 0xF);
-    time_max->hour = ((data[9] >> 4) * 10) + (data[9] & 0xF);
-    time_max->day = ((data[10] >> 4) * 10) + (data[10] & 0xF);
-    time_max->month = ((data[11] >> 4) * 10) + (data[11] & 0xF);
-    time_max->year = 2000 + ((data[12] >> 4) * 10) + (data[12] & 0xF);
+    time_max->minute = ((data[8] >> 4) * 10) + (data[8] & 0x0f);
+    time_max->hour = ((data[9] >> 4) * 10) + (data[9] & 0x0f);
+    time_max->day = ((data[10] >> 4) * 10) + (data[10] & 0x0f);
+    time_max->month = ((data[11] >> 4) * 10) + (data[11] & 0x0f);
+    time_max->year = 2000 + ((data[12] >> 4) * 10) + (data[12] & 0x0f);
 
-    return (data[0] >> 4) * 10 + (data[0] & 0xF);
+    return (data[0] >> 4) * 10 + (data[0] & 0x0f);
     }
 
 
@@ -686,35 +686,35 @@ void humidity_outdoor_reset( uint8_t minmax )
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
 
-    data_value[0] = data_read[0] & 0xF;
+    data_value[0] = data_read[0] & 0x0f;
     data_value[1] = data_read[0] >> 4;
 
-    address = 0x23B;                                                            // current time
+    address = 0x23b;                                                            // current time
     number = 6;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
     
-    data_time[0] = data_read[0] & 0xF;
+    data_time[0] = data_read[0] & 0x0f;
     data_time[1] = data_read[0] >> 4;
-    data_time[2] = data_read[1] & 0xF;
+    data_time[2] = data_read[1] & 0x0f;
     data_time[3] = data_read[1] >> 4;
     data_time[4] = data_read[2] >> 4;
-    data_time[5] = data_read[3] & 0xF;
+    data_time[5] = data_read[3] & 0x0f;
     data_time[6] = data_read[3] >> 4;
-    data_time[7] = data_read[4] & 0xF;
+    data_time[7] = data_read[4] & 0x0f;
     data_time[8] = data_read[4] >> 4;
-    data_time[9] = data_read[5] & 0xF;
+    data_time[9] = data_read[5] & 0x0f;
 
     if( minmax & RESET_MIN )
         {
-        address = 0x41B;                                                        // set min value
+        address = 0x41b;                                                        // set min value
         number = 2;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        address = 0x41F;                                                        // set min value timestamp
+        address = 0x41f;                                                        // set min value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -723,7 +723,7 @@ void humidity_outdoor_reset( uint8_t minmax )
 
     if( minmax & RESET_MAX )
         {
-        address = 0x41D;                                                        // set max value
+        address = 0x41d;                                                        // set max value
         number = 2;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
@@ -759,7 +759,7 @@ double wind_current( double * winddir )
             handle_comm_error(ERR_COMM_READ);
     
         if( ( data[0] != 0x00 ) ||                                              // invalid wind data
-            ( ( data[1] == 0xFF ) && ( ((data[2] & 0xF) == 0 ) || ( (data[2] & 0xF) == 1 ) ) ) )
+            ( ( data[1] == 0x0fF ) && ( ((data[2] & 0x0f) == 0 ) || ( (data[2] & 0x0f) == 1 ) ) ) )
             {
             usleep(10000);                                                      // wait 10 seconds for new wind measurement
             continue;
@@ -770,7 +770,7 @@ double wind_current( double * winddir )
 
     *winddir = (data[2] >> 4) * 22.5;
 
-    return (((data[2] & 0xF) << 8) + data[1]) / 10.0;
+    return (((data[2] & 0x0f) << 8) + data[1]) / 10.0;
     }
 
 
@@ -796,7 +796,7 @@ double wind_current_flags( double * winddir, int * sensor_connected, int * minim
         if( read_data(data, address, bytes) != bytes )                          // wind
             handle_comm_error(ERR_COMM_READ);
     
-        if( ( data[1] == 0xFF ) && ( ( (data[2] & 0xF) == 0 ) || ( (data[2] & 0xF) == 1 )) )
+        if( ( data[1] == 0x0fF ) && ( ( (data[2] & 0x0f) == 0 ) || ( (data[2] & 0x0f) == 1 )) )
             {
             usleep(10000);                                                      // wait 10 seconds for new wind measurement
             continue;
@@ -806,10 +806,10 @@ double wind_current_flags( double * winddir, int * sensor_connected, int * minim
         }
 
     *winddir = (data[2] >> 4) * 22.5;
-    *sensor_connected = data[0] & 0x0F;
-    *minimum_code = (data[0] >> 4) & 0x0F;
+    *sensor_connected = data[0] & 0x0f;
+    *minimum_code = (data[0] >> 4) & 0x0f;
 
-    return (((data[2] & 0xF) << 8) + data[1]) / 10.0;
+    return (((data[2] & 0x0f) << 8) + data[1]) / 10.0;
     }
 
 
@@ -840,7 +840,7 @@ double wind_all( int * winddir_index, double * winddir )
             handle_comm_error(ERR_COMM_READ);
          
         if( ( data[0]!=0x00 ) ||                                                // invalid wind data
-           ( ( data[1] == 0xFF ) && ( ((data[2] & 0xF) == 0 )||( (data[2] & 0xF) == 1 ) ) ) )
+           ( ( data[1] == 0x0fF ) && ( ((data[2] & 0x0f) == 0 )||( (data[2] & 0x0f) == 1 ) ) ) )
             {
             usleep(10000);                                                      // wait 10 seconds for new wind measurement
             continue;
@@ -851,13 +851,13 @@ double wind_all( int * winddir_index, double * winddir )
 
     *winddir_index = data[2] >> 4;
     winddir[0] = (data[2] >> 4) * 22.5;
-    winddir[1] = (data[3] & 0xF) * 22.5;
+    winddir[1] = (data[3] & 0x0f) * 22.5;
     winddir[2] = (data[3] >> 4) * 22.5;
-    winddir[3] = (data[4] & 0xF) * 22.5;
+    winddir[3] = (data[4] & 0x0f) * 22.5;
     winddir[4] = (data[4] >> 4) * 22.5;
-    winddir[5] = (data[5] & 0xF) * 22.5;
+    winddir[5] = (data[5] & 0x0f) * 22.5;
 
-    return (((data[2] & 0xF) << 8) + data[1]) / 10.0;
+    return (((data[2] & 0x0f) << 8) + data[1]) / 10.0;
     }
 
 
@@ -876,7 +876,7 @@ double wind_all( int * winddir_index, double * winddir )
 double wind_minmax( double * wind_min, double * wind_max, struct timestamp * time_min, struct timestamp * time_max )
     {
     uint8_t data[15];
-    int address = 0x4EE;
+    int address = 0x4ee;
     int bytes = 15;
 
     if( read_data(data, address, bytes) != bytes )
@@ -889,20 +889,20 @@ double wind_minmax( double * wind_min, double * wind_max, struct timestamp * tim
 
     if( time_min )
         {
-        time_min->minute = ((data[5] >> 4) * 10) + (data[5] & 0xF);
-        time_min->hour = ((data[6] >> 4) * 10) + (data[6] & 0xF);
-        time_min->day = ((data[7] >> 4) * 10) + (data[7] & 0xF);
-        time_min->month = ((data[8] >> 4) * 10) + (data[8] & 0xF);
-        time_min->year = 2000 + ((data[9] >> 4) * 10) + (data[9] & 0xF);
+        time_min->minute = ((data[5] >> 4) * 10) + (data[5] & 0x0f);
+        time_min->hour = ((data[6] >> 4) * 10) + (data[6] & 0x0f);
+        time_min->day = ((data[7] >> 4) * 10) + (data[7] & 0x0f);
+        time_min->month = ((data[8] >> 4) * 10) + (data[8] & 0x0f);
+        time_min->year = 2000 + ((data[9] >> 4) * 10) + (data[9] & 0x0f);
         }
 
     if( time_max )
         {
-        time_max->minute = ((data[10] >> 4) * 10) + (data[10] & 0xF);
-        time_max->hour = ((data[11] >> 4) * 10) + (data[11] & 0xF);
-        time_max->day = ((data[12] >> 4) * 10) + (data[12] & 0xF);
-        time_max->month = ((data[13] >> 4) * 10) + (data[13] & 0xF);
-        time_max->year = 2000 + ((data[14] >> 4) * 10) + (data[14] & 0xF);
+        time_max->minute = ((data[10] >> 4) * 10) + (data[10] & 0x0f);
+        time_max->hour = ((data[11] >> 4) * 10) + (data[11] & 0x0f);
+        time_max->day = ((data[12] >> 4) * 10) + (data[12] & 0x0f);
+        time_max->month = ((data[13] >> 4) * 10) + (data[13] & 0x0f);
+        time_max->year = 2000 + ((data[14] >> 4) * 10) + (data[14] & 0x0f);
         }
 
     return (data[4] * 256 + data[3]) / 360.0;
@@ -935,7 +935,7 @@ void wind_reset( uint8_t minmax )
             handle_comm_error(ERR_COMM_READ);
          
         if( ( data_read[0] != 0x00 ) ||                                         // invalid wind data
-            ( ( data_read[1] == 0xFF ) && ( ( (data_read[2] & 0xF) == 0 ) || ( (data_read[2] & 0xF) == 1 ) ) ) )
+            ( ( data_read[1] == 0x0ff ) && ( ( (data_read[2] & 0x0f) == 0 ) || ( (data_read[2] & 0x0f) == 1 ) ) ) )
             {
             usleep(10000);                                                      // wait 10 seconds for new wind measurement
             continue;
@@ -944,33 +944,33 @@ void wind_reset( uint8_t minmax )
             break;
         }
 
-    current_wind = (((data_read[2] & 0xF) << 8) + data_read[1]) * 36;
+    current_wind = (((data_read[2] & 0x0f) << 8) + data_read[1]) * 36;
 
-    data_value[0] = current_wind&0xF;
-    data_value[1] = (current_wind>>4) & 0xF;
-    data_value[2] = (current_wind>>8) & 0xF;
-    data_value[3] = (current_wind>>12) & 0xF;
+    data_value[0] = current_wind&0x0f;
+    data_value[1] = (current_wind>>4) & 0x0f;
+    data_value[2] = (current_wind>>8) & 0x0f;
+    data_value[3] = (current_wind>>12) & 0x0f;
 
-    address = 0x23B;                                                            // current time
+    address = 0x23b;                                                            // current time
     number = 6;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
 
-    data_time[0] = data_read[0] & 0xF;
+    data_time[0] = data_read[0] & 0x0f;
     data_time[1] = data_read[0] >> 4;
-    data_time[2] = data_read[1] & 0xF;
+    data_time[2] = data_read[1] & 0x0f;
     data_time[3] = data_read[1] >> 4;
     data_time[4] = data_read[2] >> 4;
-    data_time[5] = data_read[3] & 0xF;
+    data_time[5] = data_read[3] & 0x0f;
     data_time[6] = data_read[3] >> 4;
-    data_time[7] = data_read[4] & 0xF;
+    data_time[7] = data_read[4] & 0x0f;
     data_time[8] = data_read[4] >> 4;
-    data_time[9] = data_read[5] & 0xF;
+    data_time[9] = data_read[5] & 0x0f;
 
     if( minmax & RESET_MIN )
         {
-        address = 0x4EE;                                                        // set min value
+        address = 0x4ee;                                                        // set min value
         number = 4;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
@@ -985,7 +985,7 @@ void wind_reset( uint8_t minmax )
 
     if( minmax & RESET_MAX )
         {
-        address = 0x4F4;                                                        // set max value
+        address = 0x4f4;                                                        // set max value
         number = 4;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
@@ -1009,13 +1009,13 @@ void wind_reset( uint8_t minmax )
 double windchill( void )
     {
     uint8_t data[2];
-    int address = 0x3A0;
+    int address = 0x3a0;
     int bytes = 2;
 
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    return (((data[1] >> 4) * 10 + (data[1] & 0xF) + (data[0] >> 4) / 10.0 + (data[0] & 0xF) / 100.0) - 30.0);
+    return (((data[1] >> 4) * 10 + (data[1] & 0x0f) + (data[0] >> 4) / 10.0 + (data[0] & 0x0f) / 100.0) - 30.0);
     }
 
 
@@ -1031,26 +1031,26 @@ double windchill( void )
 void windchill_minmax( double * wc_min, double * wc_max, struct timestamp * time_min, struct timestamp * time_max )
     {
     uint8_t data[15];
-    int address = 0x3A5;
+    int address = 0x3a5;
     int bytes = 15;
 
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    *wc_min = ((data[1] >> 4) * 10 + (data[1] & 0xF) + (data[0] >> 4) / 10.0 + (data[0] & 0xF) / 100.0 ) - 30.0;
-    *wc_max = ((data[4] & 0xF) * 10 + (data[3] >> 4) + (data[3] & 0xF) / 10.0 + (data[2] >> 4) / 100.0 ) - 30.0;
+    *wc_min = ((data[1] >> 4) * 10 + (data[1] & 0x0f) + (data[0] >> 4) / 10.0 + (data[0] & 0x0f) / 100.0 ) - 30.0;
+    *wc_max = ((data[4] & 0x0f) * 10 + (data[3] >> 4) + (data[3] & 0x0f) / 10.0 + (data[2] >> 4) / 100.0 ) - 30.0;
 
-    time_min->minute = ((data[5] & 0xF) * 10) + (data[4] >> 4);
-    time_min->hour = ((data[6] & 0xF) * 10) + (data[5] >> 4);
-    time_min->day = ((data[7] & 0xF) * 10) + (data[6] >> 4);
-    time_min->month = ((data[8] & 0xF) * 10) + (data[7] >> 4);
-    time_min->year = 2000 + ((data[9] & 0xF) * 10) + (data[8] >> 4);
+    time_min->minute = ((data[5] & 0x0f) * 10) + (data[4] >> 4);
+    time_min->hour = ((data[6] & 0x0f) * 10) + (data[5] >> 4);
+    time_min->day = ((data[7] & 0x0f) * 10) + (data[6] >> 4);
+    time_min->month = ((data[8] & 0x0f) * 10) + (data[7] >> 4);
+    time_min->year = 2000 + ((data[9] & 0x0f) * 10) + (data[8] >> 4);
 
-    time_max->minute = ((data[10] & 0xF) * 10) + (data[9] >> 4);
-    time_max->hour = ((data[11] & 0xF) * 10) + (data[10] >> 4);
-    time_max->day = ((data[12] & 0xF) * 10) + (data[11] >> 4);
-    time_max->month = ((data[13] & 0xF) * 10) + (data[12] >> 4);
-    time_max->year = 2000 + ((data[14] & 0xF) * 10) + (data[13] >> 4);
+    time_max->minute = ((data[10] & 0x0f) * 10) + (data[9] >> 4);
+    time_max->hour = ((data[11] & 0x0f) * 10) + (data[10] >> 4);
+    time_max->day = ((data[12] & 0x0f) * 10) + (data[11] >> 4);
+    time_max->month = ((data[13] & 0x0f) * 10) + (data[12] >> 4);
+    time_max->year = 2000 + ((data[14] & 0x0f) * 10) + (data[13] >> 4);
     }
 
 
@@ -1066,43 +1066,43 @@ void windchill_reset( uint8_t minmax )
     uint8_t data_read[6];
     uint8_t data_value[4];
     uint8_t data_time[10];
-    int address = 0x3A0;                                                        // current windchill
+    int address = 0x3a0;                                                        // current windchill
     int number = 2;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
 
-    data_value[0] = data_read[0] & 0xF;
+    data_value[0] = data_read[0] & 0x0f;
     data_value[1] = data_read[0] >> 4;
-    data_value[2] = data_read[1] & 0xF;
+    data_value[2] = data_read[1] & 0x0f;
     data_value[3] = data_read[1] >> 4;
 
-    address = 0x23B;                                                            // current time
+    address = 0x23b;                                                            // current time
     number = 6;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
     
-    data_time[0] = data_read[0] & 0xF;
+    data_time[0] = data_read[0] & 0x0f;
     data_time[1] = data_read[0] >> 4;
-    data_time[2] = data_read[1] & 0xF;
+    data_time[2] = data_read[1] & 0x0f;
     data_time[3] = data_read[1] >> 4;
     data_time[4] = data_read[2] >> 4;
-    data_time[5] = data_read[3] & 0xF;
+    data_time[5] = data_read[3] & 0x0f;
     data_time[6] = data_read[3] >> 4;
-    data_time[7] = data_read[4] & 0xF;
+    data_time[7] = data_read[4] & 0x0f;
     data_time[8] = data_read[4] >> 4;
-    data_time[9] = data_read[5] & 0xF;
+    data_time[9] = data_read[5] & 0x0f;
 
     if( minmax & RESET_MIN )
         {
-        address = 0x3A5;                                                        // set min value
+        address = 0x3a5;                                                        // set min value
         number = 4;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        address = 0x3AE;                                                        // set min value timestamp
+        address = 0x3ae;                                                        // set min value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -1111,13 +1111,13 @@ void windchill_reset( uint8_t minmax )
 
     if( minmax & RESET_MAX )
         {
-        address = 0x3AA;                                                        // set max value
+        address = 0x3aa;                                                        // set max value
         number = 4;
     
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        address = 0x3B8;                                                        // set max value timestamp
+        address = 0x3b8;                                                        // set max value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -1135,14 +1135,14 @@ void windchill_reset( uint8_t minmax )
 double rain_1h( void )
     {
     uint8_t data[3];
-    int address = 0x4B4;
+    int address = 0x4b4;
     int bytes = 3;
 
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    return (data[2] >> 4) * 1000 + (data[2] & 0xF) * 100 + (data[1] >> 4) * 10 +
-           (data[1] & 0xF) + (data[0] >> 4) / 10.0 + (data[0] & 0xF) / 100.0;
+    return (data[2] >> 4) * 1000 + (data[2] & 0x0f) * 100 + (data[1] >> 4) * 10 +
+           (data[1] & 0x0f) + (data[0] >> 4) / 10.0 + (data[0] & 0x0f) / 100.0;
     }
 
 
@@ -1158,23 +1158,23 @@ double rain_1h( void )
 double rain_1h_all( double * rain_max, struct timestamp * time_max )
     {
     uint8_t data[11];
-    int address = 0x4B4;
+    int address = 0x4b4;
     int bytes = 11;
 
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
     
-    *rain_max = (data[5] >> 4) * 1000 + (data[5] & 0xF) * 100 + (data[4] >> 4) * 10 +
-                (data[4] & 0xF) + (data[3] >> 4) / 10.0 + (data[3] & 0xF) / 100.0;
+    *rain_max = (data[5] >> 4) * 1000 + (data[5] & 0x0f) * 100 + (data[4] >> 4) * 10 +
+                (data[4] & 0x0f) + (data[3] >> 4) / 10.0 + (data[3] & 0x0f) / 100.0;
              
-    time_max->minute = ((data[6] >> 4) * 10) + (data[6] & 0xF);
-    time_max->hour = ((data[7] >> 4) * 10) + (data[7] & 0xF);
-    time_max->day = ((data[8] >> 4) * 10) + (data[8] & 0xF);
-    time_max->month = ((data[9] >> 4) * 10) + (data[9] & 0xF);
-    time_max->year = 2000 + ((data[10] >> 4) * 10) + (data[10] & 0xF);
+    time_max->minute = ((data[6] >> 4) * 10) + (data[6] & 0x0f);
+    time_max->hour = ((data[7] >> 4) * 10) + (data[7] & 0x0f);
+    time_max->day = ((data[8] >> 4) * 10) + (data[8] & 0x0f);
+    time_max->month = ((data[9] >> 4) * 10) + (data[9] & 0x0f);
+    time_max->year = 2000 + ((data[10] >> 4) * 10) + (data[10] & 0x0f);
 
-    return (data[2] >> 4) * 1000 + (data[2] & 0xF) * 100 + (data[1] >> 4) * 10 +
-           (data[1] & 0xF) + (data[0] >> 4) / 10.0 + (data[0] & 0xF) / 100.0;
+    return (data[2] >> 4) * 1000 + (data[2] & 0x0f) * 100 + (data[1] >> 4) * 10 +
+           (data[1] & 0x0f) + (data[0] >> 4) / 10.0 + (data[0] & 0x0f) / 100.0;
     }
 
 
@@ -1187,43 +1187,43 @@ void rain_1h_max_reset( void )
     uint8_t data_read[6];
     uint8_t data_value[6];
     uint8_t data_time[10];
-    int address = 0x4B4;                                                        // current rain 1h
+    int address = 0x4b4;                                                        // current rain 1h
     int number = 3;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
 
-    data_value[0] = data_read[0] & 0xF;
+    data_value[0] = data_read[0] & 0x0f;
     data_value[1] = data_read[0] >> 4;
-    data_value[2] = data_read[1] & 0xF;
+    data_value[2] = data_read[1] & 0x0f;
     data_value[3] = data_read[1] >> 4;
-    data_value[4] = data_read[2] & 0xF;
+    data_value[4] = data_read[2] & 0x0f;
     data_value[5] = data_read[2] >> 4;
 
-    address = 0x23B;                                                            // current time
+    address = 0x23b;                                                            // current time
     number = 6;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
 
-    data_time[0] = data_read[0] & 0xF;
+    data_time[0] = data_read[0] & 0x0f;
     data_time[1] = data_read[0] >> 4;
-    data_time[2] = data_read[1] & 0xF;
+    data_time[2] = data_read[1] & 0x0f;
     data_time[3] = data_read[1] >> 4;
     data_time[4] = data_read[2] >> 4;
-    data_time[5] = data_read[3] & 0xF;
+    data_time[5] = data_read[3] & 0x0f;
     data_time[6] = data_read[3] >> 4;
-    data_time[7] = data_read[4] & 0xF;
+    data_time[7] = data_read[4] & 0x0f;
     data_time[8] = data_read[4] >> 4;
-    data_time[9] = data_read[5] & 0xF;
+    data_time[9] = data_read[5] & 0x0f;
 
-    address = 0x4BA;                                                            // set max value
+    address = 0x4ba;                                                            // set max value
     number = 6;
 
     if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
         handle_comm_error(ERR_COMM_WRITE);
 
-    address = 0x4C0;                                                            // set max value timestamp
+    address = 0x4c0;                                                            // set max value timestamp
     number = 10;
 
     if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -1246,7 +1246,7 @@ void rain_1h_reset( void )
     if( write_data(data, address, number, WRITE_NIBBBLE) != number )
         handle_comm_error(ERR_COMM_WRITE);
 
-    address = 0x4B4;                                                            // set value to zero
+    address = 0x4b4;                                                            // set value to zero
     number = 6;
 
     if( write_data(data, address, number, WRITE_NIBBBLE) != number )
@@ -1269,8 +1269,8 @@ double rain_24h( void )
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    return (data[2] >> 4) * 1000 + (data[2] & 0xF) * 100 + (data[1] >> 4) * 10 +
-           (data[1] & 0xF) + (data[0] >> 4) / 10.0 + (data[0] & 0xF) / 100.0;
+    return (data[2] >> 4) * 1000 + (data[2] & 0x0f) * 100 + (data[1] >> 4) * 10 +
+           (data[1] & 0x0f) + (data[0] >> 4) / 10.0 + (data[0] & 0x0f) / 100.0;
     }
 
 
@@ -1292,17 +1292,17 @@ double rain_24h_all( double * rain_max, struct timestamp * time_max )
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    *rain_max = (data[5] >> 4) * 1000 + (data[5] & 0xF) * 100 + (data[4] >> 4) * 10 +
-                (data[4] & 0xF) + (data[3] >> 4)/10.0 + (data[3] & 0xF) / 100.0;
+    *rain_max = (data[5] >> 4) * 1000 + (data[5] & 0x0f) * 100 + (data[4] >> 4) * 10 +
+                (data[4] & 0x0f) + (data[3] >> 4)/10.0 + (data[3] & 0x0f) / 100.0;
 
-    time_max->minute = ((data[6] >> 4) * 10) + (data[6] & 0xF);
-    time_max->hour = ((data[7] >> 4) * 10) + (data[7] & 0xF);
-    time_max->day = ((data[8] >> 4) * 10) + (data[8] & 0xF);
-    time_max->month = ((data[9] >> 4) * 10) + (data[9] & 0xF);
-    time_max->year = 2000 + ((data[10] >> 4) * 10) + (data[10] & 0xF);
+    time_max->minute = ((data[6] >> 4) * 10) + (data[6] & 0x0f);
+    time_max->hour = ((data[7] >> 4) * 10) + (data[7] & 0x0f);
+    time_max->day = ((data[8] >> 4) * 10) + (data[8] & 0x0f);
+    time_max->month = ((data[9] >> 4) * 10) + (data[9] & 0x0f);
+    time_max->year = 2000 + ((data[10] >> 4) * 10) + (data[10] & 0x0f);
 
-    return (data[2] >> 4) * 1000 + (data[2] & 0xF) * 100 + (data[1] >> 4) * 10 +
-           (data[1] & 0xF) + (data[0] >> 4) / 10.0 + (data[0] & 0xF) / 100.0;
+    return (data[2] >> 4) * 1000 + (data[2] & 0x0f) * 100 + (data[1] >> 4) * 10 +
+           (data[1] & 0x0f) + (data[0] >> 4) / 10.0 + (data[0] & 0x0f) / 100.0;
     }
 
 
@@ -1321,37 +1321,37 @@ void rain_24h_max_reset( void )
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
 
-    data_value[0] = data_read[0] & 0xF;
+    data_value[0] = data_read[0] & 0x0f;
     data_value[1] = data_read[0] >> 4;
-    data_value[2] = data_read[1] & 0xF;
+    data_value[2] = data_read[1] & 0x0f;
     data_value[3] = data_read[1] >> 4;
-    data_value[4] = data_read[2] & 0xF;
+    data_value[4] = data_read[2] & 0x0f;
     data_value[5] = data_read[2] >> 4;
 
-    address = 0x23B;                                                            // current time
+    address = 0x23b;                                                            // current time
     number = 6;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
 
-    data_time[0] = data_read[0] & 0xF;
+    data_time[0] = data_read[0] & 0x0f;
     data_time[1] = data_read[0] >> 4;
-    data_time[2] = data_read[1] & 0xF;
+    data_time[2] = data_read[1] & 0x0f;
     data_time[3] = data_read[1] >> 4;
     data_time[4] = data_read[2] >> 4;
-    data_time[5] = data_read[3] & 0xF;
+    data_time[5] = data_read[3] & 0x0f;
     data_time[6] = data_read[3] >> 4;
-    data_time[7] = data_read[4] & 0xF;
+    data_time[7] = data_read[4] & 0x0f;
     data_time[8] = data_read[4] >> 4;
-    data_time[9] = data_read[5] & 0xF;
+    data_time[9] = data_read[5] & 0x0f;
 
-    address = 0x49D;                                                            // set max value
+    address = 0x49d;                                                            // set max value
     number = 6;
 
     if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
         handle_comm_error(ERR_COMM_WRITE);
 
-    address = 0x4A3;                                                            // set max value timestamp
+    address = 0x4a3;                                                            // set max value timestamp
     number = 10;
 
     if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -1391,14 +1391,14 @@ void rain_24h_reset( void )
 double rain_total( void )
     {
     uint8_t data[3];
-    int address = 0x4D2;
+    int address = 0x4d2;
     int bytes = 3;
 
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    return (data[2] >> 4) * 1000 + (data[2] & 0xF) * 100 + (data[1] >> 4) * 10 +
-           (data[1] & 0xF) + (data[0] >> 4) / 10.0 + (data[0] & 0xF) / 100.0;
+    return (data[2] >> 4) * 1000 + (data[2] & 0x0f) * 100 + (data[1] >> 4) * 10 +
+           (data[1] & 0x0f) + (data[0] >> 4) / 10.0 + (data[0] & 0x0f) / 100.0;
     }
 
 
@@ -1413,20 +1413,20 @@ double rain_total( void )
 double rain_total_all( struct timestamp * time_since )
     {
     uint8_t data[8];
-    int address = 0x4D2;
+    int address = 0x4d2;
     int bytes = 8;
 
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    time_since->minute = ((data[3] >> 4) * 10) + (data[3] & 0xF);
-    time_since->hour = ((data[4] >> 4) * 10) + (data[4] & 0xF);
-    time_since->day = ((data[5] >> 4) * 10) + (data[5] & 0xF);
-    time_since->month = ((data[6] >> 4) * 10) + (data[6] & 0xF);
-    time_since->year = 2000 + ((data[7] >> 4) * 10) + (data[7] & 0xF);
+    time_since->minute = ((data[3] >> 4) * 10) + (data[3] & 0x0f);
+    time_since->hour = ((data[4] >> 4) * 10) + (data[4] & 0x0f);
+    time_since->day = ((data[5] >> 4) * 10) + (data[5] & 0x0f);
+    time_since->month = ((data[6] >> 4) * 10) + (data[6] & 0x0f);
+    time_since->year = 2000 + ((data[7] >> 4) * 10) + (data[7] & 0x0f);
 
-    return (data[2] >> 4) * 1000 + (data[2] & 0xF) * 100 + (data[1] >> 4) * 10 +
-           (data[1] & 0xF) + (data[0] >> 4) / 10.0 + (data[0] & 0xF) / 100.0;
+    return (data[2] >> 4) * 1000 + (data[2] & 0x0f) * 100 + (data[1] >> 4) * 10 +
+           (data[1] & 0x0f) + (data[0] >> 4) / 10.0 + (data[0] & 0x0f) / 100.0;
     }
 
 
@@ -1439,31 +1439,31 @@ void rain_total_reset( void )
     uint8_t data_read[6];
     uint8_t data_value[7];
     uint8_t data_time[10];
-    int address = 0x23B;                                                        // current time
+    int address = 0x23b;                                                        // current time
     int number = 6;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
     
-    data_time[0] = data_read[0] & 0xF;
+    data_time[0] = data_read[0] & 0x0f;
     data_time[1] = data_read[0] >> 4;
-    data_time[2] = data_read[1] & 0xF;
+    data_time[2] = data_read[1] & 0x0f;
     data_time[3] = data_read[1] >> 4;
     data_time[4] = data_read[2] >> 4;
-    data_time[5] = data_read[3] & 0xF;
+    data_time[5] = data_read[3] & 0x0f;
     data_time[6] = data_read[3] >> 4;
-    data_time[7] = data_read[4] & 0xF;
+    data_time[7] = data_read[4] & 0x0f;
     data_time[8] = data_read[4] >> 4;
-    data_time[9] = data_read[5] & 0xF;
+    data_time[9] = data_read[5] & 0x0f;
 
-    address = 0x4D1;                                                            // set value to zero
+    address = 0x4d1;                                                            // set value to zero
     number = 7;
     memset(&data_value, 0, sizeof(data_value));
 
     if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
         handle_comm_error(ERR_COMM_WRITE);
 
-    address = 0x4D8;                                                            // set max value timestamp
+    address = 0x4d8;                                                            // set max value timestamp
     number = 10;
 
     if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -1480,14 +1480,14 @@ void rain_total_reset( void )
 double rel_pressure( void )
     {
     uint8_t data[3];
-    int address = 0x5E2;
+    int address = 0x5e2;
     int bytes = 3;
 
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    return (data[2] & 0xF) * 1000 + (data[1] >> 4) * 100 + (data[1] & 0xF) * 10 +
-           (data[0] >> 4) + (data[0] & 0xF) / 10.0;
+    return (data[2] & 0x0f) * 1000 + (data[1] >> 4) * 100 + (data[1] & 0x0f) * 10 +
+           (data[0] >> 4) + (data[0] & 0x0f) / 10.0;
     }
 
 
@@ -1509,28 +1509,28 @@ void rel_pressure_minmax( double * pres_min, double * pres_max, struct timestamp
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    *pres_min = (data[2] & 0xF) * 1000 + (data[1] >> 4) * 100 + (data[1] & 0xF) * 10 +
-                (data[0] >> 4) + (data[0] & 0xF) / 10.0;
-    *pres_max = (data[12] & 0xF) * 1000 + (data[11] >> 4) * 100 + (data[11] & 0xF) * 10 +
-                (data[10] >> 4) + (data[10] & 0xF) / 10.0;
+    *pres_min = (data[2] & 0x0f) * 1000 + (data[1] >> 4) * 100 + (data[1] & 0x0f) * 10 +
+                (data[0] >> 4) + (data[0] & 0x0f) / 10.0;
+    *pres_max = (data[12] & 0x0f) * 1000 + (data[11] >> 4) * 100 + (data[11] & 0x0f) * 10 +
+                (data[10] >> 4) + (data[10] & 0x0f) / 10.0;
     
-    address = 0x61E;                                                            // relative pressure time and date for min/max
+    address = 0x61e;                                                            // relative pressure time and date for min/max
     bytes = 10;
 
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    time_min->minute = ((data[0] >> 4) * 10) + (data[0] & 0xF);
-    time_min->hour = ((data[1] >> 4) * 10) + (data[1] & 0xF);
-    time_min->day = ((data[2] >> 4) * 10) + (data[2] & 0xF);
-    time_min->month = ((data[3] >> 4) * 10) + (data[3] & 0xF);
-    time_min->year = 2000 + ((data[4] >> 4) * 10) + (data[4] & 0xF);
+    time_min->minute = ((data[0] >> 4) * 10) + (data[0] & 0x0f);
+    time_min->hour = ((data[1] >> 4) * 10) + (data[1] & 0x0f);
+    time_min->day = ((data[2] >> 4) * 10) + (data[2] & 0x0f);
+    time_min->month = ((data[3] >> 4) * 10) + (data[3] & 0x0f);
+    time_min->year = 2000 + ((data[4] >> 4) * 10) + (data[4] & 0x0f);
 
-    time_max->minute = ((data[5] >> 4) * 10) + (data[5] & 0xF);
-    time_max->hour = ((data[6] >> 4) * 10) + (data[6] & 0xF);
-    time_max->day = ((data[7] >> 4) * 10) + (data[7] & 0xF);
-    time_max->month = ((data[8] >> 4) * 10) + (data[8] & 0xF);
-    time_max->year = 2000 + ((data[9] >> 4) * 10) + (data[9] & 0xF);
+    time_max->minute = ((data[5] >> 4) * 10) + (data[5] & 0x0f);
+    time_max->hour = ((data[6] >> 4) * 10) + (data[6] & 0x0f);
+    time_max->day = ((data[7] >> 4) * 10) + (data[7] & 0x0f);
+    time_max->month = ((data[8] >> 4) * 10) + (data[8] & 0x0f);
+    time_max->year = 2000 + ((data[9] >> 4) * 10) + (data[9] & 0x0f);
     }
 
 
@@ -1543,14 +1543,14 @@ void rel_pressure_minmax( double * pres_min, double * pres_max, struct timestamp
 double abs_pressure( void )
     {
     uint8_t data[3];
-    int address = 0x5D8;
+    int address = 0x5d8;
     int bytes = 3;
 
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    return (data[2] & 0xF) * 1000 + (data[1] >> 4) * 100 + (data[1] & 0xF) * 10 +
-           (data[0] >> 4) + (data[0] & 0xF) / 10.0;
+    return (data[2] & 0x0f) * 1000 + (data[1] >> 4) * 100 + (data[1] & 0x0f) * 10 +
+           (data[0] >> 4) + (data[0] & 0x0f) / 10.0;
     }
 
 
@@ -1566,34 +1566,34 @@ double abs_pressure( void )
 void abs_pressure_minmax( double * pres_min, double * pres_max, struct timestamp * time_min, struct timestamp * time_max )
     {
     uint8_t data[13];
-    int address = 0x5F6;
+    int address = 0x5f6;
     int bytes = 13;
 
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    *pres_min = (data[2] & 0xF) * 1000 + (data[1] >> 4) * 100 + (data[1] & 0xF) * 10 +
-                (data[0] >> 4) + (data[0] & 0xF) / 10.0;
-    *pres_max = (data[12] & 0xF) * 1000 + (data[11] >> 4) * 100 + (data[11] & 0xF) * 10 +
-                (data[10] >> 4) + (data[10] & 0xF) / 10.0;
+    *pres_min = (data[2] & 0x0f) * 1000 + (data[1] >> 4) * 100 + (data[1] & 0x0f) * 10 +
+                (data[0] >> 4) + (data[0] & 0x0f) / 10.0;
+    *pres_max = (data[12] & 0x0f) * 1000 + (data[11] >> 4) * 100 + (data[11] & 0x0f) * 10 +
+                (data[10] >> 4) + (data[10] & 0x0f) / 10.0;
     
-    address = 0x61E;                                                            // relative pressure time and date for min/max
+    address = 0x61e;                                                            // relative pressure time and date for min/max
     bytes = 10;
 
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    time_min->minute = ((data[0] >> 4) * 10) + (data[0] & 0xF);
-    time_min->hour = ((data[1] >> 4) * 10) + (data[1] & 0xF);
-    time_min->day = ((data[2] >> 4) * 10) + (data[2] & 0xF);
-    time_min->month = ((data[3] >> 4) * 10) + (data[3] & 0xF);
-    time_min->year = 2000 + ((data[4] >> 4) * 10) + (data[4] & 0xF);
+    time_min->minute = ((data[0] >> 4) * 10) + (data[0] & 0x0f);
+    time_min->hour = ((data[1] >> 4) * 10) + (data[1] & 0x0f);
+    time_min->day = ((data[2] >> 4) * 10) + (data[2] & 0x0f);
+    time_min->month = ((data[3] >> 4) * 10) + (data[3] & 0x0f);
+    time_min->year = 2000 + ((data[4] >> 4) * 10) + (data[4] & 0x0f);
 
-    time_max->minute = ((data[5] >> 4) * 10) + (data[5] & 0xF);
-    time_max->hour = ((data[6] >> 4) * 10) + (data[6] & 0xF);
-    time_max->day = ((data[7] >> 4) * 10) + (data[7] & 0xF);
-    time_max->month = ((data[8] >> 4) * 10) + (data[8] & 0xF);
-    time_max->year = 2000 + ((data[9] >> 4) * 10) + (data[9] & 0xF);
+    time_max->minute = ((data[5] >> 4) * 10) + (data[5] & 0x0f);
+    time_max->hour = ((data[6] >> 4) * 10) + (data[6] & 0x0f);
+    time_max->day = ((data[7] >> 4) * 10) + (data[7] & 0x0f);
+    time_max->month = ((data[8] >> 4) * 10) + (data[8] & 0x0f);
+    time_max->year = 2000 + ((data[9] >> 4) * 10) + (data[9] & 0x0f);
     }
 
 
@@ -1610,44 +1610,44 @@ void pressure_reset( char minmax )
     uint8_t data_value_abs[5];
     uint8_t data_value_rel[5];
     uint8_t data_time[10];
-    int address = 0x5D8;                                                        // current abs/rel pressure
+    int address = 0x5d8;                                                        // current abs/rel pressure
     int number = 8;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
     
-    data_value_abs[0] = data_read[0] & 0xF;
+    data_value_abs[0] = data_read[0] & 0x0f;
     data_value_abs[1] = data_read[0] >> 4;
-    data_value_abs[2] = data_read[1] & 0xF;
+    data_value_abs[2] = data_read[1] & 0x0f;
     data_value_abs[3] = data_read[1] >> 4;
-    data_value_abs[4] = data_read[2] & 0xF;
+    data_value_abs[4] = data_read[2] & 0x0f;
 
-    data_value_rel[0] = data_read[5] & 0xF;
+    data_value_rel[0] = data_read[5] & 0x0f;
     data_value_rel[1] = data_read[5] >> 4;
-    data_value_rel[2] = data_read[6] & 0xF;
+    data_value_rel[2] = data_read[6] & 0x0f;
     data_value_rel[3] = data_read[6] >> 4;
-    data_value_rel[4] = data_read[7] & 0xF;
+    data_value_rel[4] = data_read[7] & 0x0f;
 
-    address = 0x23B;                                                            // current time
+    address = 0x23b;                                                            // current time
     number = 6;
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
     
-    data_time[0] = data_read[0] & 0xF;
+    data_time[0] = data_read[0] & 0x0f;
     data_time[1] = data_read[0] >> 4;
-    data_time[2] = data_read[1] & 0xF;
+    data_time[2] = data_read[1] & 0x0f;
     data_time[3] = data_read[1] >> 4;
     data_time[4] = data_read[2] >> 4;
-    data_time[5] = data_read[3] & 0xF;
+    data_time[5] = data_read[3] & 0x0f;
     data_time[6] = data_read[3] >> 4;
-    data_time[7] = data_read[4] & 0xF;
+    data_time[7] = data_read[4] & 0x0f;
     data_time[8] = data_read[4] >> 4;
-    data_time[9] = data_read[5] & 0xF;
+    data_time[9] = data_read[5] & 0x0f;
 
     if( minmax & RESET_MIN )
         {
-        address = 0x5F6;                                                        // set min abs value
+        address = 0x5f6;                                                        // set min abs value
         number = 5;
     
         if( write_data(data_value_abs, address, number, WRITE_NIBBBLE) != number )
@@ -1659,7 +1659,7 @@ void pressure_reset( char minmax )
         if( write_data(data_value_rel, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
-        address = 0x61E;                                                        // set min value timestamp
+        address = 0x61e;                                                        // set min value timestamp
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
@@ -1668,7 +1668,7 @@ void pressure_reset( char minmax )
 
     if( minmax & RESET_MAX )
         {
-        address = 0x60A;                                                        // set max abs value
+        address = 0x60a;                                                        // set max abs value
         number = 5;
     
         if( write_data(data_value_abs, address, number, WRITE_NIBBBLE) != number )
@@ -1698,14 +1698,14 @@ void pressure_reset( char minmax )
 double pressure_correction( void )
     {
     uint8_t data[3];
-    int address = 0x5EC;
+    int address = 0x5ec;
     int bytes = 3;
 
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
-    return (data[2] & 0xF) * 1000 + (data[1] >> 4) * 100 + (data[1] & 0xF) * 10 +
-           (data[0] >> 4) + (data[0] & 0xF) / 10.0 - 1000;
+    return (data[2] & 0x0f) * 1000 + (data[1] >> 4) * 100 + (data[1] & 0x0f) * 10 +
+           (data[0] >> 4) + (data[0] & 0x0f) / 10.0 - 1000;
     }
 
 
@@ -1719,14 +1719,14 @@ double pressure_correction( void )
 void tendency_forecast( int * tendency, int * forecast )
     {
     uint8_t data;
-    int address = 0x26B;
+    int address = 0x26b;
     int bytes = 1;
 
     if( read_data(&data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
 
     *tendency = data >> 4;
-    *forecast = data & 0xF;
+    *forecast = data & 0x0f;
     }
 
 

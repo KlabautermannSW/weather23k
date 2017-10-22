@@ -53,7 +53,7 @@
 
 #define ACK_WRITE                               0x10
 #define ACK_SET                                 0x04
-#define ACK_CLEAR                               0x0C
+#define ACK_CLEAR                               0x0c
 
 
 /*  function        static void enc_address( int src, uint8_t * dst )
@@ -69,7 +69,7 @@ static void enc_address( int src, uint8_t * dst )
     int i;
 
     for( i = 0; i < 4; ++i )
-        *(dst + i) = (uint8_t)(0x82 + (((src >> (4 * (3 - i))) & 0x0F) * 4));
+        *(dst + i) = (uint8_t)(0x82 + (((src >> (4 * (3 - i))) & 0x0f) * 4));
     }
 
 
@@ -148,7 +148,7 @@ static int perform_read( uint8_t * data, int addr, int n )
     if( n > 15 )                                                                // we can't read more then 15 bytes at a single blow 
         return -1;
     enc_address(addr, cmd);                                                     // first 4 bytes are address
-    cmd[4] = (uint8_t)(0xC2 + n * 4);                                           // last byte contains the number of bytes
+    cmd[4] = (uint8_t)(0xc2 + n * 4);                                           // last byte contains the number of bytes
 
     for( i = 0; i < 4; ++i )
         {
@@ -180,7 +180,7 @@ static int perform_read( uint8_t * data, int addr, int n )
         return -1;
     for( i = 0; i < n; ++i )
         checksum += data[i];
-    checksum &= 0xFF;
+    checksum &= 0xff;
 
     if( dst != checksum )
         return -1;
