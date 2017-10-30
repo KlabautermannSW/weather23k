@@ -94,7 +94,7 @@ ERRNO Log( void )
     weatherdata_t * p_weatherdata = get_weatherdata_ptr();
 
     sprintf(line, "%s", p_weatherdata->act_time);
-    sprintf(line, "%s %6.2f", line, p_weatherdata->temperature);                // temperature [٠C]
+    sprintf(line, "%s %6.2f", line, p_weatherdata->temperature);                // temperature [°C]
     sprintf(line, "%s %6.1f", line, p_weatherdata->pressure);                   // absolute pressure [hPa]
     sprintf(line, "%s %6.1f", line, GetRelPressure());                          // relative pressure [hPa]
     sprintf(line, "%s %3d", line, p_weatherdata->humidity);                     // relative humudity [%]
@@ -104,8 +104,8 @@ ERRNO Log( void )
     sprintf(line, "%s %5.1f", line, p_weatherdata->speed[1]);                   // wind speed [km/h]
     sprintf(line, "%s %5.1f", line, p_weatherdata->speed[2]);                   // wind speed [kn]
     sprintf(line, "%s %2d", line, (int)p_weatherdata->speed[3]);                // wind speed [bft]
-    sprintf(line, "%s %6.2f", line, p_weatherdata->dewpoint);                   // dewpoint [٠]
-    sprintf(line, "%s %6.2f", line, p_weatherdata->windchill);                  // windchill [٠]
+    sprintf(line, "%s %6.2f", line, p_weatherdata->dewpoint);                   // dewpoint [°C]
+    sprintf(line, "%s %6.2f", line, p_weatherdata->windchill);                  // windchill [°C]
     sprintf(line, "%s %5.1f", line, p_weatherdata->rain_per_hour);              // rain_per_hour [l]
     sprintf(line, "%s %5.1f", line, p_weatherdata->rain_per_day);               // rain_per_day [l]
     sprintf(line, "%s\n", line);
