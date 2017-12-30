@@ -22,7 +22,7 @@
 
     file        debug.c
 
-    date        18.06.2017
+    date        30.12.2017
 
     author      Uwe Jantzen (jantzen@klabautermann-software.de)
 
@@ -54,8 +54,8 @@ void debug( const char * format, ... )
     if( is_debug() )
         {
         va_start(arg, format);
-        printf(format);
+        vfprintf(stderr, format, arg);
         va_end(arg);
-        fflush(stdout);
+        fflush(stderr);
         }
     }

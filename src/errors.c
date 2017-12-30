@@ -114,7 +114,7 @@ void error( ERRNO err )
     idx = (int)err * -1;                                                        // switch error code to index into the text array
     if( idx < 0 )                                                               // just in case
         {
-        printf("Error %3d --- This is an implementation bug! Error code should NOT be positive!\n", err);
+        fprintf(stderr, "Error %3d --- This is an implementation bug! Error code should NOT be positive!\n", err);
         return;
         }
 
@@ -127,8 +127,8 @@ void error( ERRNO err )
             }
 
         if( errors[count] )
-            printf("Error %3d : %s\n", err, errors[count]);
+            fprintf(stderr, "Error %3d : %s\n", err, errors[count]);
         else
-            printf("Error %3d : unknown error code !\n", err);
+            fprintf(stderr, "Error %3d : unknown error code !\n", err);
         }
     }
