@@ -77,7 +77,7 @@ ERRNO handle_arg( char * str )
                 case 'h' :
                     printf("\nweather23k V%s (c) Uwe Jantzen (Klabautermann-Software) %s", VERSION, __DATE__);
                     printf("\n\nUsage:");
-                    printf("\n        weather23k [options] [<configuration file>]]");
+                    printf("\n        weather23k [options] [<configuration file>]");
                     printf("\nOptios:");
                     printf("\n        -v            verbose, show data read from the weather station");
                     printf("\n        -d            debug, show more data (eg. ftp, logging ...)");
