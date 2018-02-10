@@ -78,10 +78,10 @@ ERRNO handle_arg( char * str )
                     printf("\nweather23k V%s (c) Uwe Jantzen (Klabautermann-Software) %s", VERSION, __DATE__);
                     printf("\n\nUsage:");
                     printf("\n        weather23k [options] [<configuration file>]");
-                    printf("\nOptios:");
+                    printf("\nOptions:");
                     printf("\n        -v            verbose, show data read from the weather station");
                     printf("\n        -d            debug, show more data (eg. ftp, logging ...)");
-                    printf("\n        -h            show this help thet stop without doing anything more");
+                    printf("\n        -h            show this help then stop without doing anything more");
                     printf("\n        -c            start the password encoder");
                     printf("\n\nIf no configuration file name is given the file \"conf/weather23k.conf\" is used.");
                     printf("\n\n");
