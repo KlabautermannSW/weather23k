@@ -695,7 +695,7 @@ ERRNO PrintVariable( int var, char * dst )
     switch( var )
         {
         case VAR_TEMP :
-            sprintf(var_str, "%1.2f", p_weatherdata->temperature);
+            sprintf(var_str, "%1.1f", p_weatherdata->temperature);
             break;
         case VAR_PRESS :
             sprintf(var_str, "%1.1f", GetRelPressure());
@@ -734,11 +734,11 @@ ERRNO PrintVariable( int var, char * dst )
                 sprintf(var_str, "-");
             break;
         case VAR_DEW :
-            sprintf(var_str, "%1.2f", p_weatherdata->dewpoint);
+            sprintf(var_str, "%1.1f", p_weatherdata->dewpoint);
             break;
         case VAR_CHILL :
             if( p_weatherdata->sensor_connected == 0 )
-                sprintf(var_str, "%1.2f", p_weatherdata->windchill);
+                sprintf(var_str, "%1.1f", p_weatherdata->windchill);
             else
                 sprintf(var_str, "-.-");
             break;

@@ -28,40 +28,43 @@
 #
 #   brief       Makefile for weather23k
 #
-#   details     
+#   details
 #
 #   project     weather23k
 #   target      Linux
 #   begin       09.10.2016
 #
-#   note        
+#   note
 #
-#   todo        
+#   todo
 #
 
 vpath %.h include
 vpath %.c src
 vpath %.o obj
 
-CC  = gcc
-CC  = gcc
-OBJ = weather23k.o sercom.o ws23kcom.o ws23k.o ftp.o getargs.o data.o log.o password.o errors.o locals.o debug.o
-DSRC = src
-DINC = include
-DBIN = bin
-DOBJ = obj
-CONF = conf
+CC  := gcc
+DSRC := src
+DINC := include
+DBIN := bin
+DOBJ := obj
+CONF := conf
+
+OBJ := weather23k.o sercom.o ws23kcom.o ws23k.o ftp.o getargs.o data.o log.o password.o errors.o locals.o debug.o
 
 VERSION = 1.00
 
 CFLAGS = -I $(DINC) -Wall -O3 -DVERSION=\"$(VERSION)\"
 CC_LDFLAGS = -lm
 
+.c.o: $(DOBJ)
+	$(CC) $(CFLAGS) -c $< -o $(DOBJ)/$@
+
 ####### Build rules
 
-all: weather23k
+all: install weather23k
 
-weather23k : $(OBJ)
+weather23k : $(OBJ) $(DBIN)
 	$(CC) $(CFLAGS) -o $(DBIN)/$@ \
 		$(DOBJ)/weather23k.o \
 		$(DOBJ)/sercom.o \
@@ -79,52 +82,36 @@ weather23k : $(OBJ)
 		$(CC_LDFLAGS)
 
 weather23k.o : weather23k.c data.h getargs.h ws23k.h ftp.h log.h sercom.h debug.h
-	mkdir -p $(DOBJ)
-	$(CC) $(CFLAGS) -c $(DSRC)/weather23k.c -o $(DOBJ)/weather23k.o
 
 sercom.o : sercom.c sercom.h errors.h debug.h
-	mkdir -p $(DOBJ)
-	$(CC) $(CFLAGS) -c $(DSRC)/sercom.c -o $(DOBJ)/sercom.o
 
 ws23kcom.o : ws23kcom.c sercom.h errors.h debug.h
-	mkdir -p $(DOBJ)
-	$(CC) $(CFLAGS) -c $(DSRC)/ws23kcom.c -o $(DOBJ)/ws23kcom.o
 
 ws23k.o : ws23k.c data.h ws23kcom.h ws23k.h locals.h debug.h
-	mkdir -p $(DOBJ)
-	$(CC) $(CFLAGS) -c $(DSRC)/ws23k.c -o $(DOBJ)/ws23k.o
 
 ftp.o : ftp.c ftp.h data.h debug.h
-	mkdir -p $(DOBJ)
-	$(CC) $(CFLAGS) -c $(DSRC)/ftp.c -o $(DOBJ)/ftp.o
 
 getargs.o : getargs.c data.h password.h getargs.h debug.h
-	mkdir -p $(DOBJ)
-	$(CC) $(CFLAGS) -c $(DSRC)/getargs.c -o $(DOBJ)/getargs.o
 
 data.o : data.c data.h ws23k.h password.h debug.h
-	mkdir -p $(DOBJ)
-	$(CC) $(CFLAGS) -c $(DSRC)/data.c -o $(DOBJ)/data.o
 
 log.o : log.c log.h ws23k.h debug.h
-	mkdir -p $(DOBJ)
-	$(CC) $(CFLAGS) -c $(DSRC)/log.c -o $(DOBJ)/log.o
 
 password.o : password.c password.h debug.h
-	mkdir -p $(DOBJ)
-	$(CC) $(CFLAGS) -c $(DSRC)/password.c -o $(DOBJ)/password.o
 
 errors.o : errors.c errors.h data.h debug.h
-	mkdir -p $(DOBJ)
-	$(CC) $(CFLAGS) -c $(DSRC)/errors.c -o $(DOBJ)/errors.o
 
 locals.o : locals.c locals.h debug.h
-	mkdir -p $(DOBJ)
-	$(CC) $(CFLAGS) -c $(DSRC)/locals.c -o $(DOBJ)/locals.o
 
 debug.o : debug.c debug.h
-	mkdir -p $(DOBJ)
-	$(CC) $(CFLAGS) -c $(DSRC)/debug.c -o $(DOBJ)/debug.o
 
+####### create object and executable directory if missing
+install:
+	@if [ ! -d  $(DBIN) ]; then mkdir $(DBIN); fi
+	@if [ ! -e  $(DOBJ) ]; then mkdir $(DOBJ); fi
+
+####### cleanup all objects and executables
+.PHONY clean:
 clean:
-	rm -v -f $(DSRC)/*~ $(DINC)/*~ $(CONF)/*~ $(DOBJ)/* *~ 
+	-rm -v -f $(DOBJ)/* $(DBIN)/*
+	-rmdir $(DOBJ) $(DBIN)
