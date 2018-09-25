@@ -35,15 +35,15 @@
                     log data to log file
                     push data to ftp server
 
-    details     
+    details
 
     project     weather23k
     target      Linux
     begin       08.09.2015
 
-    note        
+    note
 
-    todo        
+    todo
 
 */
 
@@ -94,7 +94,7 @@ int main( int argc, char *argv[] )
                 printf("Error in command line argument : %s\n", argv[i]);
             }
         }
-        
+
     error = Init();
     if( error )
         {
@@ -150,7 +150,8 @@ int main( int argc, char *argv[] )
             printf("Taupunkt :                %6.2f °C\n", p_weatherdata->dewpoint);            // dewpoint [٠]
             printf("Gefühlte Temp. :          %6.2f °C\n", p_weatherdata->windchill);           // windchill [٠]
             printf("Regen / Stunde :          %5.1f mm\n", p_weatherdata->rain_per_hour);       // rain_per_hour [l]
-            printf("Regen / 24 Stunden :      %5.1f mm\n", p_weatherdata->rain_per_day);        // rain_per_day [l]            }
+            printf("Regen / 24 Stunden :      %5.1f mm\n", p_weatherdata->rain_per_day);        // rain_per_day [l]
+            }
         debug("Preparing data string\n");
         SetFtpString();
 #ifndef NIX
