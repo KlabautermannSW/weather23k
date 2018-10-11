@@ -108,7 +108,7 @@ debug.o : debug.c debug.h
 ####### create object and executable directory if missing
 install:
 	@if [ ! -d  $(DBIN) ]; then mkdir $(DBIN); fi
-	@if [ ! -e  $(DOBJ) ]; then mkdir $(DOBJ); fi
+	@if [ ! -d  $(DOBJ) ]; then mkdir $(DOBJ); fi
 
 ####### cleanup all objects and executables
 .PHONY clean:
