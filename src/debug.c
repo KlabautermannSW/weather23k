@@ -22,21 +22,21 @@
 
     file        debug.c
 
-    date        30.12.2017
+    date        08.12.2018
 
     author      Uwe Jantzen (jantzen@klabautermann-software.de)
 
     brief       debugging gadgets
 
-    details     
+    details
 
     project     weather23k
     target      Linux
     begin       18.06.2017
 
-    note        
+    note
 
-    todo        
+    todo
 
 */
 
@@ -47,7 +47,7 @@
 #include "debug.h"
 
 
-void debug( const char * format, ... )
+void debug( char const * format, ... )
     {
     va_list arg;
 

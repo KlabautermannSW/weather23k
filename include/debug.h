@@ -22,21 +22,21 @@
 
     file        debug.h
 
-    date        18.06.2017
+    date        08.12.2018
 
     author      Uwe Jantzen (jantzen@klabautermann-software.de)
 
     brief       debugging gadgets
 
-    details     
+    details
 
     project     weather23k
     target      Linux
     begin       18.06.2017
 
-    note        
+    note
 
-    todo        
+    todo
 
 */
 
@@ -45,7 +45,7 @@
 #define __DEBUG_H__
 
 
-extern void debug( const char * format, ... );
+extern void debug( char const * format, ... );
 
 
 #endif  // __DEBUG_H__

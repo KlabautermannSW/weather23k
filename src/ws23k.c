@@ -22,22 +22,22 @@
 
     file        ws23k.c
 
-    date        22.10.2017
+    date        08.12.2018
 
     author      Uwe Jantzen (jantzen@klabautermann-software.de)
 
     brief       Handle all access to WS2300 weather station
                 Handle some data conversion
 
-    details 
+    details
 
     project     weather23k
     target      Linux
     begin       05.09.2015
 
-    note    
+    note
 
-    todo        
+    todo
 
 */
 
@@ -80,11 +80,11 @@ weatherdata_t * get_weatherdata_ptr( void )
 */
 double GetRelPressure( void )
     {
-    const double G0 = 9.80665;
-    const double R_STAR = 287.05;
-    const double A = 0.0065;
-    const double CH = 0.12;
-    const double KELVIN = 273.15;
+    double const G0 = 9.80665;
+    double const R_STAR = 287.05;
+    double const A = 0.0065;
+    double const CH = 0.12;
+    double const KELVIN = 273.15;
     double x;
     double p;
     double e_approx;
@@ -153,7 +153,7 @@ void temperature_indoor_minmax( double * temp_min, double * temp_max, struct tim
     time_min->day = ((data[7] & 0x0f) * 10) + (data[6] >> 4);
     time_min->month = ((data[8] & 0x0f) * 10) + (data[7] >> 4);
     time_min->year = 2000 + ((data[9] & 0x0f) * 10) + (data[8] >> 4);
-    
+
     time_max->minute = ((data[10] & 0x0f) * 10) + (data[9] >> 4);
     time_max->hour = ((data[11] & 0x0f) * 10) + (data[10] >> 4);
     time_max->day = ((data[12] & 0x0f) * 10) + (data[11] >> 4);
@@ -205,7 +205,7 @@ void temperature_indoor_reset( uint8_t minmax )
         {
         address = 0x34B;                                                        // set min value
         number = 4;
-    
+
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
@@ -220,7 +220,7 @@ void temperature_indoor_reset( uint8_t minmax )
         {
         address = 0x350;                                                        // set max value
         number = 4;
-    
+
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
@@ -314,7 +314,7 @@ void temperature_outdoor_reset( uint8_t minmax )
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
-    
+
     data_time[0] = data_read[0] & 0x0f;
     data_time[1] = data_read[0] >> 4;
     data_time[2] = data_read[1] & 0x0f;
@@ -330,7 +330,7 @@ void temperature_outdoor_reset( uint8_t minmax )
         {
         address = 0x378;                                                        // set min value
         number = 4;
-    
+
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
@@ -345,7 +345,7 @@ void temperature_outdoor_reset( uint8_t minmax )
         {
         address = 0x37d;                                                        // set max value
         number = 4;
-    
+
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
@@ -439,7 +439,7 @@ void dewpoint_reset( uint8_t minmax )
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
-    
+
     data_time[0] = data_read[0] & 0x0f;
     data_time[1] = data_read[0] >> 4;
     data_time[2] = data_read[1] & 0x0f;
@@ -455,7 +455,7 @@ void dewpoint_reset( uint8_t minmax )
         {
         address = 0x3d3;                                                        // set min value
         number = 4;
-    
+
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
@@ -470,7 +470,7 @@ void dewpoint_reset( uint8_t minmax )
         {
         address = 0x3d8;                                                        // set max value
         number = 4;
-    
+
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
@@ -566,7 +566,7 @@ void humidity_indoorr_reset( uint8_t minmax )
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
-    
+
     data_time[0] = data_read[0] & 0x0f;
     data_time[1] = data_read[0] >> 4;
     data_time[2] = data_read[1] & 0x0f;
@@ -582,7 +582,7 @@ void humidity_indoorr_reset( uint8_t minmax )
         {
         address = 0x3fd;                                                        // set min value
         number = 2;
-    
+
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
@@ -598,7 +598,7 @@ void humidity_indoorr_reset( uint8_t minmax )
         address = 0x3ff;                                                        // set max value
 
         number = 2;
-    
+
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
@@ -606,7 +606,7 @@ void humidity_indoorr_reset( uint8_t minmax )
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
-            handle_comm_error(ERR_COMM_WRITE);    
+            handle_comm_error(ERR_COMM_WRITE);
         }
     }
 
@@ -694,7 +694,7 @@ void humidity_outdoor_reset( uint8_t minmax )
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
-    
+
     data_time[0] = data_read[0] & 0x0f;
     data_time[1] = data_read[0] >> 4;
     data_time[2] = data_read[1] & 0x0f;
@@ -710,7 +710,7 @@ void humidity_outdoor_reset( uint8_t minmax )
         {
         address = 0x41b;                                                        // set min value
         number = 2;
-    
+
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
@@ -725,7 +725,7 @@ void humidity_outdoor_reset( uint8_t minmax )
         {
         address = 0x41d;                                                        // set max value
         number = 2;
-    
+
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
@@ -757,7 +757,7 @@ double wind_current( double * winddir )
         {
         if( read_data(data, address, bytes) != bytes )                          // wind
             handle_comm_error(ERR_COMM_READ);
-    
+
         if( ( data[0] != 0x00 ) ||                                              // invalid wind data
             ( ( data[1] == 0x0fF ) && ( ((data[2] & 0x0f) == 0 ) || ( (data[2] & 0x0f) == 1 ) ) ) )
             {
@@ -779,7 +779,7 @@ double wind_current( double * winddir )
     brief           Read wind speed, wind direction, sensor flags, minimum code
 
     param[out]      double * winddir [°]
-    param[out]      int * sensor_connected, flag : 0 = normal, 5 = sensor disconnencted 
+    param[out]      int * sensor_connected, flag : 0 = normal, 5 = sensor disconnencted
     param[out]      int * minimum_code
 
     return          double, wind speed [m/s]
@@ -795,7 +795,7 @@ double wind_current_flags( double * winddir, int * sensor_connected, int * minim
         {
         if( read_data(data, address, bytes) != bytes )                          // wind
             handle_comm_error(ERR_COMM_READ);
-    
+
         if( ( data[1] == 0x0fF ) && ( ( (data[2] & 0x0f) == 0 ) || ( (data[2] & 0x0f) == 1 )) )
             {
             usleep(10000);                                                      // wait 10 seconds for new wind measurement
@@ -838,7 +838,7 @@ double wind_all( int * winddir_index, double * winddir )
         {
         if( read_data(data, address, bytes) != bytes )                          // wind
             handle_comm_error(ERR_COMM_READ);
-         
+
         if( ( data[0]!=0x00 ) ||                                                // invalid wind data
            ( ( data[1] == 0x0fF ) && ( ((data[2] & 0x0f) == 0 )||( (data[2] & 0x0f) == 1 ) ) ) )
             {
@@ -933,7 +933,7 @@ void wind_reset( uint8_t minmax )
         {
         if( read_data(data_read, address, number) != number )
             handle_comm_error(ERR_COMM_READ);
-         
+
         if( ( data_read[0] != 0x00 ) ||                                         // invalid wind data
             ( ( data_read[1] == 0x0ff ) && ( ( (data_read[2] & 0x0f) == 0 ) || ( (data_read[2] & 0x0f) == 1 ) ) ) )
             {
@@ -972,7 +972,7 @@ void wind_reset( uint8_t minmax )
         {
         address = 0x4ee;                                                        // set min value
         number = 4;
-    
+
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
@@ -987,7 +987,7 @@ void wind_reset( uint8_t minmax )
         {
         address = 0x4f4;                                                        // set max value
         number = 4;
-    
+
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
@@ -995,7 +995,7 @@ void wind_reset( uint8_t minmax )
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
-            handle_comm_error(ERR_COMM_WRITE);    
+            handle_comm_error(ERR_COMM_WRITE);
         }
     }
 
@@ -1082,7 +1082,7 @@ void windchill_reset( uint8_t minmax )
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
-    
+
     data_time[0] = data_read[0] & 0x0f;
     data_time[1] = data_read[0] >> 4;
     data_time[2] = data_read[1] & 0x0f;
@@ -1098,7 +1098,7 @@ void windchill_reset( uint8_t minmax )
         {
         address = 0x3a5;                                                        // set min value
         number = 4;
-    
+
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
@@ -1113,7 +1113,7 @@ void windchill_reset( uint8_t minmax )
         {
         address = 0x3aa;                                                        // set max value
         number = 4;
-    
+
         if( write_data(data_value, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
@@ -1163,10 +1163,10 @@ double rain_1h_all( double * rain_max, struct timestamp * time_max )
 
     if( read_data(data, address, bytes) != bytes )
         handle_comm_error(ERR_COMM_READ);
-    
+
     *rain_max = (data[5] >> 4) * 1000 + (data[5] & 0x0f) * 100 + (data[4] >> 4) * 10 +
                 (data[4] & 0x0f) + (data[3] >> 4) / 10.0 + (data[3] & 0x0f) / 100.0;
-             
+
     time_max->minute = ((data[6] >> 4) * 10) + (data[6] & 0x0f);
     time_max->hour = ((data[7] >> 4) * 10) + (data[7] & 0x0f);
     time_max->day = ((data[8] >> 4) * 10) + (data[8] & 0x0f);
@@ -1444,7 +1444,7 @@ void rain_total_reset( void )
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
-    
+
     data_time[0] = data_read[0] & 0x0f;
     data_time[1] = data_read[0] >> 4;
     data_time[2] = data_read[1] & 0x0f;
@@ -1513,7 +1513,7 @@ void rel_pressure_minmax( double * pres_min, double * pres_max, struct timestamp
                 (data[0] >> 4) + (data[0] & 0x0f) / 10.0;
     *pres_max = (data[12] & 0x0f) * 1000 + (data[11] >> 4) * 100 + (data[11] & 0x0f) * 10 +
                 (data[10] >> 4) + (data[10] & 0x0f) / 10.0;
-    
+
     address = 0x61e;                                                            // relative pressure time and date for min/max
     bytes = 10;
 
@@ -1576,7 +1576,7 @@ void abs_pressure_minmax( double * pres_min, double * pres_max, struct timestamp
                 (data[0] >> 4) + (data[0] & 0x0f) / 10.0;
     *pres_max = (data[12] & 0x0f) * 1000 + (data[11] >> 4) * 100 + (data[11] & 0x0f) * 10 +
                 (data[10] >> 4) + (data[10] & 0x0f) / 10.0;
-    
+
     address = 0x61e;                                                            // relative pressure time and date for min/max
     bytes = 10;
 
@@ -1615,7 +1615,7 @@ void pressure_reset( char minmax )
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
-    
+
     data_value_abs[0] = data_read[0] & 0x0f;
     data_value_abs[1] = data_read[0] >> 4;
     data_value_abs[2] = data_read[1] & 0x0f;
@@ -1633,7 +1633,7 @@ void pressure_reset( char minmax )
 
     if( read_data(data_read, address, number) != number )
         handle_comm_error(ERR_COMM_READ);
-    
+
     data_time[0] = data_read[0] & 0x0f;
     data_time[1] = data_read[0] >> 4;
     data_time[2] = data_read[1] & 0x0f;
@@ -1649,13 +1649,13 @@ void pressure_reset( char minmax )
         {
         address = 0x5f6;                                                        // set min abs value
         number = 5;
-    
+
         if( write_data(data_value_abs, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
-        
+
         address = 0x600;                                                        // set min rel value
         number = 5;
-    
+
         if( write_data(data_value_rel, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
@@ -1670,13 +1670,13 @@ void pressure_reset( char minmax )
         {
         address = 0x60a;                                                        // set max abs value
         number = 5;
-    
+
         if( write_data(data_value_abs, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
-        
+
         address = 0x614;                                                        // set max rel value
         number = 5;
-    
+
         if( write_data(data_value_rel, address, number, WRITE_NIBBBLE) != number )
             handle_comm_error(ERR_COMM_WRITE);
 
@@ -1684,7 +1684,7 @@ void pressure_reset( char minmax )
         number = 10;
 
         if( write_data(data_time, address, number, WRITE_NIBBBLE) != number )
-            handle_comm_error(ERR_COMM_WRITE);    
+            handle_comm_error(ERR_COMM_WRITE);
         }
     }
 
@@ -1742,7 +1742,7 @@ void light( int set )
     int address = 0x016;
 
     data = 0;
-    
+
     if( write_data(&data, address, 1, (set) ? BIT_SET : BIT_CLEAR) != 1 )
         handle_comm_error(ERR_COMM_WRITE);
     }

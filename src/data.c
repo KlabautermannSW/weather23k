@@ -22,22 +22,22 @@
 
     file        data.c
 
-    date        18.06.2017
+    date        08.12.2018
 
     author      Uwe Jantzen (jantzen@klabautermann-software.de)
 
     brief       Read and store data from .ini-file
                 Store global data
 
-    details     
+    details
 
     project     weather23k
     target      Linux
     begin       05.09.2015
 
-    note        
+    note
 
-    todo        
+    todo
 
 */
 
@@ -62,7 +62,7 @@ struct _tokens
     struct _tokens * next;
     };
 
-static const char * the_variables[] =
+static char const * the_variables[] =
     {
     "temp",                                                                     // temperature
     "press",                                                                    // relative air pressure
@@ -79,11 +79,11 @@ static const char * the_variables[] =
     "dirstr",                                                                   // wind direction as text
     "time"                                                                      // current time stamp
     };
-static const int max_var_length[] =                                             // maximum string lenght if variable is printed 
+static int const max_var_length[] =                                             // maximum string lenght if variable is printed
     { 0, 6, 6, 3, 3, 4, 5, 5, 2, 6, 6, 6, 6, 3, 11 };
 
-static const char * the_default_init_file_name = "conf/weather23k.conf";
-static const char * the_default_com_port = "/dev/ttyS0";
+static char const * the_default_init_file_name = "conf/weather23k.conf";
+static char const * the_default_com_port = "/dev/ttyS0";
 
 static char the_verbose_flag = 0;
 static char the_debug_flag = 0;
@@ -293,7 +293,7 @@ static void _add_token( char * p_str, int len )
     param[in]       int * len, string length or 0 if token is a variable
 
     return          char *, pointer to token
-                            this is an int pointer if token is a variable ! 
+                            this is an int pointer if token is a variable !
 */
 char * get_first_token( int * len )
     {
@@ -313,7 +313,7 @@ char * get_first_token( int * len )
     param[in]       int * len, string length or 0 if token is a variable
 
     return          char *, pointer to token
-                            this is an int pointer if token is a variable ! 
+                            this is an int pointer if token is a variable !
 */
 char * get_next_token( int * len )
     {
@@ -388,7 +388,7 @@ ERRNO Remove( char * str, char chr )
                     error condition.
                     Only if NOERR the strings contains a legal vaule!
 
-    param[in]       FILE * p_file, pointer to ini file 
+    param[in]       FILE * p_file, pointer to ini file
     param[out]      char * p_section, pointer to section name
     param[out]      char * p_key, pointer to key name
     param[out]      char * p_val, pointer to key value
@@ -401,7 +401,7 @@ ERRNO _GetEntry( FILE * p_file, char * p_section, char * p_key, char * p_val )
     char * p_str;
     int type;
     int len;
-            
+
     type = EMPTY;
     if( !p_file )
         {
@@ -515,7 +515,7 @@ ERRNO Init( void )
     char * p_str;
     int ftp_str_length = 0;
     int l;
-    int j;    
+    int j;
 
     p_template_buffer = 0;                                                      // initialize to prevent memory access errors
     template_len = 0;
@@ -534,7 +534,7 @@ ERRNO Init( void )
 
     if( the_verbose_flag )
         printf("Reading configuration from %s\n", the_init_file_name);
- 
+
     p_inifile = fopen(the_init_file_name, "r");
     if( !p_inifile )                                                            // no ini file found
         return ERR_NO_INIFILE;
@@ -691,7 +691,7 @@ ERRNO PrintVariable( int var, char * dst )
         return ERR_ILLEGAL_STRING_PTR;
 
     p_weatherdata = get_weatherdata_ptr();
-    
+
     switch( var )
         {
         case VAR_TEMP :
@@ -774,10 +774,10 @@ void SetFtpString( void )
     {
     char * str;
     int len;
-    
+
     *the_ftp_string = 0;                                                        // start from scratch every time
     str = get_first_token(&len);
-    
+
     do
         {
         if( len == 0 )                                                          // variable
@@ -788,7 +788,7 @@ void SetFtpString( void )
             {
             strcat(the_ftp_string, str);
             }
-        
+
         str = get_next_token(&len);
         }
     while( str );

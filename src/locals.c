@@ -22,21 +22,21 @@
 
     file        locals.c
 
-    date        18.06.2017
+    date        08.12.2018
 
     author      Uwe Jantzen (jantzen@klabautermann-software.de)
 
     brief       This file include some localized data
 
-    details     
+    details
 
     project     weather23k
     target      Linux
     begin       18.06.2017
 
-    note        
+    note
 
-    todo        
+    todo
 
 */
 
@@ -45,7 +45,7 @@
 #define __WS23K_H__
 
 
-const char * directions[] = { "N  ","NNO","NO ","ONO","O  ","OSO","SO ","SSO", "S  ","SSW","SW ","WSW","W  ","WNW","NW ","NNW" };
+char const * directions[] = { "N  ","NNO","NO ","ONO","O  ","OSO","SO ","SSO", "S  ","SSW","SW ","WSW","W  ","WNW","NW ","NNW" };
 
 
 #endif  //  __WS23K_H__

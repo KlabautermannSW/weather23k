@@ -22,21 +22,21 @@
 
     file        locals.h
 
-    date        18.06.2017
+    date        08.12.2018
 
     author      Uwe Jantzen (jantzen@klabautermann-software.de)
 
     brief       This file include some localized data
 
-    details     
+    details
 
     project     weather23k
     target      Linux
     begin       18.06.2017
 
-    note        
+    note
 
-    todo        
+    todo
 
 */
 
@@ -52,7 +52,7 @@
 #define HEIGHT                                   114.0                          // Staffort
 
 
-extern const char * directions[];
+extern char const * directions[];
 
 
 #endif  //  __LOCALS_H__
