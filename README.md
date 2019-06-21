@@ -1,7 +1,7 @@
 # weather23k
 
 ## Entstehung, Ziel
-Lange habe ich meine [Wetterseite](http://ur9.de/) mit einem selbst geschriebenen Programm auf Basis
+Lange habe ich meine Wetterseite mit einem selbst geschriebenen Programm auf Basis
 der [OPEN2300-Bibliothek](http://lavrsen.dk/foswiki/bin/view/Open2300/WebHome) von Kenneth Lavrsen
 gefüttert.
 
@@ -22,7 +22,7 @@ sind einige Module entstanden, die folgende Kriterien erfüllen :
 - Innerhalb eines Moduls gibt es keine Funktion, die hier nur einmal aufgerufen wird
 
 Aus diesen Überlegungen ist das Programm "weather23k" entstanden. Es ist keine allgemein
-verwendbare Bibliothek, sondern ein komplettes Programm, um 
+verwendbare Bibliothek, sondern ein komplettes Programm, um
 - die Daten aus einer WS2300-kompatiblen Wetterstation auszulesen
 - diese Daten zu loggen (lokal und auf einem FTP-Server)
 - ausgewählte Daten für eine Webseite zur Verfügung zu stellen
@@ -49,7 +49,7 @@ Eine ausführliche (englische) Dokumentation steht in doc/wether23k_en.pdf, die 
 Dokumentation folgt noch.
 
 ## Idea and Goal
-I feeded my [weather webpage](http://ur9.de/) for a long time with a self developed
+I feeded my weather webpage for a long time with a self developed
 program based on the [OPEN2300 library](http://lavrsen.dk/foswiki/bin/view/Open2300/WebHome)
 implemented by Kenneth Lavrsen.
 
